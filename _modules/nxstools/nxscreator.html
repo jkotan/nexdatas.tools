@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 3.63.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 3.64.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.63</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.64</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -2014,7 +2014,8 @@
     <span class="k">def</span> <span class="nf">__createSECoPTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="n">samplename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">modulenames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">environments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                          <span class="n">meanings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transattrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                          <span class="n">meanings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transattrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">dynamiclinks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">samplenxdata</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create nexus node tree</span>
 
 <span class="sd">        :param df: definition parent node</span>
@@ -2037,6 +2038,10 @@
 <span class="sd">        :type first: :obj:`str`</span>
 <span class="sd">        :param transattrs: JSON dictionary with transformation attributes</span>
 <span class="sd">        :type transattrs: :obj:`str`</span>
+<span class="sd">        :param dynamiclinks: dynamic links flag</span>
+<span class="sd">        :type dynamiclinks: :obj:`bool`</span>
+<span class="sd">        :param samplenxdata: sample nxdata</span>
+<span class="sd">        :type samplenxdata: :obj:`bool`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ename</span> <span class="o">=</span> <span class="s2">&quot;$var.entryname#&#39;$(__entryname__)&#39;$var.serialno&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
                     <span class="s2">&quot;$(__entryname__)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s2">&quot;scan&quot;</span><span class="p">))</span>
@@ -2120,25 +2125,44 @@
 
         <span class="n">llinks</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">tg</span><span class="p">,</span> <span class="n">mns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">tg</span><span class="p">,</span> <span class="n">mns</span> <span class="ow">in</span> <span class="n">links</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span>
                         <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dynamiclinks</span> <span class="ow">or</span> <span class="n">samplenxdata</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">createSECoPLinkDS</span><span class="p">(</span>
+                <span class="n">ename</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span> <span class="n">meanings</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">environments</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dynamiclinks</span><span class="p">:</span>
+            <span class="n">ae</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span>
+                <span class="s1">&#39;secop_env_links&#39;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$datasources.sample_env_links&quot;</span><span class="p">)</span>
+            <span class="n">ae</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;FINAL&quot;</span><span class="p">)</span>
+            <span class="n">al</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span>
+                <span class="s1">&#39;secop_log_links&#39;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$datasources.sample_log_links&quot;</span><span class="p">)</span>
+            <span class="n">al</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;FINAL&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">samplenxdata</span><span class="p">:</span>
+            <span class="n">al</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span>
+                <span class="s1">&#39;sample_nxdata&#39;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$datasources.sample_nxdata&quot;</span><span class="p">)</span>
+            <span class="n">al</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;FINAL&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">target</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">semn</span> <span class="ow">in</span> <span class="n">llinks</span><span class="p">:</span>
             <span class="n">starget</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">mn</span> <span class="ow">in</span> <span class="n">lenvironments</span> <span class="ow">and</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_env&quot;</span> <span class="o">%</span> <span class="n">mn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">created</span><span class="p">:</span>
-                <span class="n">env</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span>
-                    <span class="n">sample</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_env&quot;</span> <span class="o">%</span> <span class="n">mn</span><span class="p">,</span> <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">dynamiclinks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">mn</span> <span class="ow">in</span> <span class="n">lenvironments</span> <span class="ow">and</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_env&quot;</span> <span class="o">%</span> <span class="n">mn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">created</span><span class="p">:</span>
+                    <span class="n">env</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span>
+                        <span class="n">sample</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_env&quot;</span> <span class="o">%</span> <span class="n">mn</span><span class="p">,</span> <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
 
-                <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">starget</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-                <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/description&quot;</span><span class="p">)</span>
-                <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/name&quot;</span><span class="p">)</span>
-                <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;short_name&quot;</span><span class="p">,</span>
-                      <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/short_name&quot;</span><span class="p">)</span>
-                <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/type&quot;</span><span class="p">)</span>
-                <span class="n">created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_env&quot;</span> <span class="o">%</span> <span class="n">mn</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">mn</span> <span class="ow">in</span> <span class="n">lmeanings</span> <span class="ow">and</span> <span class="n">mn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">created</span><span class="p">:</span>
-                <span class="n">NLink</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-                <span class="n">created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mn</span><span class="p">)</span>
+                    <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">starget</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/description&quot;</span><span class="p">)</span>
+                    <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/name&quot;</span><span class="p">)</span>
+                    <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;short_name&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/short_name&quot;</span><span class="p">)</span>
+                    <span class="n">NLink</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">starget</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;/type&quot;</span><span class="p">)</span>
+                    <span class="n">created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_env&quot;</span> <span class="o">%</span> <span class="n">mn</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">mn</span> <span class="ow">in</span> <span class="n">lmeanings</span> <span class="ow">and</span> <span class="n">mn</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">created</span><span class="p">:</span>
+                    <span class="n">NLink</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+                    <span class="n">created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mn</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="n">mn</span> <span class="ow">in</span> <span class="n">trattrs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">nm</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">starget</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="n">starget</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">nm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">created_trans</span><span class="p">:</span>
@@ -2181,7 +2205,13 @@
         <span class="k">if</span> <span class="s1">&#39;meaning&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">meaning</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;meaning&#39;</span><span class="p">]</span>
             <span class="n">semeaning</span> <span class="o">=</span> <span class="n">meaning</span>
+            <span class="n">importance</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">importance</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">meaning</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="n">importance</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">meaning</span> <span class="ow">in</span> <span class="n">mnTme</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -2189,6 +2219,9 @@
                 <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;measurement&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
                 <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span>
                 <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">importance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">mimp</span> <span class="o">=</span> <span class="n">NAttr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s2">&quot;secop_importance&quot;</span><span class="p">,</span> <span class="s2">&quot;NX_INT32&quot;</span><span class="p">)</span>
+                    <span class="n">mimp</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">importance</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="s1">&#39;implementation&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
@@ -2400,7 +2433,9 @@
                                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">environments</span><span class="p">,</span>
                                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">meanings</span><span class="p">,</span>
                                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">first</span><span class="p">,</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">transattrs</span><span class="p">)</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">transattrs</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">dynamiclinks</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">samplenxdata</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">cpname</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">cpname</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">()</span></div>
 
@@ -2465,6 +2500,112 @@
             <span class="p">)</span> <span class="k">as</span> <span class="n">content_file</span><span class="p">:</span>
                 <span class="n">xmlcontent</span> <span class="o">=</span> <span class="n">content_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                 <span class="n">xml</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$(name)&quot;</span><span class="p">,</span> <span class="n">dsname</span><span class="p">)</span>
+                <span class="n">missing</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentVariables</span><span class="p">[</span>
+                        <span class="n">module</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">xml</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">var</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="n">desc</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">xml</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">var</span><span class="p">,</span> <span class="n">desc</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">missing</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+                        <span class="n">root</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                            <span class="nb">bytes</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">),</span>
+                            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">root</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                            <span class="n">xml</span><span class="p">,</span>
+                            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+                    <span class="n">nodes</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//attribute&quot;</span><span class="p">)</span>
+                    <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//field&quot;</span><span class="p">))</span>
+                    <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//link&quot;</span><span class="p">))</span>
+                    <span class="n">grnodes</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//group&quot;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+                        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getText</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
+                            <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;$(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">ms</span>
+                            <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+                                <span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                                <span class="n">parent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                                <span class="k">break</span>
+                    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">grnodes</span><span class="p">:</span>
+                        <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">text</span> <span class="ow">and</span> <span class="s2">&quot;$(&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
+                                <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;$(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">ms</span>
+                                <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+                                    <span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                                    <span class="n">parent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                                    <span class="k">break</span>
+                    <span class="n">xml</span> <span class="o">=</span> <span class="n">_simpletoxml</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MISSING </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">missing</span><span class="p">)</span>
+                    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="s2">&quot;s.$(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">xml</span><span class="p">:</span>
+                            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="s2">&quot;WARNING: </span><span class="si">%s</span><span class="s2"> cannot be created without </span><span class="si">%s</span><span class="s2">&quot;</span>
+                            <span class="o">%</span> <span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">errors</span><span class="p">))</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
+                        <span class="n">xml</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">var</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">lines</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">xml</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lines</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())])</span>
+                <span class="k">if</span> <span class="n">xmlfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.ds.xml&quot;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">newname</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">newname</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span></div>
+
+<div class="viewcode-block" id="SECoPCPCreator.createSECoPLinkDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator.createSECoPLinkDS">[docs]</a>    <span class="k">def</span> <span class="nf">createSECoPLinkDS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entryname</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span> <span class="n">meanings</span><span class="p">,</span> <span class="n">environments</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; create SECoP datasource</span>
+
+<span class="sd">        :param entryname: secop entry name</span>
+<span class="sd">        :type entryname: :obj:`str`</span>
+<span class="sd">        :param samplename: secop sample name</span>
+<span class="sd">        :type samplename: :obj:`str`</span>
+<span class="sd">        :param meanings: secop meanings list</span>
+<span class="sd">        :type meanings: :obj:`str`</span>
+<span class="sd">        :param environments: secop environments list</span>
+<span class="sd">        :type environments: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;secoplinks&#39;</span>
+        <span class="n">dsname</span> <span class="o">=</span> <span class="s2">&quot;secop&quot;</span>
+
+        <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentTemplateFiles</span><span class="p">:</span>
+            <span class="n">xmlfiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentTemplateFiles</span><span class="p">[</span><span class="n">module</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmltemplatepath</span><span class="p">,</span> <span class="n">module</span><span class="p">)):</span>
+                <span class="n">xmlfiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="n">module</span><span class="p">]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;entryname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entryname</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;samplename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">samplename</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;meanings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meanings</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;environments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">environments</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
+            <span class="n">dsname</span> <span class="o">=</span> <span class="n">dsname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">xmlfile</span> <span class="ow">in</span> <span class="n">xmlfiles</span><span class="p">:</span>
+            <span class="c1"># print(xmlfile)</span>
+            <span class="n">newname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replaceName</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">,</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+                    <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">xmltemplatepath</span><span class="p">,</span> <span class="n">xmlfile</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span>
+            <span class="p">)</span> <span class="k">as</span> <span class="n">content_file</span><span class="p">:</span>
+                <span class="n">xmlcontent</span> <span class="o">=</span> <span class="n">content_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">xml</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$(name)&quot;</span><span class="p">,</span> <span class="n">dsname</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                    <span class="s2">&quot;$(__entryname__)&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s2">&quot;scan&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                        <span class="s2">&quot;$(__insname__)&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">insname</span>
+                         <span class="ow">or</span> <span class="s2">&quot;instrument&quot;</span><span class="p">))</span>
                 <span class="n">missing</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentVariables</span><span class="p">[</span>
                         <span class="n">module</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
