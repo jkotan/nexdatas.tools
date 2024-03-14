@@ -428,7 +428,7 @@ class SetUp(object):
                     # running = adminproxy.RunningServers
                     running = adminproxy.DevGetRunningServers(True)
                     if server in running:
-                        time.sleep(0.01)
+                        time.sleep(0.02)
                         cnt += 1
                         continue
                     else:
@@ -439,7 +439,7 @@ class SetUp(object):
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device in exl.value_string:
-                        time.sleep(0.01)
+                        time.sleep(0.02)
                         cnt += 1
                         continue
                 found = False
@@ -448,7 +448,7 @@ class SetUp(object):
                         print(" %s is not working" % (device or server))
             except Exception as e:
                 print(str(e))
-                time.sleep(0.01)
+                time.sleep(0.02)
                 found = True
             cnt += 1
         if waitforproc:
@@ -487,7 +487,7 @@ class SetUp(object):
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device not in exl.value_string:
-                        time.sleep(0.01)
+                        time.sleep(0.02)
                         cnt += 1
                         continue
                     else:
@@ -500,7 +500,7 @@ class SetUp(object):
                     # running = adminproxy.RunningServers
                     running = adminproxy.DevGetRunningServers(True)
                     if server not in running:
-                        time.sleep(0.01)
+                        time.sleep(0.02)
                         cnt += 1
                         continue
                 found = True
@@ -509,7 +509,7 @@ class SetUp(object):
                         print(" %s is working" % (device or server))
             except Exception as e:
                 print(str(e))
-                time.sleep(0.01)
+                time.sleep(0.02)
                 found = False
             cnt += 1
         if waitforproc:
@@ -618,7 +618,7 @@ class SetUp(object):
                                         problems = False
                                     except Exception:
                                         counter += 1
-                                        time.sleep(0.2)
+                                        time.sleep(0.4)
                                 problems = not self.waitServerRunning(
                                     svl, None, adminproxy) or problems
                                 print(" ")

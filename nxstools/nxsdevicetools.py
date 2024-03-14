@@ -242,12 +242,12 @@ def openServer(device):
 
     while not found and cnt < 1000:
         if cnt > 1:
-            time.sleep(0.01)
+            time.sleep(0.02)
         try:
             if cnfServer.state() != tango.DevState.RUNNING:
                 found = True
         except tango.DevFailed:
-            time.sleep(0.01)
+            time.sleep(0.02)
             found = False
         cnt += 1
 

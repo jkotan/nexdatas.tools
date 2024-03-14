@@ -1,3 +1,7 @@
+2024-03-14 Jan Kotanski <jankotan@gmail.com>
+	* increase waiting time for restarting servers (#618)
+	* tagged as v3.65.1
+
 2024-02-22 Jan Kotanski <jankotan@gmail.com>
 	* spilt NXsample to sample and sample_environment like for SECoP components (#615)
 	* remove --strict and  --node-in-instrument (#615)
