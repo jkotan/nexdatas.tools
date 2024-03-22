@@ -822,7 +822,8 @@ class SetUp(object):
 
         return True
 
-    def createConfigServer(self, beamline, masterhost, jsonsettings=None):
+    def createConfigServer(self, beamline, masterhost, jsonsettings=None,
+                           hostname=None):
         """ creates configuration server
 
         :param beamline: beamline name
@@ -831,6 +832,8 @@ class SetUp(object):
         :type masterhost: :obj:`str`
         :param jsonsettings: connection settings to DB in json
         :type jsonsettings: :obj:`str`
+        :param hostname: host of config server
+        :type hostname: :obj:`str`
         :returns: True if server was created
         :rtype: :obj:`bool`
         """
@@ -868,7 +871,8 @@ class SetUp(object):
                   "To change its device name please remove it." % server_name)
             return False
 
-        hostname = self.db.get_db_host().split(".")[0]
+        if not hostname:
+            hostname = self.db.get_db_host().split(".")[0]
 
         self._startupServer(server_name, 1, hostname, 1, self.cserver_name)
 
@@ -995,6 +999,10 @@ class Set(Runner):
             dest="masterhost", help="the host that stores the Mg"
             " ( default: <localhost> )")
         parser.add_argument(
+            "-c", "--confighost", action="store",
+            dest="confighost", help="the host with config server"
+            " ( default: <mysqlhost> )")
+        parser.add_argument(
             "-u", "--user", action="store",
             dest="user", help="the local user"
             " ( default: 'tango' )")
@@ -1082,7 +1090,8 @@ class Set(Runner):
             if not setUp.createConfigServer(
                     beamline=options.beamline,
                     masterhost=options.masterhost,
-                    jsonsettings=jsonsettings):
+                    jsonsettings=jsonsettings,
+                    hostname=options.confighost):
                 print("startup failed to create the nexus config server")
                 sys.exit(255)
 
