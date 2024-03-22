@@ -38,6 +38,8 @@ nxsetup set
 			    name of the beamline ( default: 'nxs' )
       -m MASTERHOST, --masterHost MASTERHOST
 			    the host that stores the Mg ( default: <localhost> )
+      -c CONFIGHOST, --confighost CONFIGHOST
+                            the host with config server ( default: <mysqlhost> )
       -u USER, --user USER  the local user ( default: 'tango' )
       -d DBNAME, --database DBNAME
 			    the database name ( default: 'nxsconfig')
