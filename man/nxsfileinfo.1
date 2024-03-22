@@ -1,5 +1,8 @@
 .\" Man page generated from reStructuredText.
 .
+.TH "NXSFILEINFO" "1" "Mar 22, 2024" "3.66" "NXSTools"
+.SH NAME
+nxsfileinfo \- show metadata of the NeXus file
 .
 .nr rst2man-indent-level 0
 .
@@ -27,9 +30,6 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSFILEINFO" "1" "Feb 21, 2024" "3.65" "NXSTools"
-.SH NAME
-nxsfileinfo \- show metadata of the NeXus file
 .SH DESCRIPTION
 .sp
 The nxsfileinfo program show metadata from nexus files
@@ -65,13 +65,13 @@ nxsfileinfo general <nexus_file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.B  \-\-h5py
+.B \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B  \-\-h5cpp
+.B \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -105,28 +105,28 @@ Usage: nxsfileinfo field [options]  <file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-c \ HEADERS\fR,\fB \ \-\-columns\fB= HEADERS
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
 .BI \-f \ FILTERS\fR,\fB \ \-\-filters\fB= FILTERS
-full_path filters (separated by commas without spaces). Default: ‘*’. E.g. ‘\fI:NXsample/\fP’
+full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
 .TP
-.B  \-g\fP,\fB  \-\-geometry
+.B \-g\fP,\fB  \-\-geometry
 show fields with geometry full_path filters, i.e. \fI:NXtransformations/\fP,*/depends_on. It works only when \-f is not defined
 .TP
-.B  \-s\fP,\fB  \-\-source
+.B \-s\fP,\fB  \-\-source
 show datasource parameters
 .TP
-.B  \-\-h5py
+.B \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B  \-\-h5cpp
+.B \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -162,14 +162,14 @@ Usage: nxsfileinfo metadata [options] <file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-a \ ATTRS\fR,\fB \ \-\-attributes \ ATTRS
 names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
 .TP
 .BI \-n \ NATTRS\fR,\fB \ \-\-hidden\-attributes \ NATTRS
-names of field or group attributes to be hidden (separated by commas without spaces). The default: ‘nexdatas_source,nexdatas_strategy’
+names of field or group attributes to be hidden (separated by commas without spaces). The default: \(aqnexdatas_source,nexdatas_strategy\(aq
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
@@ -185,25 +185,25 @@ access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt,{beamline}dmgt
 .TP
 .BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
-postfix to be added to NeXus group name. The default: ‘Parameters’
+postfix to be added to NeXus group name. The default: \(aqParameters\(aq
 .TP
 .BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
-names of entry NX_class to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘NXentry’
+names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
 .TP
 .BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
-names of entry groups to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘’
+names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
 .TP
-.B  \-m\fP,\fB  \-\-raw\-metadata
+.B \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
 .TP
-.B  \-\-add\-empty\-units
+.B \-\-add\-empty\-units
 add empty units for fields without units
 .TP
-.B  \-\-oned
+.B \-\-oned
 add 1d values to scientificMetadata
 .TP
 .BI \-\-max\-oned\-size \ MAXONEDSIZE
-add min and max (or first and last) values of 1d records to scientificMetadata if its size excides –max\-oned\-size value
+add min and max (or first and last) values of 1d records to scientificMetadata if its size excides \-\-max\-oned\-size value
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
@@ -211,26 +211,26 @@ dataset pid
 .BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
 beamtime id
 .TP
-.B  \-u\fP,\fB  \-\-pid\-with\-uuid
+.B \-u\fP,\fB  \-\-pid\-with\-uuid
 generate pid with uuid
 .TP
-.B  \-f\fP,\fB  \-\-pid\-with\-filename
+.B \-f\fP,\fB  \-\-pid\-with\-filename
 generate pid with file name
 .TP
 .BI \-q \ TECHNIQUES\fR,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
-spaces).The default: ‘’
+spaces).The default: \(aq\(aq
 .TP
 .BI \-j \ SAMPLEID\fR,\fB \ \-\-sample\-id \ SAMPLEID
 sampleId
 .TP
-.B  \-\-sample\-id\-from\-name
+.B \-\-sample\-id\-from\-name
 get sampleId from the sample name
 .TP
 .BI \-y \ INSTRUMENTID\fR,\fB \ \-\-instrument\-id \ INSTRUMENTID
 instrumentId
 .TP
-.B  \-\-raw\-instrument\-id
+.B \-\-raw\-instrument\-id
 leave raw instrument id
 .TP
 .BI \-b \ BEAMTIMEMETA\fR,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
@@ -255,24 +255,24 @@ or a text file list to re\-arrange metadata
 .BI \-\-copy\-map\-field \ COPYMAPFIELD
 field json or yaml with map {output: input} or [[output, input],]
 or a text file list to re\-arrange metadata. The default:
-‘scientificMetadata.nxsfileinfo_parameters.copymap.value’
+\(aqscientificMetadata.nxsfileinfo_parameters.copymap.value\(aq
 .TP
-.B  \-\-copy\-map\-error
+.B \-\-copy\-map\-error
 Raise an error when the copy map file does not exist
 .TP
 .BI \-\-copy\-map\-file \ COPYMAPFILE
-json or yaml file containing the copy map, see also –copy\-map
+json or yaml file containing the copy map, see also \-\-copy\-map
 .TP
 .BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. ‘nxs’. Default is defined by the file extension
+input file format, e.g. \(aqnxs\(aq. Default is defined by the file extension
 .TP
-.B  \-\-proposal\-as\-proposal
+.B \-\-proposal\-as\-proposal
 Store the DESY proposal as the SciCat proposal
 .TP
-.B  \-\-h5py
+.B \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B  \-\-h5cpp
+.B \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -310,7 +310,7 @@ Usage: nxsfileinfo origdatablock [options] <scan_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
@@ -328,13 +328,13 @@ access group names separated by commas. Default is
 .TP
 .BI \-s \ SKIP\fR,\fB \ \-\-skip \ SKIP
 filters for files to be skipped (separated by commas
-without spaces). Default: ‘’. E.g.
-‘\fI\&.pyc,\fP~’
+without spaces). Default: \(aq\(aq. E.g.
+\(aq\fI\&.pyc,\fP~\(aq
 .TP
 .BI \-a \ ADD\fR,\fB \ \-\-add \ ADD
 list of files to be added (separated by commas
-without spaces). Default: ‘’. E.g.
-‘scan1.nxs,scan2.nxs’
+without spaces). Default: \(aq\(aq. E.g.
+\(aqscan1.nxs,scan2.nxs\(aq
 .TP
 .BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
@@ -373,7 +373,7 @@ Usage: nxsfileinfo sample [options]
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-s \ SAMPLEID\fR,\fB \ \-\-sample\-id \ SAMPLEID
@@ -391,7 +391,7 @@ sample description
 .BI \-r \ OWNER\fR,\fB \ \-\-owner \ OWNER
 sample owner
 .TP
-.B  \-p\fP,\fB  \-\-published
+.B \-p\fP,\fB  \-\-published
 sample is published
 .TP
 .BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
@@ -442,7 +442,7 @@ Usage: nxsfileinfo instrument [options]
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
@@ -505,7 +505,7 @@ Usage: nxsfileinfo attachment [options] <image_file|scan_file>
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-a \ ATID\fR,\fB \ \-\-id \ ATID
@@ -532,13 +532,13 @@ amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
 amline}dmgt,{beamline}staff
 .TP
 .BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. ‘nxs’. Default is defined by
+input file format, e.g. \(aqnxs\(aq. Default is defined by
 the file extension
 .TP
-.B  \-\-h5py
+.B \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B  \-\-h5cpp
+.B \-\-h5cpp
 use h5cpp module as a nexus reader
 .TP
 .BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
@@ -554,7 +554,7 @@ axis/axes data name(s) separated by comma
 a JSON dictionary with scan\-command axes to override,
 axis/axes data name(s) separated by comma for
 detectors and by semicolon for more plots. Default:
-{“hklscan”:”h;k;l”,”qscan”:”qz;qpar”}
+{"hklscan":"h;k;l","qscan":"qz;qpar"}
 .TP
 .BI \-m \ FRAME\fR,\fB \ \-\-frame \ FRAME
 a frame number for if more 2D images in the data
@@ -568,15 +568,15 @@ x\-axis label
 .BI \-\-ylabel \ YLABEL
 y\-axis label
 .TP
-.B  \-u\fP,\fB  \-\-override
+.B \-u\fP,\fB  \-\-override
 override NeXus entries by script parameters
 .TP
-.B  \-\-parameters\-in\-caption
+.B \-\-parameters\-in\-caption
 add plot paramters to the caption
 .TP
 .BI \-n \ NEXUSPATH\fR,\fB \ \-\-nexus\-path \ NEXUSPATH
 base nexus path to element to be shown.
-If th path is ‘’ the default group is shown. The default: ‘’
+If th path is \(aq\(aq the default group is shown. The default: \(aq\(aq
 .TP
 .BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
@@ -614,28 +614,28 @@ Usage: nxsfileinfo groupmetadata [options] [groupname]
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
 .TP
-.B  \-\-raw
+.B \-\-raw
 raw dataset type
 .TP
 .BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid
 BEAMTIMEID beamtime id
 .TP
-.B  \-s\fP,\fB  \-\-skip\-group\-datablock
+.B \-s\fP,\fB  \-\-skip\-group\-datablock
 skip group datablock
 .TP
-.B  \-w\fP,\fB  \-\-allow\-duplication
+.B \-w\fP,\fB  \-\-allow\-duplication
 allow to merge metadata with duplicated pid
 .TP
-.B  \-q\fP,\fB  \-\-raw
+.B \-q\fP,\fB  \-\-raw
 raw dataset type
 .TP
-.B  \-f\fP,\fB  \-\-write\-files
+.B \-f\fP,\fB  \-\-write\-files
 write output to files
 .TP
 .BI \-k \ SCICATVERSION\fR,\fB \ \-\-scicat\-version \ SCICATVERSION
@@ -648,7 +648,7 @@ json metadata file mod bits, e.g. 0o662
 json or yaml map of {output: input} or [[output,
 input],] or a text file list to re\-arrange metadata
 .TP
-.B  \-e\fP,\fB  \-\-group\-map\-error
+.B \-e\fP,\fB  \-\-group\-map\-error
 Raise an error when the group map file does not exist
 .TP
 .BI \-r \ GROUPMAPFILE\fR,\fB \ \-\-group\-map\-file \ GROUPMAPFILE
