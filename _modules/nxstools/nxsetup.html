@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsetup &#8212; NXSTools 3.65.0 documentation</title>
+    <title>nxstools.nxsetup &#8212; NXSTools 3.66.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.65</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.66</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -607,7 +607,7 @@
                     <span class="c1"># running = adminproxy.RunningServers</span>
                     <span class="n">running</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevGetRunningServers</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">running</span><span class="p">:</span>
-                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
                         <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
                         <span class="k">continue</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -618,7 +618,7 @@
                         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
                     <span class="n">exl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_exported</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">exl</span><span class="o">.</span><span class="n">value_string</span><span class="p">:</span>
-                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
                         <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
                         <span class="k">continue</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
@@ -627,7 +627,7 @@
                         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%s</span><span class="s2"> is not working&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">device</span> <span class="ow">or</span> <span class="n">server</span><span class="p">))</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">waitforproc</span><span class="p">:</span>
@@ -666,7 +666,7 @@
                         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
                     <span class="n">exl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_exported</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">device</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exl</span><span class="o">.</span><span class="n">value_string</span><span class="p">:</span>
-                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
                         <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
                         <span class="k">continue</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -679,7 +679,7 @@
                     <span class="c1"># running = adminproxy.RunningServers</span>
                     <span class="n">running</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevGetRunningServers</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">server</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">running</span><span class="p">:</span>
-                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
                         <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
                         <span class="k">continue</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
@@ -688,7 +688,7 @@
                         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%s</span><span class="s2"> is working&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">device</span> <span class="ow">or</span> <span class="n">server</span><span class="p">))</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">waitforproc</span><span class="p">:</span>
@@ -797,7 +797,7 @@
                                         <span class="n">problems</span> <span class="o">=</span> <span class="kc">False</span>
                                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                                         <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
-                                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+                                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span>
                                 <span class="n">problems</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">waitServerRunning</span><span class="p">(</span>
                                     <span class="n">svl</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">adminproxy</span><span class="p">)</span> <span class="ow">or</span> <span class="n">problems</span>
                                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
@@ -1001,7 +1001,8 @@
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="SetUp.createConfigServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createConfigServer">[docs]</a>    <span class="k">def</span> <span class="nf">createConfigServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterhost</span><span class="p">,</span> <span class="n">jsonsettings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SetUp.createConfigServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createConfigServer">[docs]</a>    <span class="k">def</span> <span class="nf">createConfigServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterhost</span><span class="p">,</span> <span class="n">jsonsettings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">hostname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates configuration server</span>
 
 <span class="sd">        :param beamline: beamline name</span>
@@ -1010,6 +1011,8 @@
 <span class="sd">        :type masterhost: :obj:`str`</span>
 <span class="sd">        :param jsonsettings: connection settings to DB in json</span>
 <span class="sd">        :type jsonsettings: :obj:`str`</span>
+<span class="sd">        :param hostname: host of config server</span>
+<span class="sd">        :type hostname: :obj:`str`</span>
 <span class="sd">        :returns: True if server was created</span>
 <span class="sd">        :rtype: :obj:`bool`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1047,7 +1050,8 @@
                   <span class="s2">&quot;To change its device name please remove it.&quot;</span> <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_db_host</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hostname</span><span class="p">:</span>
+            <span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_db_host</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_startupServer</span><span class="p">(</span><span class="n">server_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">hostname</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
 
@@ -1174,6 +1178,10 @@
             <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;masterhost&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the host that stores the Mg&quot;</span>
             <span class="s2">&quot; ( default: &lt;localhost&gt; )&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--confighost&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;confighost&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the host with config server&quot;</span>
+            <span class="s2">&quot; ( default: &lt;mysqlhost&gt; )&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="s2">&quot;--user&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
             <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the local user&quot;</span>
             <span class="s2">&quot; ( default: &#39;tango&#39; )&quot;</span><span class="p">)</span>
@@ -1261,7 +1269,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">setUp</span><span class="o">.</span><span class="n">createConfigServer</span><span class="p">(</span>
                     <span class="n">beamline</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">beamline</span><span class="p">,</span>
                     <span class="n">masterhost</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">masterhost</span><span class="p">,</span>
-                    <span class="n">jsonsettings</span><span class="o">=</span><span class="n">jsonsettings</span><span class="p">):</span>
+                    <span class="n">jsonsettings</span><span class="o">=</span><span class="n">jsonsettings</span><span class="p">,</span>
+                    <span class="n">hostname</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">confighost</span><span class="p">):</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;startup failed to create the nexus config server&quot;</span><span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
 

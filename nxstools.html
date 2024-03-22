@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools package &#8212; NXSTools 3.65.0 documentation</title>
+    <title>nxstools package &#8212; NXSTools 3.66.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.65</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.66</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -2913,7 +2913,7 @@ by the new line character</p></li>
 
 <dl class="py method">
 <dt id="nxstools.nxsetup.SetUp.createConfigServer">
-<code class="sig-name descname">createConfigServer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">beamline</span></em>, <em class="sig-param"><span class="n">masterhost</span></em>, <em class="sig-param"><span class="n">jsonsettings</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp.createConfigServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp.createConfigServer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">createConfigServer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">beamline</span></em>, <em class="sig-param"><span class="n">masterhost</span></em>, <em class="sig-param"><span class="n">jsonsettings</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hostname</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp.createConfigServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp.createConfigServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>creates configuration server</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2921,6 +2921,7 @@ by the new line character</p></li>
 <li><p><strong>beamline</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – beamline name</p></li>
 <li><p><strong>masterhost</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – master host of data writer</p></li>
 <li><p><strong>jsonsettings</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – connection settings to DB in json</p></li>
+<li><p><strong>hostname</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – host of config server</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2983,7 +2984,7 @@ by the new line character</p></li>
 <dl class="py attribute">
 <dt id="nxstools.nxsetup.SetUp.db">
 <code class="sig-name descname">db</code><a class="headerlink" href="#nxstools.nxsetup.SetUp.db" title="Permalink to this definition">¶</a></dt>
-<dd><p>(<a class="reference external" href="https://pytango.readthedocs.io/en/latest/database.html#tango.Database" title="(in PyTango v10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.Database</span></code></a>) tango database server</p>
+<dd><p>(<a class="reference external" href="https://pytango.readthedocs.io/en/latest/api/database.html#tango.Database" title="(in PyTango v10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.Database</span></code></a>) tango database server</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3047,7 +3048,7 @@ by the new line character</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>server</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – server name, check if running when not None</p></li>
 <li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – device name, check if exported when not None</p></li>
-<li><p><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v10.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</p></li>
+<li><p><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/api/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v10.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</p></li>
 <li><p><strong>maxcnt</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – maximal waiting time in 10ms</p></li>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – verbose mode</p></li>
 <li><p><strong>waitforproc</strong> – wait for process list update</p></li>
@@ -3071,7 +3072,7 @@ by the new line character</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>server</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – server name, check if running when not None</p></li>
 <li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – device name, check if exported when not None</p></li>
-<li><p><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v10.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</p></li>
+<li><p><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/api/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v10.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</p></li>
 <li><p><strong>maxcnt</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – maximal waiting time in 10ms</p></li>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – verbose mode</p></li>
 <li><p><strong>waitforproc</strong> – wait for process list update</p></li>
@@ -6271,7 +6272,7 @@ xml template files of modules</p>
 <dd class="field-even"><p>configuration server proxy</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytango.readthedocs.io/en/latest/api/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>

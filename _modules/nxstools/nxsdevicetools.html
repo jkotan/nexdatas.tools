@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsdevicetools &#8212; NXSTools 3.65.0 documentation</title>
+    <title>nxstools.nxsdevicetools &#8212; NXSTools 3.66.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.65</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.66</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -421,12 +421,12 @@
 
     <span class="k">while</span> <span class="ow">not</span> <span class="n">found</span> <span class="ow">and</span> <span class="n">cnt</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">cnt</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">cnfServer</span><span class="o">.</span><span class="n">state</span><span class="p">()</span> <span class="o">!=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DevState</span><span class="o">.</span><span class="n">RUNNING</span><span class="p">:</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="n">tango</span><span class="o">.</span><span class="n">DevFailed</span><span class="p">:</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
             <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
 
