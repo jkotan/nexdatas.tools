@@ -39,7 +39,9 @@ nxsetup set
       -m MASTERHOST, --masterHost MASTERHOST
 			    the host that stores the Mg ( default: <localhost> )
       -c CONFIGHOST, --confighost CONFIGHOST
-                            the host with config server ( default: <mysqlhost> )
+                            the host to run the config server ( default: <mysqlhost> )
+      -r RUNHOST, --runhost RUNHOST
+                            the host to run the server ( default: localhost )
       -u USER, --user USER  the local user ( default: 'tango' )
       -d DBNAME, --database DBNAME
 			    the database name ( default: 'nxsconfig')
@@ -49,10 +51,16 @@ nxsetup set
 			    true', "read_default_file": <MY_CNF_FILE>}' where
 			    <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
 			    "/var/lib/nxsconfigserver/.my.cnf" )
+      -k CLASSNAME, --class-name CLASSNAME
+                            tango server class name
+      -y PROPJSON, --json-device-properties PROPJSON
+                            JSON tango device properties ( default: '{}' )
+      -t, --postpone        do not start the server
 
      examples:
 	   nxsetup set
 	   nxsetup set -b p09 -m haso228 -u p09user -d nxsconfig NXSConfigServer
+	   nxsetup set nexuswriter/haso228  -k NexusWriter  -y '{"p00/bliss_nexuswriter/test_session":{"session":"test_session","beacon_host":"haso228:25000"}}'  -t
 
 
 nxsetup restart

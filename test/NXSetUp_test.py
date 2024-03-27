@@ -136,7 +136,7 @@ class NXSetUpTest(unittest.TestCase):
         self.helperror = "Error: too few arguments\n"
 
         self.helpinfo = """usage: nxsetup [-h]
-               {set,restart,start,stop,move-prop,change-prop,add-recorder-path}
+               {set,restart,start,stop,wait,move-prop,change-prop,add-recorder-path}
                ...
 
 Command-line tool for setting up  NeXus Tango Servers
@@ -149,6 +149,7 @@ positional arguments:
     restart             restart tango server
     start               start tango server
     stop                stop tango server
+    wait                wait for tango server
     move-prop           change property name
     change-prop         change property value
     add-recorder-path   add-recorder-path into MacroServer(s) property

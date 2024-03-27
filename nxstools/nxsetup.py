@@ -733,7 +733,7 @@ class SetUp(object):
         self.db.put_server_info(sinfo)
         return True
 
-    def _startupServer(self, new, level, host, ctrl, device):
+    def _startupServer(self, new, level, host, ctrl, device, postpone=False):
         """ starts the server up
 
         :param new: new server name
@@ -746,6 +746,8 @@ class SetUp(object):
         :type ctrl: :obj:`str`
         :param device: device name
         :type device: :obj:`str`
+        :param postpone: postpone start server
+        :type postpone: :obj:`bool`
         :returns: True if server was started up
         :rtype: :obj:`bool`
         """
@@ -781,24 +783,28 @@ class SetUp(object):
         adminproxy.UpdateServersInfo()
         running = adminproxy.DevGetRunningServers(True)
         # running = adminproxy.RunningServers
-        if new not in running:
+        if new not in running and not postpone:
             adminproxy.DevStart(new)
         else:
             print("%s NOT STARTED" % new)
 
+
         adminproxy.UpdateServersInfo()
 
-        sys.stdout.write("waiting for server ")
-        sys.stdout.flush()
-        return self.waitServerRunning(new, device, adminproxy)
+        if not postpone:
+            sys.stdout.write("waiting for server ")
+            sys.stdout.flush()
+            return self.waitServerRunning(new, device, adminproxy)
 
-    def createDataWriter(self, beamline, masterhost):
+    def createDataWriter(self, beamline, masterhost, postpone=False):
         """ creates data writer
 
         :param beamline: beamline name
         :type beamline: :obj:`str`
         :param masterhost: master host of data writer
         :type masterhost: :obj:`str`
+        :param postpone: postpone starting flag
+        :type postpone: :obj:`bool`
         :returns: True if server was created
         :rtype: :obj:`bool`
         """
@@ -838,12 +844,89 @@ class SetUp(object):
 
         hostname = socket.gethostname()
 
-        self._startupServer(full_class_name, 1, hostname, 1, self.writer_name)
+        self._startupServer(full_class_name, 1, hostname, 1, self.writer_name,
+                            postpone)
+
+        return True
+
+    def createServer(self, server_name, beamline, masterhost, hostname=None,
+                     class_name=None, jsondeviceproperties=None,
+                     postpone=False):
+        """ creates tango server in DB
+
+        :param server_name: server name
+        :type server_name: :obj:`str`
+        :param beamline: beamline name
+        :type beamline: :obj:`str`
+        :param masterhost: master host of data writer
+        :type masterhost: :obj:`str`
+        :param hostname: host to run the config server
+        :type hostname: :obj:`str`
+        :param class_name: class name
+        :type clas_name: :obj:`str`
+        :param jsondeviceproperties: json device properties
+        :type jsondeviceproperties: :obj:`str`
+        :param postpone: postpone starting flag
+        :type postpone: :obj:`bool`
+        :returns: True if server was created
+        :rtype: :obj:`bool`
+        """
+        if not beamline:
+            print("createServer: no beamline given ")
+            return False
+        if not masterhost:
+            print("createServer: no masterhost given ")
+            return False
+
+        if "/" not in server_name:
+            server_name = server_name + '/' + masterhost
+        server = server_name.split("/")[0]
+        if not class_name:
+            class_name = server
+        self.device_name = "%s/%s/%s" % (beamline, server.lower(), masterhost)
+        if server_name not in self.db.get_server_list(server_name):
+            print("creating: %s" % server_name)
+
+            if server_name in self.db.get_server_list(server_name):
+                print("createDataWriter: DB contains already %s" % server_name)
+                return False
+
+            try:
+                properties = dict(json.loads(jsondeviceproperties))
+            except Exception:
+                print("\ncreateServer: properties cannot be load")
+                properties = {}
+            if not properties:
+                properties = {self.__device_name: {}}
+
+            print("PROP", properties)    
+            for dv, props in properties.items():
+                di = tango.DbDevInfo()
+                di.name = dv
+                di._class = class_name
+                di.server = server_name
+                self.db.add_device(di)
+                try:
+                    self.db.put_device_property(dv, props)
+                except Exception:
+                    print("\ncreateServer: properties cannot be added")
+
+        elif (self.device_name not in
+              self.db.get_device_class_list(server_name).value_string):
+            print("\ncreateServer: %s already exists. "
+                  "To change its device name please remove it." % server_name)
+            return False
+
+        if not hostname:
+            hostname = socket.gethostname()
+
+        self._startupServer(server_name, 1, hostname, 1, self.device_name,
+                            postpone)
 
         return True
 
     def createConfigServer(self, beamline, masterhost, jsonsettings=None,
-                           hostname=None):
+                           hostname=None, postpone=False):
         """ creates configuration server
 
         :param beamline: beamline name
@@ -852,8 +935,10 @@ class SetUp(object):
         :type masterhost: :obj:`str`
         :param jsonsettings: connection settings to DB in json
         :type jsonsettings: :obj:`str`
-        :param hostname: host of config server
+        :param hostname: host to run the config server
         :type hostname: :obj:`str`
+        :param postpone: postpone starting flag
+        :type postpone: :obj:`bool`
         :returns: True if server was created
         :rtype: :obj:`bool`
         """
@@ -894,40 +979,43 @@ class SetUp(object):
         if not hostname:
             hostname = self.db.get_db_host().split(".")[0]
 
-        self._startupServer(server_name, 1, hostname, 1, self.cserver_name)
+        self._startupServer(server_name, 1, hostname, 1, self.cserver_name,
+                            postpone)
 
-        dp = tango.DeviceProxy(self.cserver_name)
-        if dp.state() != tango.DevState.ON:
-            dp.Close()
-        if jsonsettings:
+        if not postpone:
             dp = tango.DeviceProxy(self.cserver_name)
-            dp.JSONSettings = jsonsettings
-        try:
-            dp.Open()
-        except Exception:
+            if dp.state() != tango.DevState.ON:
+                dp.Close()
+            if jsonsettings:
+                dp = tango.DeviceProxy(self.cserver_name)
+                dp.JSONSettings = jsonsettings
             try:
-                jsettings = json.loads(jsonsettings)
-                jsettings['read_default_file'] = \
-                    '/var/lib/nxsconfigserver/.my.cnf'
-                dp.JSONSettings = str(json.dumps(jsettings))
                 dp.Open()
             except Exception:
                 try:
+                    jsettings = json.loads(jsonsettings)
                     jsettings['read_default_file'] = \
                         '/var/lib/nxsconfigserver/.my.cnf'
                     dp.JSONSettings = str(json.dumps(jsettings))
                     dp.Open()
                 except Exception:
-                    print("createConfigServer: "
-                          "%s cannot connect the"
-                          " database with JSONSettings: \n%s " % (
-                              self.cserver_name, jsonsettings))
-                    print("try to change the settings")
-                    return False
+                    try:
+                        jsettings['read_default_file'] = \
+                            '/var/lib/nxsconfigserver/.my.cnf'
+                        dp.JSONSettings = str(json.dumps(jsettings))
+                        dp.Open()
+                    except Exception:
+                        print("createConfigServer: "
+                              "%s cannot connect the"
+                              " database with JSONSettings: \n%s " % (
+                                  self.cserver_name, jsonsettings))
+                        print("try to change the settings")
+                        return False
 
         return True
 
-    def createSelector(self, beamline, masterhost, writer=None, cserver=None):
+    def createSelector(self, beamline, masterhost, writer=None, cserver=None,
+                       postpone=False):
         """ creates selector server
 
         :param beamline: beamline name
@@ -938,6 +1026,8 @@ class SetUp(object):
         :type writer: :obj:`str`
         :param cserver: configuration server device name
         :type cserver: :obj:`str`
+        :param postpone: postpone starting flag
+        :type postpone: :obj:`bool`
         :returns: True if server was created
         :rtype: :obj:`bool`
         """
@@ -978,16 +1068,18 @@ class SetUp(object):
 
         hostname = socket.gethostname()
 
-        self._startupServer(full_class_name, 4, hostname, 1, device_name)
+        self._startupServer(full_class_name, 4, hostname, 1,
+                            device_name, postpone)
 
-        if self.writer_name or self.cserver_name:
-            dp = tango.DeviceProxy(device_name)
-            dp.ping()
-            self.waitServerRunning(None, device_name)
-            if self.cserver_name:
-                dp.configDevice = self.cserver_name
-            if self.writer_name:
-                dp.writerDevice = self.writer_name
+        if not postpone:
+            if self.writer_name or self.cserver_name:
+                dp = tango.DeviceProxy(device_name)
+                dp.ping()
+                self.waitServerRunning(None, device_name)
+                if self.cserver_name:
+                    dp.configDevice = self.cserver_name
+                if self.writer_name:
+                    dp.writerDevice = self.writer_name
         return True
 
 
@@ -1004,6 +1096,10 @@ class Set(Runner):
         + "       nxsetup set\n" \
         + "       nxsetup set -b p09 -m haso228 -u p09user " \
         + "-d nxsconfig NXSConfigServer\n" \
+        + "       nxsetup set nexuswriter/haso228  -k NexusWriter  " \
+        + "-y '{\"p00/bliss_nexuswriter/test_session\":" \
+        + "{\"session\":\"test_session\",\"beacon_host\":\"haso228:25000\"}}'" \
+        + "  -t\n" \
         + "\n"
 
     def create(self):
@@ -1020,8 +1116,12 @@ class Set(Runner):
             " ( default: <localhost> )")
         parser.add_argument(
             "-c", "--confighost", action="store",
-            dest="confighost", help="the host with config server"
+            dest="confighost", help="the host run the config server"
             " ( default: <mysqlhost> )")
+        parser.add_argument(
+            "-r", "--runhost", action="store",
+            dest="runhost", help="the host to run the server"
+            " ( default: localhost )")
         parser.add_argument(
             "-u", "--user", action="store",
             dest="user", help="the local user"
@@ -1040,6 +1140,18 @@ class Set(Runner):
             "  where <MY_CNF_FILE> stays for"
             " \"/home/<USER>/.my.cnf\""
             " or \"/var/lib/nxsconfigserver/.my.cnf\" )")
+        parser.add_argument(
+            "-k", "--class-name", action="store",
+            dest="classname", help="tango server class name")
+        parser.add_argument(
+            "-y", "--json-device-properties", action="store",
+            dest="propjson",
+            help="JSON tango device properties "
+            "( default: '{}' )")
+        parser.add_argument(
+            "-t", "--postpone", action="store_true",
+            default=False, dest="postpone",
+            help="do not start the server")
         parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
@@ -1106,21 +1218,41 @@ class Set(Runner):
                 + ' "read_default_file":"/home/%s/.my.cnf",' % options.user \
                 + ' "use_unicode":true}'
 
+        if options.propjson:
+            jsondeviceproperties = options.propjson
+        else:
+            jsondeviceproperties = '{}'
+
         if not args or "NXSConfigServer" in args:
             if not setUp.createConfigServer(
                     beamline=options.beamline,
                     masterhost=options.masterhost,
                     jsonsettings=jsonsettings,
-                    hostname=options.confighost):
+                    hostname=options.confighost,
+                    postpone=options.postpone):
                 print("startup failed to create the nexus config server")
                 sys.exit(255)
 
         if not args or "NXSRecSelector" in args:
             if not setUp.createSelector(
                     beamline=options.beamline,
-                    masterhost=options.masterhost):
+                    masterhost=options.masterhost,
+                    postpone=options.postpone):
                 print("startup failed to create the nexus selector server")
                 sys.exit(255)
+        for arg in args:
+            if arg not in ["NXSDataWriter", "NXSRecSelector",
+                           "NXSConfigServer"]:
+                if not setUp.createServer(
+                        arg,
+                        beamline=options.beamline,
+                        masterhost=options.masterhost,
+                        hostname=options.runhost,
+                        class_name=options.classname,
+                        jsondeviceproperties=jsondeviceproperties,
+                        postpone=options.postpone):
+                    print("startup failed to create the nexus selector server")
+                    sys.exit(255)
 
 
 class Start(Runner):
@@ -1177,7 +1309,7 @@ class Wait(Runner):
     """ start runner"""
 
     #: (:obj:`str`) command description
-    description = "wait for tango server until it is on"
+    description = "wait for tango server"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -1377,7 +1509,7 @@ class AddRecorderPath(Runner):
             "-i", "--instance", action="store",
             dest="instance",
             help="macroserver instance name, i.e. haso"
-            " ( default: '*'")
+            " ( default: '*')")
 
     def postauto(self):
         """ creates parser
