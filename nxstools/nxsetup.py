@@ -569,7 +569,7 @@ class SetUp(object):
         :param wait:  script should wait for the server
         :type wait: :obj:`bool`
         :param timeout: timeout for  start
-        :type timeout: :obj:`int`
+        :type timeout: :obj:`float`
         """
         if name:
             admin = self.getStarterName(host)
@@ -636,16 +636,16 @@ class SetUp(object):
                                         maxcnt = int(float(timeout)/0.2)
                                     except Exception:
                                         maxcnt = 1000
-
                                     problems = not self.waitServerRunning(
                                         svl, None, adminproxy, maxcnt) \
                                         or problems
-                                    print(" ")
                                     if problems:
                                         print("%s was not restarted" % svl)
                                         print("Warning: "
                                               "Process with the server"
                                               "instance could be suspended")
+                                else:
+                                    print("")
 
     def __exported_servers(self):
         """ returns Servers for exported devices
@@ -1143,10 +1143,10 @@ class Start(Runner):
             "-l", "--level", action="store", type=int, default=-1,
             dest="level", help="startup level")
         parser.add_argument(
-            "-w", "--timeout", action="store", type=float, default=-1,
-            dest="level", help="timeout in seconds")
+            "-z", "--timeout", action="store", type=float, default=None,
+            dest="timeout", help="timeout in seconds")
         parser.add_argument(
-            "-n", "--no-wait", action="store_true",
+            "-e", "--no-wait", action="store_true",
             default=False, dest="nowait",
             help="do not wait")
         parser.add_argument(
@@ -1181,7 +1181,7 @@ class Wait(Runner):
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
-        + "       nxsetup start Pool/haso228 -l 2\n" \
+        + "       nxsetup wait Pool/haso228 -z 30\n" \
         + "\n"
 
     def create(self):
@@ -1189,8 +1189,8 @@ class Wait(Runner):
         """
         parser = self._parser
         parser.add_argument(
-            "-w", "--timeout", action="store", type=float, default=-1,
-            dest="level", help="timeout in seconds")
+            "-z", "--timeout", action="store", type=float, default=None,
+            dest="timeout", help="timeout in seconds")
         parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
@@ -1242,10 +1242,10 @@ class MoveProp(Runner):
             default=False, dest="postpone",
             help="do not restart the server")
         parser.add_argument(
-            "-w", "--timeout", action="store", type=float, default=-1,
-            dest="level", help="timeout in seconds")
+            "-z", "--timeout", action="store", type=float, default=None,
+            dest="timeout", help="timeout in seconds")
         parser.add_argument(
-            "-n", "--no-wait", action="store_true",
+            "-e", "--no-wait", action="store_true",
             default=False, dest="nowait",
             help="do not wait")
         parser.add_argument(
@@ -1308,6 +1308,13 @@ class ChangeProp(Runner):
             default=False, dest="postpone",
             help="do not restart the server")
         parser.add_argument(
+            "-z", "--timeout", action="store", type=float, default=None,
+            dest="timeout", help="timeout in seconds")
+        parser.add_argument(
+            "-e", "--no-wait", action="store_true",
+            default=False, dest="nowait",
+            help="do not wait")
+        parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
             help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
@@ -1329,7 +1336,9 @@ class ChangeProp(Runner):
             if setUp.changePropertyValue(
                     server, options.newname, options.propvalue):
                 if not options.postpone:
-                    setUp.restartServer(server)
+                    setUp.restartServer(
+                        server,
+                        timeout=options.timeout, wait=(not options.nowait))
 
 
 class AddRecorderPath(Runner):
@@ -1358,10 +1367,10 @@ class AddRecorderPath(Runner):
             default=False, dest="postpone",
             help="do not restart the server")
         parser.add_argument(
-            "-w", "--timeout", action="store", type=float, default=-1,
-            dest="level", help="timeout in seconds")
+            "-z", "--timeout", action="store", type=float, default=None,
+            dest="timeout", help="timeout in seconds")
         parser.add_argument(
-            "-n", "--no-wait", action="store_true",
+            "-e", "--no-wait", action="store_true",
             default=False, dest="nowait",
             help="do not wait")
         parser.add_argument(
@@ -1420,10 +1429,10 @@ class Restart(Runner):
             "-l", "--level", action="store", type=int, default=-1,
             dest="level", help="startup level")
         parser.add_argument(
-            "-t", "--timeout", action="store", type=float, default=-1,
-            dest="level", help="timeout in seconds")
+            "-z", "--timeout", action="store", type=float, default=None,
+            dest="timeout", help="timeout in seconds")
         parser.add_argument(
-            "-n", "--no-wait", action="store_true",
+            "-e", "--no-wait", action="store_true",
             default=False, dest="nowait",
             help="do not wait")
         parser.add_argument(
