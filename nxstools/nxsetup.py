@@ -551,7 +551,8 @@ class SetUp(object):
                         shell=True)
             pipe.close()
 
-    def restartServer(self, name, host=None, level=None, restart=True):
+    def restartServer(self, name, host=None, level=None,
+                      restart=True, stopstart=True, wait=True):
         """ restarts server
 
         :param name: server name
@@ -562,6 +563,12 @@ class SetUp(object):
         :type level: :obj:`int`
         :param restart:  if server should be restarted
         :type restart: :obj:`bool`
+        :param stopstart:  if server should be stopped and started
+        :type stopstart: :obj:`bool`
+        :param wait:  script should wait for the server
+        :type wait: :obj:`bool`
+        :param timeout: timeout for  start
+        :type timeout: :obj:`int`
         """
         if name:
             admin = self.getStarterName(host)
@@ -592,40 +599,48 @@ class SetUp(object):
                                 if level is not None:
                                     self._changeLevel(
                                         svl, level, tohigher=False)
-                                if started and svl in started:
+                                problems = False
+                                if stopstart:
+                                    if started and svl in started:
+                                        try:
+                                            # adminproxy.HardKillServer(svl)
+                                            adminproxy.DevStop(svl)
+                                            # self.killServer(svl)
+                                        except Exception:
+                                            adminproxy.HardKillServer(svl)
+                                        problems = self.waitServerNotRunning(
+                                            svl, None, adminproxy, verbose=None)
+                                        if problems:
+                                            self.killServer(svl)
+                                            print("Server Running")
+                                        sys.stdout.write("Restarting: %s" % svl)
+                                    else:
+                                        sys.stdout.write("Starting: %s" % svl)
+                                    sys.stdout.flush()
+                                    problems = True
+                                    counter = 0
+                                    while problems and counter < 100:
+                                        try:
+                                            sys.stdout.write('.')
+                                            sys.stdout.flush()
+                                            adminproxy.DevStart(svl)
+                                            problems = False
+                                        except Exception:
+                                            counter += 1
+                                            time.sleep(0.4)
+                                if wait:
                                     try:
-                                        # adminproxy.HardKillServer(svl)
-                                        adminproxy.DevStop(svl)
-                                        # self.killServer(svl)
+                                       maxcnt = int(float(timeout)/0.2)
                                     except Exception:
-                                        adminproxy.HardKillServer(svl)
-                                    problems = self.waitServerNotRunning(
-                                        svl, None, adminproxy, verbose=None)
+                                       maxcnt = 1000
+
+                                    problems = not self.waitServerRunning(
+                                        svl, None, adminproxy, maxcnt) or problems
+                                    print(" ")
                                     if problems:
-                                        self.killServer(svl)
-                                        print("Server Running")
-                                    sys.stdout.write("Restarting: %s" % svl)
-                                else:
-                                    sys.stdout.write("Starting: %s" % svl)
-                                sys.stdout.flush()
-                                problems = True
-                                counter = 0
-                                while problems and counter < 100:
-                                    try:
-                                        sys.stdout.write('.')
-                                        sys.stdout.flush()
-                                        adminproxy.DevStart(svl)
-                                        problems = False
-                                    except Exception:
-                                        counter += 1
-                                        time.sleep(0.4)
-                                problems = not self.waitServerRunning(
-                                    svl, None, adminproxy) or problems
-                                print(" ")
-                                if problems:
-                                    print("%s was not restarted" % svl)
-                                    print("Warning: Process with the server"
-                                          "instance could be suspended")
+                                        print("%s was not restarted" % svl)
+                                        print("Warning: Process with the server"
+                                              "instance could be suspended")
 
     def __exported_servers(self):
         """ returns Servers for exported devices
@@ -1123,6 +1138,13 @@ class Start(Runner):
             "-l", "--level", action="store", type=int, default=-1,
             dest="level", help="startup level")
         parser.add_argument(
+            "-t", "--timeout", action="store", type=float, default=-1,
+            dest="level", help="timeout in seconds")
+        parser.add_argument(
+            "-n", "--no-wait", action="store_true",
+            default=False, dest="nowait",
+            help="do not wait")
+        parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
             help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
@@ -1141,7 +1163,46 @@ class Start(Runner):
             setUp.restartServer(
                 server,
                 level=(options.level if options.level > -1 else None),
-                restart=False)
+                restart=False, timeout=options.timeout, wait=(not options.nowait))
+
+class Wait(Runner):
+
+    """ start runner"""
+
+    #: (:obj:`str`) command description
+    description = "wait for tango server until it is on"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsetup start Pool/haso228 -l 2\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-t", "--timeout", action="store", type=float, default=-1,
+            dest="level", help="timeout in seconds")
+        parser.add_argument(
+            'args', metavar='server_name',
+            type=str, nargs='*',
+            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        args = options.args or []
+        setUp = SetUp()
+        servers = args if args else [
+            "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
+        for server in servers:
+            setUp.restartServer(
+                server,
+                restart=False, stopstart=False, timeout=options.timeout)
 
 
 class MoveProp(Runner):
@@ -1335,6 +1396,13 @@ class Restart(Runner):
             "-l", "--level", action="store", type=int, default=-1,
             dest="level", help="startup level")
         parser.add_argument(
+            "-t", "--timeout", action="store", type=float, default=-1,
+            dest="level", help="timeout in seconds")
+        parser.add_argument(
+            "-n", "--no-wait", action="store_true",
+            default=False, dest="nowait",
+            help="do not wait")
+        parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
             help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
@@ -1351,7 +1419,8 @@ class Restart(Runner):
             "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
         for server in servers:
             setUp.restartServer(
-                server, level=(options.level if options.level > -1 else None))
+                server, level=(options.level if options.level > -1 else None)
+                timeout=options.timeout, wait=(not options.nowait))
 
 
 class Stop(Runner):
@@ -1444,6 +1513,7 @@ def main():
         ('restart', Restart),
         ('start', Start),
         ('stop', Stop),
+        ('wait', Wait),
         ('move-prop', MoveProp),
         ('change-prop', ChangeProp),
         ('add-recorder-path', AddRecorderPath),
