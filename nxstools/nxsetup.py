@@ -788,7 +788,6 @@ class SetUp(object):
         else:
             print("%s NOT STARTED" % new)
 
-
         adminproxy.UpdateServersInfo()
 
         if not postpone:
@@ -899,7 +898,7 @@ class SetUp(object):
             if not properties:
                 properties = {self.__device_name: {}}
 
-            print("PROP", properties)    
+            print("PROP", properties)
             for dv, props in properties.items():
                 di = tango.DbDevInfo()
                 di.name = dv
@@ -1098,8 +1097,8 @@ class Set(Runner):
         + "-d nxsconfig NXSConfigServer\n" \
         + "       nxsetup set nexuswriter/haso228  -k NexusWriter  " \
         + "-y '{\"p00/bliss_nexuswriter/test_session\":" \
-        + "{\"session\":\"test_session\",\"beacon_host\":\"haso228:25000\"}}'" \
-        + "  -t\n" \
+        + "{\"session\":\"test_session\"," \
+        + "\"beacon_host\":\"haso228:25000\"}}'  -t\n" \
         + "\n"
 
     def create(self):
