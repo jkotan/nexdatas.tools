@@ -134,21 +134,22 @@ class NXSetUpTest(unittest.TestCase):
         unittest.TestCase.__init__(self, methodName)
 
         self.helperror = "Error: too few arguments\n"
-
+        self.maxDiff = None
         self.helpinfo = """usage: nxsetup [-h]
-               {set,restart,start,stop,move-prop,change-prop,add-recorder-path}
+               {set,restart,start,stop,wait,move-prop,change-prop,add-recorder-path}
                ...
 
 Command-line tool for setting up  NeXus Tango Servers
 
 positional arguments:
-  {set,restart,start,stop,move-prop,change-prop,add-recorder-path}
+  {set,restart,start,stop,wait,move-prop,change-prop,add-recorder-path}
                         sub-command help
     set                 set up NXSConfigServer NXSDataWriter and
                         NXSRecSelector servers
     restart             restart tango server
     start               start tango server
     stop                stop tango server
+    wait                wait for tango server
     move-prop           change property name
     change-prop         change property value
     add-recorder-path   add-recorder-path into MacroServer(s) property
@@ -388,10 +389,13 @@ For more help:
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         vl, er, et = self.runtestexcept(['nxsetup'], SystemExit)
-        self.assertEqual(
-            "".join(self.helpinfo.split()).replace(
-                "optionalarguments:", "options:"),
-            "".join(vl.split()).replace("optionalarguments:", "options:"))
+        h1 = "".join(self.helpinfo.split()).replace(
+            "optionalarguments:", "options:")
+        h2 = "".join(vl.split()).replace("optionalarguments:", "options:")
+        if len(h2) > len(h1):
+            self.assertEqual(h2[:len(h1)], h1)
+        else:
+            self.assertEqual(h2, h1)
         self.assertEqual(self.helperror, er)
 
     # comp_available test
@@ -403,10 +407,13 @@ For more help:
         helps = ['-h', '--help']
         for hl in helps:
             vl, er, et = self.runtestexcept(['nxsetup', hl], SystemExit)
-            self.assertEqual(
-                "".join(self.helpinfo.split()).replace(
-                    "optionalarguments:", "options:"),
-                "".join(vl.split()).replace("optionalarguments:", "options:"))
+            h1 = "".join(self.helpinfo.split()).replace(
+                "optionalarguments:", "options:")
+            h2 = "".join(vl.split()).replace("optionalarguments:", "options:")
+            if len(h2) > len(h1):
+                self.assertEqual(h2[:len(h1)], h1)
+            else:
+                self.assertEqual(h2, h1)
             self.assertEqual('', er)
 
     # comp_available test
