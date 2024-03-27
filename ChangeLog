@@ -1,5 +1,6 @@
 2024-03-27 Jan Kotanski <jankotan@gmail.com>
-	* add nxsetup wait
+	* add nxsetup wait subcommand (#624)
+	* add --timeout -no-wait for  nonxsetup subcommands (#624)
 	* tagged as v3.67.0
 
 2024-03-22 Jan Kotanski <jankotan@gmail.com>

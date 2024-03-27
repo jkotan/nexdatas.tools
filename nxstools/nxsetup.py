@@ -552,7 +552,8 @@ class SetUp(object):
             pipe.close()
 
     def restartServer(self, name, host=None, level=None,
-                      restart=True, stopstart=True, wait=True):
+                      restart=True, stopstart=True, wait=True,
+                      timeout=None):
         """ restarts server
 
         :param name: server name
@@ -609,11 +610,13 @@ class SetUp(object):
                                         except Exception:
                                             adminproxy.HardKillServer(svl)
                                         problems = self.waitServerNotRunning(
-                                            svl, None, adminproxy, verbose=None)
+                                            svl, None, adminproxy,
+                                            verbose=None)
                                         if problems:
                                             self.killServer(svl)
                                             print("Server Running")
-                                        sys.stdout.write("Restarting: %s" % svl)
+                                        sys.stdout.write(
+                                            "Restarting: %s" % svl)
                                     else:
                                         sys.stdout.write("Starting: %s" % svl)
                                     sys.stdout.flush()
@@ -630,16 +633,18 @@ class SetUp(object):
                                             time.sleep(0.4)
                                 if wait:
                                     try:
-                                       maxcnt = int(float(timeout)/0.2)
+                                        maxcnt = int(float(timeout)/0.2)
                                     except Exception:
-                                       maxcnt = 1000
+                                        maxcnt = 1000
 
                                     problems = not self.waitServerRunning(
-                                        svl, None, adminproxy, maxcnt) or problems
+                                        svl, None, adminproxy, maxcnt) \
+                                        or problems
                                     print(" ")
                                     if problems:
                                         print("%s was not restarted" % svl)
-                                        print("Warning: Process with the server"
+                                        print("Warning: "
+                                              "Process with the server"
                                               "instance could be suspended")
 
     def __exported_servers(self):
@@ -1138,7 +1143,7 @@ class Start(Runner):
             "-l", "--level", action="store", type=int, default=-1,
             dest="level", help="startup level")
         parser.add_argument(
-            "-t", "--timeout", action="store", type=float, default=-1,
+            "-w", "--timeout", action="store", type=float, default=-1,
             dest="level", help="timeout in seconds")
         parser.add_argument(
             "-n", "--no-wait", action="store_true",
@@ -1163,7 +1168,9 @@ class Start(Runner):
             setUp.restartServer(
                 server,
                 level=(options.level if options.level > -1 else None),
-                restart=False, timeout=options.timeout, wait=(not options.nowait))
+                restart=False, timeout=options.timeout,
+                wait=(not options.nowait))
+
 
 class Wait(Runner):
 
@@ -1182,7 +1189,7 @@ class Wait(Runner):
         """
         parser = self._parser
         parser.add_argument(
-            "-t", "--timeout", action="store", type=float, default=-1,
+            "-w", "--timeout", action="store", type=float, default=-1,
             dest="level", help="timeout in seconds")
         parser.add_argument(
             'args', metavar='server_name',
@@ -1235,6 +1242,13 @@ class MoveProp(Runner):
             default=False, dest="postpone",
             help="do not restart the server")
         parser.add_argument(
+            "-w", "--timeout", action="store", type=float, default=-1,
+            dest="level", help="timeout in seconds")
+        parser.add_argument(
+            "-n", "--no-wait", action="store_true",
+            default=False, dest="nowait",
+            help="do not wait")
+        parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
             help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
@@ -1256,7 +1270,9 @@ class MoveProp(Runner):
             if setUp.changePropertyName(
                     server, options.oldname, options.newname):
                 if not options.postpone:
-                    setUp.restartServer(server)
+                    setUp.restartServer(
+                        server, timeout=options.timeout,
+                        wait=(not options.nowait))
 
 
 class ChangeProp(Runner):
@@ -1342,6 +1358,13 @@ class AddRecorderPath(Runner):
             default=False, dest="postpone",
             help="do not restart the server")
         parser.add_argument(
+            "-w", "--timeout", action="store", type=float, default=-1,
+            dest="level", help="timeout in seconds")
+        parser.add_argument(
+            "-n", "--no-wait", action="store_true",
+            default=False, dest="nowait",
+            help="do not wait")
+        parser.add_argument(
             "-i", "--instance", action="store",
             dest="instance",
             help="macroserver instance name, i.e. haso"
@@ -1373,7 +1396,8 @@ class AddRecorderPath(Runner):
                     ms = "MacroServer/%s" % options.instance
                 else:
                     ms = "MacroServer"
-                setUp.restartServer(ms)
+                setUp.restartServer(ms, timeout=options.timeout,
+                                    wait=(not options.nowait))
 
 
 class Restart(Runner):
@@ -1419,7 +1443,7 @@ class Restart(Runner):
             "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
         for server in servers:
             setUp.restartServer(
-                server, level=(options.level if options.level > -1 else None)
+                server, level=(options.level if options.level > -1 else None),
                 timeout=options.timeout, wait=(not options.nowait))
 
 
