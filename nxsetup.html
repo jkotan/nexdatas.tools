@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxsetup &#8212; NXSTools 3.66.0 documentation</title>
+    <title>nxsetup &#8212; NXSTools 3.67.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.66</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.67</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -110,6 +110,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-restart">nxsetup restart</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-start">nxsetup start</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-stop">nxsetup stop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsetup-wait">nxsetup wait</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-move-prop">nxsetup move-prop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-change-prop">nxsetup change-prop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-add-recorder-path">nxsetup add-recorder-path</a></li>
@@ -154,6 +155,7 @@
 <li><a class="reference internal" href="#nxsetup-restart">nxsetup restart</a></li>
 <li><a class="reference internal" href="#nxsetup-start">nxsetup start</a></li>
 <li><a class="reference internal" href="#nxsetup-stop">nxsetup stop</a></li>
+<li><a class="reference internal" href="#nxsetup-wait">nxsetup wait</a></li>
 <li><a class="reference internal" href="#nxsetup-move-prop">nxsetup move-prop</a></li>
 <li><a class="reference internal" href="#nxsetup-change-prop">nxsetup change-prop</a></li>
 <li><a class="reference internal" href="#nxsetup-add-recorder-path">nxsetup add-recorder-path</a></li>
@@ -231,7 +233,9 @@
   <span class="o">-</span><span class="n">m</span> <span class="n">MASTERHOST</span><span class="p">,</span> <span class="o">--</span><span class="n">masterHost</span> <span class="n">MASTERHOST</span>
                         <span class="n">the</span> <span class="n">host</span> <span class="n">that</span> <span class="n">stores</span> <span class="n">the</span> <span class="n">Mg</span> <span class="p">(</span> <span class="n">default</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">localhost</span><span class="o">&gt;</span> <span class="p">)</span>
   <span class="o">-</span><span class="n">c</span> <span class="n">CONFIGHOST</span><span class="p">,</span> <span class="o">--</span><span class="n">confighost</span> <span class="n">CONFIGHOST</span>
-                        <span class="n">the</span> <span class="n">host</span> <span class="k">with</span> <span class="n">config</span> <span class="n">server</span> <span class="p">(</span> <span class="n">default</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">mysqlhost</span><span class="o">&gt;</span> <span class="p">)</span>
+                        <span class="n">the</span> <span class="n">host</span> <span class="n">to</span> <span class="n">run</span> <span class="n">the</span> <span class="n">config</span> <span class="n">server</span> <span class="p">(</span> <span class="n">default</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">mysqlhost</span><span class="o">&gt;</span> <span class="p">)</span>
+  <span class="o">-</span><span class="n">r</span> <span class="n">RUNHOST</span><span class="p">,</span> <span class="o">--</span><span class="n">runhost</span> <span class="n">RUNHOST</span>
+                        <span class="n">the</span> <span class="n">host</span> <span class="n">to</span> <span class="n">run</span> <span class="n">the</span> <span class="n">server</span> <span class="p">(</span> <span class="n">default</span><span class="p">:</span> <span class="n">localhost</span> <span class="p">)</span>
   <span class="o">-</span><span class="n">u</span> <span class="n">USER</span><span class="p">,</span> <span class="o">--</span><span class="n">user</span> <span class="n">USER</span>  <span class="n">the</span> <span class="n">local</span> <span class="n">user</span> <span class="p">(</span> <span class="n">default</span><span class="p">:</span> <span class="s1">&#39;tango&#39;</span> <span class="p">)</span>
   <span class="o">-</span><span class="n">d</span> <span class="n">DBNAME</span><span class="p">,</span> <span class="o">--</span><span class="n">database</span> <span class="n">DBNAME</span>
                         <span class="n">the</span> <span class="n">database</span> <span class="n">name</span> <span class="p">(</span> <span class="n">default</span><span class="p">:</span> <span class="s1">&#39;nxsconfig&#39;</span><span class="p">)</span>
@@ -241,29 +245,40 @@
                         <span class="n">true</span><span class="s1">&#39;, &quot;read_default_file&quot;: &lt;MY_CNF_FILE&gt;}&#39;</span> <span class="n">where</span>
                         <span class="o">&lt;</span><span class="n">MY_CNF_FILE</span><span class="o">&gt;</span> <span class="n">stays</span> <span class="k">for</span> <span class="s2">&quot;/home/&lt;USER&gt;/.my.cnf&quot;</span> <span class="ow">or</span>
                         <span class="s2">&quot;/var/lib/nxsconfigserver/.my.cnf&quot;</span> <span class="p">)</span>
+  <span class="o">-</span><span class="n">k</span> <span class="n">CLASSNAME</span><span class="p">,</span> <span class="o">--</span><span class="n">class</span><span class="o">-</span><span class="n">name</span> <span class="n">CLASSNAME</span>
+                        <span class="n">tango</span> <span class="n">server</span> <span class="k">class</span> <span class="nc">name</span>
+  <span class="o">-</span><span class="n">y</span> <span class="n">PROPJSON</span><span class="p">,</span> <span class="o">--</span><span class="n">json</span><span class="o">-</span><span class="n">device</span><span class="o">-</span><span class="n">properties</span> <span class="n">PROPJSON</span>
+                        <span class="n">JSON</span> <span class="n">tango</span> <span class="n">device</span> <span class="n">properties</span> <span class="p">(</span> <span class="n">default</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span> <span class="p">)</span>
+  <span class="o">-</span><span class="n">t</span><span class="p">,</span> <span class="o">--</span><span class="n">postpone</span>        <span class="n">do</span> <span class="ow">not</span> <span class="n">start</span> <span class="n">the</span> <span class="n">server</span>
 
  <span class="n">examples</span><span class="p">:</span>
        <span class="n">nxsetup</span> <span class="nb">set</span>
        <span class="n">nxsetup</span> <span class="nb">set</span> <span class="o">-</span><span class="n">b</span> <span class="n">p09</span> <span class="o">-</span><span class="n">m</span> <span class="n">haso228</span> <span class="o">-</span><span class="n">u</span> <span class="n">p09user</span> <span class="o">-</span><span class="n">d</span> <span class="n">nxsconfig</span> <span class="n">NXSConfigServer</span>
+       <span class="n">nxsetup</span> <span class="nb">set</span> <span class="n">nexuswriter</span><span class="o">/</span><span class="n">haso228</span>  <span class="o">-</span><span class="n">k</span> <span class="n">NexusWriter</span>  <span class="o">-</span><span class="n">y</span> <span class="s1">&#39;{&quot;p00/bliss_nexuswriter/test_session&quot;:{&quot;session&quot;:&quot;test_session&quot;,&quot;beacon_host&quot;:&quot;haso228:25000&quot;}}&#39;</span>  <span class="o">-</span><span class="n">t</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="nxsetup-restart">
 <h2>nxsetup restart<a class="headerlink" href="#nxsetup-restart" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: nxsetup restart <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-l LEVEL<span class="o">]</span> <span class="o">[</span>server_name <span class="o">[</span>server_name ...<span class="o">]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>   usage: nxsetup restart <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-l LEVEL<span class="o">]</span> <span class="o">[</span>server_name <span class="o">[</span>server_name ...<span class="o">]]</span>
 
-restart tango server
+   restart tango server
 
-positional arguments:
-  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+   positional arguments:
+     server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
 
-optional arguments:
-  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
-  -l LEVEL, --level LEVEL
-                        startup level
+   optional arguments:
+     -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+     -l LEVEL, --level LEVEL
+                           startup level
+     -z TIMEOUT, --timeout TIMEOUT
+                           timeout in seconds
+     -e, --no-wait         <span class="k">do</span> not <span class="nb">wait</span>
 
- examples:
-       nxsetup restart Pool/haso228 -l <span class="m">2</span>
+examples:
+
+    examples:
+          nxsetup restart Pool/haso228 -l <span class="m">2</span>
 </pre></div>
 </div>
 </div>
@@ -280,6 +295,9 @@ optional arguments:
   -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
   -l LEVEL, --level LEVEL
                         startup level
+  -z TIMEOUT, --timeout TIMEOUT
+                        timeout in seconds
+  -e, --no-wait         <span class="k">do</span> not <span class="nb">wait</span>
 
  examples:
        nxsetup start Pool/haso228 -l <span class="m">2</span>
@@ -303,6 +321,26 @@ optional arguments:
 </pre></div>
 </div>
 </div>
+<div class="section" id="nxsetup-wait">
+<h2>nxsetup wait<a class="headerlink" href="#nxsetup-wait" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: nxsetup <span class="nb">wait</span> <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>server_name <span class="o">[</span>server_name ...<span class="o">]]</span>
+
+stop tango server
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -z TIMEOUT, --timeout TIMEOUT
+                        timeout in seconds
+
+
+ examples:
+       nxsetup <span class="nb">wait</span> Pool/haso228
+</pre></div>
+</div>
+</div>
 <div class="section" id="nxsetup-move-prop">
 <h2>nxsetup move-prop<a class="headerlink" href="#nxsetup-move-prop" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: nxsetup move-prop <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-n NEWNAME<span class="o">]</span> <span class="o">[</span>-o OLDNAME<span class="o">]</span>
@@ -320,6 +358,9 @@ optional arguments:
   -o OLDNAME, --oldname OLDNAME
                         old property name
   -t, --postpone        <span class="k">do</span> not restart the server
+  -z TIMEOUT, --timeout TIMEOUT
+                        timeout in seconds
+  -e, --no-wait         <span class="k">do</span> not <span class="nb">wait</span>
 
  examples:
        nxsetup move-prop -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
@@ -344,6 +385,9 @@ optional arguments:
   -w PROPVALUE, --propvalue PROPVALUE
                         new property value
   -t, --postpone        <span class="k">do</span> not restart the server
+  -z TIMEOUT, --timeout TIMEOUT
+                        timeout in seconds
+  -e, --no-wait         <span class="k">do</span> not <span class="nb">wait</span>
 
 
  examples:
@@ -365,6 +409,11 @@ positional arguments:
 optional arguments:
   -h, --help     show this <span class="nb">help</span> message and <span class="nb">exit</span>
   -t, --postpone  <span class="k">do</span> not restart the server
+  -z TIMEOUT, --timeout TIMEOUT
+                        timeout in seconds
+  -e, --no-wait         <span class="k">do</span> not <span class="nb">wait</span>
+  -i INSTANCE, --instance INSTANCE
+                        macroserver instance name, i.e. haso <span class="o">(</span> default: <span class="s1">&#39;*&#39;</span><span class="o">)</span>
  examples:
        nxsetup add-recorder-path /usr/share/pyshared/sardananxsrecorder
        nxsetup add-recorder-path -t /usr/share/pyshared/sardananxsrecorder

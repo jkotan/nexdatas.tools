@@ -39,7 +39,9 @@ nxsetup set
       -m MASTERHOST, --masterHost MASTERHOST
 			    the host that stores the Mg ( default: <localhost> )
       -c CONFIGHOST, --confighost CONFIGHOST
-                            the host with config server ( default: <mysqlhost> )
+                            the host to run the config server ( default: <mysqlhost> )
+      -r RUNHOST, --runhost RUNHOST
+                            the host to run the server ( default: localhost )
       -u USER, --user USER  the local user ( default: 'tango' )
       -d DBNAME, --database DBNAME
 			    the database name ( default: 'nxsconfig')
@@ -49,10 +51,16 @@ nxsetup set
 			    true', "read_default_file": <MY_CNF_FILE>}' where
 			    <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
 			    "/var/lib/nxsconfigserver/.my.cnf" )
+      -k CLASSNAME, --class-name CLASSNAME
+                            tango server class name
+      -y PROPJSON, --json-device-properties PROPJSON
+                            JSON tango device properties ( default: '{}' )
+      -t, --postpone        do not start the server
 
      examples:
 	   nxsetup set
 	   nxsetup set -b p09 -m haso228 -u p09user -d nxsconfig NXSConfigServer
+	   nxsetup set nexuswriter/haso228  -k NexusWriter  -y '{"p00/bliss_nexuswriter/test_session":{"session":"test_session","beacon_host":"haso228:25000"}}'  -t
 
 
 nxsetup restart
@@ -71,6 +79,11 @@ nxsetup restart
       -h, --help            show this help message and exit
       -l LEVEL, --level LEVEL
 			    startup level
+      -z TIMEOUT, --timeout TIMEOUT
+                            timeout in seconds
+      -e, --no-wait         do not wait
+
+ examples:
 
      examples:
 	   nxsetup restart Pool/haso228 -l 2
@@ -92,6 +105,9 @@ nxsetup start
       -h, --help            show this help message and exit
       -l LEVEL, --level LEVEL
 			    startup level
+      -z TIMEOUT, --timeout TIMEOUT
+                            timeout in seconds
+      -e, --no-wait         do not wait
 
      examples:
 	   nxsetup start Pool/haso228 -l 2
@@ -114,6 +130,27 @@ nxsetup stop
      examples:
 	   nxsetup stop Pool/haso228
 
+nxsetup wait
+------------
+
+.. code:: bash
+
+    usage: nxsetup wait [-h] [server_name [server_name ...]]
+
+    stop tango server
+
+    positional arguments:
+      server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -z TIMEOUT, --timeout TIMEOUT
+                            timeout in seconds
+
+
+     examples:
+	   nxsetup wait Pool/haso228
+
 
 nxsetup move-prop
 -----------------
@@ -135,6 +172,9 @@ nxsetup move-prop
       -o OLDNAME, --oldname OLDNAME
 			    old property name
       -t, --postpone        do not restart the server
+      -z TIMEOUT, --timeout TIMEOUT
+                            timeout in seconds
+      -e, --no-wait         do not wait
     
      examples:
 	   nxsetup move-prop -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
@@ -161,6 +201,9 @@ nxsetup change-prop
       -w PROPVALUE, --propvalue PROPVALUE
 			    new property value
       -t, --postpone        do not restart the server
+      -z TIMEOUT, --timeout TIMEOUT
+                            timeout in seconds
+      -e, --no-wait         do not wait
     
 
      examples:
@@ -183,6 +226,11 @@ nxsetup add-recorder-path
     optional arguments:
       -h, --help     show this help message and exit
       -t, --postpone  do not restart the server
+      -z TIMEOUT, --timeout TIMEOUT
+                            timeout in seconds
+      -e, --no-wait         do not wait
+      -i INSTANCE, --instance INSTANCE
+                            macroserver instance name, i.e. haso ( default: '*')
      examples:
 	   nxsetup add-recorder-path /usr/share/pyshared/sardananxsrecorder
 	   nxsetup add-recorder-path -t /usr/share/pyshared/sardananxsrecorder
