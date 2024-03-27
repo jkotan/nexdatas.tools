@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSETUP" "1" "Mar 22, 2024" "3.66" "NXSTools"
+.TH "NXSETUP" "1" "Mar 27, 2024" "3.67" "NXSTools"
 .SH NAME
 nxsetup \- set NeXDaTaS Tango Server environment up
 .
@@ -67,6 +67,10 @@ optional arguments:
                         name of the beamline ( default: \(aqnxs\(aq )
   \-m MASTERHOST, \-\-masterHost MASTERHOST
                         the host that stores the Mg ( default: <localhost> )
+  \-c CONFIGHOST, \-\-confighost CONFIGHOST
+                        the host to run the config server ( default: <mysqlhost> )
+  \-r RUNHOST, \-\-runhost RUNHOST
+                        the host to run the server ( default: localhost )
   \-u USER, \-\-user USER  the local user ( default: \(aqtango\(aq )
   \-d DBNAME, \-\-database DBNAME
                         the database name ( default: \(aqnxsconfig\(aq)
@@ -76,10 +80,16 @@ optional arguments:
                         true\(aq, "read_default_file": <MY_CNF_FILE>}\(aq where
                         <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
                         "/var/lib/nxsconfigserver/.my.cnf" )
+  \-k CLASSNAME, \-\-class\-name CLASSNAME
+                        tango server class name
+  \-y PROPJSON, \-\-json\-device\-properties PROPJSON
+                        JSON tango device properties ( default: \(aq{}\(aq )
+  \-t, \-\-postpone        do not start the server
 
  examples:
        nxsetup set
        nxsetup set \-b p09 \-m haso228 \-u p09user \-d nxsconfig NXSConfigServer
+       nxsetup set nexuswriter/haso228  \-k NexusWriter  \-y \(aq{"p00/bliss_nexuswriter/test_session":{"session":"test_session","beacon_host":"haso228:25000"}}\(aq  \-t
 .ft P
 .fi
 .UNINDENT
@@ -90,20 +100,25 @@ optional arguments:
 .sp
 .nf
 .ft C
-usage: nxsetup restart [\-h] [\-l LEVEL] [server_name [server_name ...]]
+   usage: nxsetup restart [\-h] [\-l LEVEL] [server_name [server_name ...]]
 
-restart tango server
+   restart tango server
 
-positional arguments:
-  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+   positional arguments:
+     server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
 
-optional arguments:
-  \-h, \-\-help            show this help message and exit
-  \-l LEVEL, \-\-level LEVEL
-                        startup level
+   optional arguments:
+     \-h, \-\-help            show this help message and exit
+     \-l LEVEL, \-\-level LEVEL
+                           startup level
+     \-z TIMEOUT, \-\-timeout TIMEOUT
+                           timeout in seconds
+     \-e, \-\-no\-wait         do not wait
 
- examples:
-       nxsetup restart Pool/haso228 \-l 2
+examples:
+
+    examples:
+          nxsetup restart Pool/haso228 \-l 2
 .ft P
 .fi
 .UNINDENT
@@ -125,6 +140,9 @@ optional arguments:
   \-h, \-\-help            show this help message and exit
   \-l LEVEL, \-\-level LEVEL
                         startup level
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+  \-e, \-\-no\-wait         do not wait
 
  examples:
        nxsetup start Pool/haso228 \-l 2
@@ -154,6 +172,31 @@ optional arguments:
 .fi
 .UNINDENT
 .UNINDENT
+.SH NXSETUP WAIT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup wait [\-h] [server_name [server_name ...]]
+
+stop tango server
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+
+
+ examples:
+       nxsetup wait Pool/haso228
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
 .SH NXSETUP MOVE-PROP
 .INDENT 0.0
 .INDENT 3.5
@@ -175,6 +218,9 @@ optional arguments:
   \-o OLDNAME, \-\-oldname OLDNAME
                         old property name
   \-t, \-\-postpone        do not restart the server
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+  \-e, \-\-no\-wait         do not wait
 
  examples:
        nxsetup move\-prop \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
@@ -204,6 +250,9 @@ optional arguments:
   \-w PROPVALUE, \-\-propvalue PROPVALUE
                         new property value
   \-t, \-\-postpone        do not restart the server
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+  \-e, \-\-no\-wait         do not wait
 
 
  examples:
@@ -230,6 +279,11 @@ positional arguments:
 optional arguments:
   \-h, \-\-help     show this help message and exit
   \-t, \-\-postpone  do not restart the server
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+  \-e, \-\-no\-wait         do not wait
+  \-i INSTANCE, \-\-instance INSTANCE
+                        macroserver instance name, i.e. haso ( default: \(aq*\(aq)
  examples:
        nxsetup add\-recorder\-path /usr/share/pyshared/sardananxsrecorder
        nxsetup add\-recorder\-path \-t /usr/share/pyshared/sardananxsrecorder

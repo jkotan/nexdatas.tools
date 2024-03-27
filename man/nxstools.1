@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Mar 22, 2024" "3.66" "NXSTools"
+.TH "NXSTOOLS" "1" "Mar 27, 2024" "3.67" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -2320,6 +2320,10 @@ optional arguments:
                         name of the beamline ( default: \(aqnxs\(aq )
   \-m MASTERHOST, \-\-masterHost MASTERHOST
                         the host that stores the Mg ( default: <localhost> )
+  \-c CONFIGHOST, \-\-confighost CONFIGHOST
+                        the host to run the config server ( default: <mysqlhost> )
+  \-r RUNHOST, \-\-runhost RUNHOST
+                        the host to run the server ( default: localhost )
   \-u USER, \-\-user USER  the local user ( default: \(aqtango\(aq )
   \-d DBNAME, \-\-database DBNAME
                         the database name ( default: \(aqnxsconfig\(aq)
@@ -2329,10 +2333,16 @@ optional arguments:
                         true\(aq, "read_default_file": <MY_CNF_FILE>}\(aq where
                         <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
                         "/var/lib/nxsconfigserver/.my.cnf" )
+  \-k CLASSNAME, \-\-class\-name CLASSNAME
+                        tango server class name
+  \-y PROPJSON, \-\-json\-device\-properties PROPJSON
+                        JSON tango device properties ( default: \(aq{}\(aq )
+  \-t, \-\-postpone        do not start the server
 
  examples:
        nxsetup set
        nxsetup set \-b p09 \-m haso228 \-u p09user \-d nxsconfig NXSConfigServer
+       nxsetup set nexuswriter/haso228  \-k NexusWriter  \-y \(aq{"p00/bliss_nexuswriter/test_session":{"session":"test_session","beacon_host":"haso228:25000"}}\(aq  \-t
 .ft P
 .fi
 .UNINDENT
@@ -2343,20 +2353,25 @@ optional arguments:
 .sp
 .nf
 .ft C
-usage: nxsetup restart [\-h] [\-l LEVEL] [server_name [server_name ...]]
+   usage: nxsetup restart [\-h] [\-l LEVEL] [server_name [server_name ...]]
 
-restart tango server
+   restart tango server
 
-positional arguments:
-  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+   positional arguments:
+     server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
 
-optional arguments:
-  \-h, \-\-help            show this help message and exit
-  \-l LEVEL, \-\-level LEVEL
-                        startup level
+   optional arguments:
+     \-h, \-\-help            show this help message and exit
+     \-l LEVEL, \-\-level LEVEL
+                           startup level
+     \-z TIMEOUT, \-\-timeout TIMEOUT
+                           timeout in seconds
+     \-e, \-\-no\-wait         do not wait
 
- examples:
-       nxsetup restart Pool/haso228 \-l 2
+examples:
+
+    examples:
+          nxsetup restart Pool/haso228 \-l 2
 .ft P
 .fi
 .UNINDENT
@@ -2378,6 +2393,9 @@ optional arguments:
   \-h, \-\-help            show this help message and exit
   \-l LEVEL, \-\-level LEVEL
                         startup level
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+  \-e, \-\-no\-wait         do not wait
 
  examples:
        nxsetup start Pool/haso228 \-l 2
@@ -2407,6 +2425,31 @@ optional arguments:
 .fi
 .UNINDENT
 .UNINDENT
+.SS nxsetup wait
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup wait [\-h] [server_name [server_name ...]]
+
+stop tango server
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+
+
+ examples:
+       nxsetup wait Pool/haso228
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
 .SS nxsetup move\-prop
 .INDENT 0.0
 .INDENT 3.5
@@ -2428,6 +2471,9 @@ optional arguments:
   \-o OLDNAME, \-\-oldname OLDNAME
                         old property name
   \-t, \-\-postpone        do not restart the server
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+  \-e, \-\-no\-wait         do not wait
 
  examples:
        nxsetup move\-prop \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
@@ -2457,6 +2503,9 @@ optional arguments:
   \-w PROPVALUE, \-\-propvalue PROPVALUE
                         new property value
   \-t, \-\-postpone        do not restart the server
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+  \-e, \-\-no\-wait         do not wait
 
 
  examples:
@@ -2483,6 +2532,11 @@ positional arguments:
 optional arguments:
   \-h, \-\-help     show this help message and exit
   \-t, \-\-postpone  do not restart the server
+  \-z TIMEOUT, \-\-timeout TIMEOUT
+                        timeout in seconds
+  \-e, \-\-no\-wait         do not wait
+  \-i INSTANCE, \-\-instance INSTANCE
+                        macroserver instance name, i.e. haso ( default: \(aq*\(aq)
  examples:
        nxsetup add\-recorder\-path /usr/share/pyshared/sardananxsrecorder
        nxsetup add\-recorder\-path \-t /usr/share/pyshared/sardananxsrecorder
@@ -5012,7 +5066,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B epilog = \(aq examples:\en       nxsetup set\en       nxsetup set \-b p09 \-m haso228 \-u p09user \-d nxsconfig NXSConfigServer\en\en\(aq
+.B epilog = \(aq examples:\en       nxsetup set\en       nxsetup set \-b p09 \-m haso228 \-u p09user \-d nxsconfig NXSConfigServer\en       nxsetup set nexuswriter/haso228  \-k NexusWriter  \-y \e\(aq{"p00/bliss_nexuswriter/test_session":{"session":"test_session","beacon_host":"haso228:25000"}}\e\(aq  \-t\en\en\(aq
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -5107,7 +5161,7 @@ True if record path was added
 .UNINDENT
 .INDENT 7.0
 .TP
-.B createConfigServer(beamline, masterhost, jsonsettings=None, hostname=None)
+.B createConfigServer(beamline, masterhost, jsonsettings=None, hostname=None, postpone=False)
 creates configuration server
 .INDENT 7.0
 .TP
@@ -5120,7 +5174,9 @@ creates configuration server
 .IP \(bu 2
 \fBjsonsettings\fP (\fI\%str\fP) \-\- connection settings to DB in json
 .IP \(bu 2
-\fBhostname\fP (\fI\%str\fP) \-\- host of config server
+\fBhostname\fP (\fI\%str\fP) \-\- host to run the config server
+.IP \(bu 2
+\fBpostpone\fP (\fI\%bool\fP) \-\- postpone starting flag
 .UNINDENT
 .TP
 .B Returns
@@ -5132,7 +5188,7 @@ True if server was created
 .UNINDENT
 .INDENT 7.0
 .TP
-.B createDataWriter(beamline, masterhost)
+.B createDataWriter(beamline, masterhost, postpone=False)
 creates data writer
 .INDENT 7.0
 .TP
@@ -5142,6 +5198,8 @@ creates data writer
 \fBbeamline\fP (\fI\%str\fP) \-\- beamline name
 .IP \(bu 2
 \fBmasterhost\fP (\fI\%str\fP) \-\- master host of data writer
+.IP \(bu 2
+\fBpostpone\fP (\fI\%bool\fP) \-\- postpone starting flag
 .UNINDENT
 .TP
 .B Returns
@@ -5153,7 +5211,7 @@ True if server was created
 .UNINDENT
 .INDENT 7.0
 .TP
-.B createSelector(beamline, masterhost, writer=None, cserver=None)
+.B createSelector(beamline, masterhost, writer=None, cserver=None, postpone=False)
 creates selector server
 .INDENT 7.0
 .TP
@@ -5167,6 +5225,39 @@ creates selector server
 \fBwriter\fP (\fI\%str\fP) \-\- writer device name
 .IP \(bu 2
 \fBcserver\fP (\fI\%str\fP) \-\- configuration server device name
+.IP \(bu 2
+\fBpostpone\fP (\fI\%bool\fP) \-\- postpone starting flag
+.UNINDENT
+.TP
+.B Returns
+True if server was created
+.TP
+.B Return type
+\fI\%bool\fP
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B createServer(server_name, beamline, masterhost, hostname=None, class_name=None, jsondeviceproperties=None, postpone=False)
+creates tango server in DB
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBserver_name\fP (\fI\%str\fP) \-\- server name
+.IP \(bu 2
+\fBbeamline\fP (\fI\%str\fP) \-\- beamline name
+.IP \(bu 2
+\fBmasterhost\fP (\fI\%str\fP) \-\- master host of data writer
+.IP \(bu 2
+\fBhostname\fP (\fI\%str\fP) \-\- host to run the config server
+.IP \(bu 2
+\fBclass_name\fP \-\- class name
+.IP \(bu 2
+\fBjsondeviceproperties\fP (\fI\%str\fP) \-\- json device properties
+.IP \(bu 2
+\fBpostpone\fP (\fI\%bool\fP) \-\- postpone starting flag
 .UNINDENT
 .TP
 .B Returns
@@ -5208,7 +5299,7 @@ starter device name
 .UNINDENT
 .INDENT 7.0
 .TP
-.B restartServer(name, host=None, level=None, restart=True)
+.B restartServer(name, host=None, level=None, restart=True, stopstart=True, wait=True, timeout=None)
 restarts server
 .INDENT 7.0
 .TP
@@ -5222,6 +5313,12 @@ restarts server
 \fBlevel\fP (\fI\%int\fP) \-\- start up level
 .IP \(bu 2
 \fBrestart\fP (\fI\%bool\fP) \-\- if server should be restarted
+.IP \(bu 2
+\fBstopstart\fP (\fI\%bool\fP) \-\- if server should be stopped and started
+.IP \(bu 2
+\fBwait\fP (\fI\%bool\fP) \-\- script should wait for the server
+.IP \(bu 2
+\fBtimeout\fP (\fI\%float\fP) \-\- timeout for  start
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5369,6 +5466,45 @@ creates parser
 .INDENT 7.0
 .TP
 .B epilog = \(aq examples:\en       nxsetup stop Pool/haso228 \en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.Wait(parser)
+Bases: \fI\%nxstools.nxsargparser.Runner\fP
+.sp
+start runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqwait for tango server\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsetup wait Pool/haso228 \-z 30\en\en\(aq
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
