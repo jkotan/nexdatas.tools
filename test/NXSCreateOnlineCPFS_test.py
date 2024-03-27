@@ -2530,7 +2530,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
               '    <hostname>%s:%s</hostname>\n' \
               '</device>\n' \
               '</hw>\n'
-        if __name__ == 'test.NXSCreateStdCompFSTest':
+
+        if __name__ == 'test.NXSCreateOnlineCPFS_test':
             pname = 'test.nxsextrasp00'
         else:
             pname = 'nxsextrasp00'
@@ -2609,7 +2610,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
 </device>
 </hw>
 """
-        if __name__ == 'test.NXSCreateStdCompFSTest':
+        if __name__ == 'test.NXSCreateOnlineCPFS_test':
             pname = 'test.nxsextrasp00'
         else:
             pname = 'nxsextrasp00'
