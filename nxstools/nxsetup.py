@@ -1095,7 +1095,7 @@ class Set(Runner):
         + "       nxsetup set\n" \
         + "       nxsetup set -b p09 -m haso228 -u p09user " \
         + "-d nxsconfig NXSConfigServer\n" \
-        + "       nxsetup set nexuswriter/haso228  -k NexusWriter  " \
+        + "       nxsetup set NexusWriter/haso228  -k NexusWriter  " \
         + "-y '{\"p00/bliss_nexuswriter/test_session\":" \
         + "{\"session\":\"test_session\"," \
         + "\"beacon_host\":\"haso228:25000\"}}'  -t\n" \
