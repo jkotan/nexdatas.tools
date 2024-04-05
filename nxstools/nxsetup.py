@@ -1250,7 +1250,7 @@ class Set(Runner):
                         class_name=options.classname,
                         jsondeviceproperties=jsondeviceproperties,
                         postpone=options.postpone):
-                    print("startup failed to create the nexus selector server")
+                    print("startup failed to create the %s server" % arg)
                     sys.exit(255)
 
 
