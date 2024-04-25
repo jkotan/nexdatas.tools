@@ -161,6 +161,7 @@ if H5PY_AVAILABLE and H5CPP_AVAILABLE:
 if H5CPP_AVAILABLE or H5PY_AVAILABLE:
     import NXSCollect_test
     import NXSFileInfo_test
+    import H5RedisWriter_test
 
 
 if PYTANGO_AVAILABLE:
@@ -304,6 +305,9 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSFileInfo_test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                H5RedisWriter_test))
 
     if PYTANGO_AVAILABLE:
         suite.addTests(

@@ -24,14 +24,13 @@ import sys
 # import numpy as np
 # from pninexus import h5cpp
 
-from . import filewriter
+# from . import filewriter
 
 H5CPP = False
 try:
     from . import h5cppwriter as h5writer
     H5File = h5writer.H5CppFile
     H5Group = h5writer.H5CppGroup
-    H5GroupIter = h5writer.H5CppGroupIter
     H5Field = h5writer.H5CppField
     H5Link = h5writer.H5CppLink
     H5VirtualFieldLayout = h5writer.H5CppVirtualFieldLayout
@@ -45,7 +44,6 @@ except Exception:
     from . import h5pywriter as h5writer
     H5File = h5writer.H5PYFile
     H5Group = h5writer.H5PYGroup
-    H5GroupIter = h5writer.H5PYGroupIter
     H5Field = h5writer.H5PYField
     H5Link = h5writer.H5PYLink
     H5VirtualFieldLayout = h5writer.H5PYVirtualFieldLayout
@@ -139,7 +137,7 @@ def open_file(filename, readonly=False, **pars):
     :returns: file object
     :rtype: :class:`H5RedisFile`
     """
-    return H5RedisFile(h5file=h5writer.open_file(filename, readonly, **pars))
+    return H5RedisFile(h5imp=h5writer.open_file(filename, readonly, **pars))
 
 
 def is_image_file_supported():
@@ -184,7 +182,7 @@ def load_file(membuffer, filename=None, readonly=False, **pars):
     :rtype: :class:`H5RedisFile`
     """
     return H5RedisFile(
-        h5file=h5writer.load_file(membuffer, filename, readonly, **pars))
+        h5imp=h5writer.load_file(membuffer, filename, readonly, **pars))
 
 
 def create_file(filename, overwrite=False, **pars):
@@ -200,7 +198,7 @@ def create_file(filename, overwrite=False, **pars):
     :rtype: :class:`H5RedisFile`
     """
     return H5RedisFile(
-        h5file=h5writer.create_file(filename, overwrite, **pars))
+        h5imp=h5writer.create_file(filename, overwrite, **pars))
 
 
 def link(target, parent, name):
@@ -213,9 +211,9 @@ def link(target, parent, name):
     :param name: link name
     :type name: :obj:`str`
     :returns: link object
-    :rtype: :class:`H5CppLink`
+    :rtype: :class:`H5RedisLink`
     """
-    return h5writer.link(target, parent, name)
+    return H5RedisLink(h5imp=h5writer.link(target, parent, name))
 
 
 def get_links(parent):
@@ -225,9 +223,10 @@ def get_links(parent):
     :type parent: :class:`FTObject`
     :returns: list of link objects
     :returns: link object
-    :rtype: :obj: `list` <:class:`H5CppLink`>
+    :rtype: :obj: `list` <:class:`H5RedisLink`>
     """
-    return h5writer.link(parent)
+    links = h5writer.get_links(parent)
+    return [H5RedisLink(h5imp=lk) for lk in links]
 
 
 def data_filter(filterid=None, name=None, options=None, availability=None,
@@ -247,10 +246,10 @@ def data_filter(filterid=None, name=None, options=None, availability=None,
     :param rate: filter shuffle
     :type rate: :obj:`bool`
     :returns: data filter object
-    :rtype: :class:`H5CppDataFilter`
+    :rtype: :class:`H5RedisDataFilter`
     """
-    return h5writer.data_filter(filterid, name, options, availability,
-                                shuffle, rate)
+    return H5RedisDataFilter(h5imp=h5writer.data_filter(
+        filterid, name, options, availability, shuffle, rate))
 
 
 def deflate_filter(rate=None, shuffle=None, availability=None):
@@ -261,9 +260,10 @@ def deflate_filter(rate=None, shuffle=None, availability=None):
     :param shuffle: filter shuffle
     :type shuffle: :obj:`bool`
     :returns: deflate filter object
-    :rtype: :class:`H5CppDataFilter`
+    :rtype: :class:`H5RedisDataFilter`
     """
-    return h5writer.deflate_filter(rate, shuffle, availability)
+    return H5RedisDataFilter(
+        h5imp=h5writer.deflate_filter(rate, shuffle, availability))
 
 
 def target_field_view(filename, fieldpath, shape,
@@ -281,10 +281,11 @@ def target_field_view(filename, fieldpath, shape,
     :param maxshape: shape
     :type maxshape: :obj:`list` < :obj:`int` >
     :returns: target field view object
-    :rtype: :class:`H5CppTargetFieldView`
+    :rtype: :class:`H5RedisTargetFieldView`
     """
-    return h5writer.target_field_view(filename, fieldpath, shape,
-                                      dtype, maxshape)
+    return H5RedisTargetFieldView(
+        h5imp=h5writer.target_field_view(
+            filename, fieldpath, shape, dtype, maxshape))
 
 
 def virtual_field_layout(shape, dtype, maxshape=None):
@@ -297,94 +298,66 @@ def virtual_field_layout(shape, dtype, maxshape=None):
     :param maxshape: shape
     :type maxshape: :obj:`list` < :obj:`int` >
     :returns: virtual layout
-    :rtype: :class:`H5CppVirtualFieldLayout`
+    :rtype: :class:`H5RedisVirtualFieldLayout`
     """
-    return h5writer.virtual_field_layout(shape, dtype, maxshape)
+    return H5RedisVirtualFieldLayout(
+        h5imp=h5writer.virtual_field_layout(
+            shape, dtype, maxshape))
 
 
-class H5RedisFile(filewriter.FTFile):
+class H5RedisFile(H5File):
 
     """ file tree file
     """
 
-    def __init__(self, h5object=None, filename=None, h5file=None):
+    def __init__(self, h5object=None, filename=None, h5imp=None):
         """ constructor
 
         :param h5object: h5 object
         :type h5object: :obj:`any`
         :param filename:  file name
         :type filename: :obj:`str`
+        :param h5imp: h5 implementation file
+        :type h5imp: :class:`filewriter.FTFile`
         """
-        if h5file is not None:
-            self.__h5file = h5file
+        if h5imp is not None:
+            H5File.__init__(self, h5imp.h5object, h5imp.name)
         else:
             if h5object is None or filename is None:
                 raise Exception("Undefined constructor parameters")
-            self.__h5file = H5File(self, h5object, filename)
+            H5File.__init__(self, h5object, filename)
 
     def root(self):
         """ root object
 
         :returns: parent object
-        :rtype: :class:`H5CppGroup`
+        :rtype: :class:`H5RedisGroup`
         """
-        return self.__h5file.root()
-
-    def flush(self):
-        """ flash the data
-        """
-        return self.__h5file.flush()
-
-    def close(self):
-        """ close file
-        """
-        return self.__h5file.close()
-
-    @property
-    def is_valid(self):
-        """ check if file is valid
-
-        :returns: valid flag
-        :rtype: :obj:`bool`
-        """
-        return self.__h5file.is_valid
-
-    @property
-    def readonly(self):
-        """ check if file is readonly
-
-        :returns: readonly flag
-        :rtype: :obj:`bool`
-        """
-        return self.__h5file.readonly
-
-    def reopen(self, readonly=False, swmr=False, libver=None):
-        """ reopen file
-
-        :param readonly: readonly flag
-        :type readonly: :obj:`bool`
-        :param swmr: swmr flag
-        :type swmr: :obj:`bool`
-        :param libver:  library version, default: 'latest'
-        :type libver: :obj:`str`
-        """
-        return self.__h5file.reopen(readonly, swmr, libver)
+        return H5RedisGroup(self._h5object.root(), self)
 
 
-class H5RedisGroup(filewriter.FTGroup):
+
+class H5RedisGroup(H5Group):
 
     """ file tree group
     """
 
-    def __init__(self, h5object, tparent=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None):
         """ constructor
 
         :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: tree parent
         :type tparent: :obj:`FTObject`
+        :param h5imp: h5 implementation group
+        :type h5imp: :class:`filewriter.FTGroup`
         """
-        self.__h5group = H5Group(self, h5object, tparent)
+        if h5imp is not None:
+            H5Group.__init__(self, h5imp.h5object, h5imp._tparent)
+        else:
+            if h5object is None:
+                raise Exception("Undefined constructor parameters")
+            H5Group.__init__(self, h5object, tparent)
 
     def open(self, name):
         """ open a file tree element
@@ -392,9 +365,16 @@ class H5RedisGroup(filewriter.FTGroup):
         :param name: element name
         :type name: :obj:`str`
         :returns: file tree object
-        :rtype: :class:`FTObject`
+        :rtype: :class:`H5RedisLink`
         """
-        return self.__h5group.open(name)
+        h5obj = H5Group.open(self, name)
+        if isinstance(h5obj, H5Group):
+            return H5RedisGroup(h5imp=h5obj)
+        elif isinstance(h5obj, H5Field):
+            return H5RedisField(h5imp=h5obj)
+        elif isinstance(h5obj, H5Attribute):
+            return H5RedisAttribute(h5imp=h5obj)
+        return H5RedisLink(h5imp=h5obj)
 
     def open_link(self, name):
         """ open a file tree element as link
@@ -402,9 +382,9 @@ class H5RedisGroup(filewriter.FTGroup):
         :param name: element name
         :type name: :obj:`str`
         :returns: file tree object
-        :rtype: :class:`FTObject`
+        :rtype: :class:`H5RedisLink`
         """
-        return self.__h5group.open_link(name)
+        return H5RedisLink(h5imp=H5Group.open_link(self, name))
 
     def create_group(self, n, nxclass=None):
         """ open a file tree element
@@ -414,9 +394,9 @@ class H5RedisGroup(filewriter.FTGroup):
         :param nxclass: group type
         :type nxclass: :obj:`str`
         :returns: file tree group
-        :rtype: :class:`H5CppGroup`
+        :rtype: :class:`H5RedisGroup`
         """
-        return self.__h5group.create_group(n)
+        return H5RedisGroup(h5imp=H5Group.create_group(self, n, nxclass))
 
     def create_virtual_field(self, name, layout, fillvalue=0):
         """ creates a virtual filed tres element
@@ -427,8 +407,12 @@ class H5RedisGroup(filewriter.FTGroup):
         :type layout: :class:`H5CppFieldLayout`
         :param fillvalue:  fill value
         :type fillvalue: :obj:`int` or :class:`np.ndarray`
+        :returns: file tree field
+        :rtype: :class:`H5RedisField`
         """
-        return self.__h5group.create_virtual_field(name, layout, fillvalue)
+        return H5RedisField(
+            h5imp=H5Group.create_virtual_field(
+                self, name, layout, fillvalue))
 
     def create_field(self, name, type_code,
                      shape=None, chunk=None, dfilter=None):
@@ -445,19 +429,12 @@ class H5RedisGroup(filewriter.FTGroup):
         :param dfilter: filter deflater
         :type dfilter: :class:`H5CppDataFilter`
         :returns: file tree field
-        :rtype: :class:`H5CppField`
+        :rtype: :class:`H5RedisField`
         """
-        return self.__h5group.create_field(
-            name, type_code, shape, chunk, dfilter)
-
-    @property
-    def size(self):
-        """ group size
-
-        :returns: group size
-        :rtype: :obj:`int`
-        """
-        return self.__h5group.size
+        return H5RedisField(
+            h5imp=H5Group.create_field(
+                self, name, type_code, shape, chunk,
+                (dfilter if dfilter is None else dfilter)))
 
     @property
     def attributes(self):
@@ -466,45 +443,19 @@ class H5RedisGroup(filewriter.FTGroup):
         :returns: attribute manager
         :rtype: :class:`H5CppAttributeManager`
         """
-        return self.__h5group.attributes
-
-    def close(self):
-        """ close group
-        """
-        return self.__h5group.close()
-
-    def reopen(self):
-        """ reopen group
-        """
-        return self.__h5group.reopen()
-
-    def exists(self, name):
-        """ if child exists
-
-        :param name: child name
-        :type name: :obj:`str`
-        :returns: existing flag
-        :rtype: :obj:`bool`
-        """
-        return self.__h5group.exists()
-
-    def names(self):
-        """ read the child names
-
-        :returns: h5 object
-        :rtype: :obj:`list` <`str`>
-        """
-        return self.__h5group.names()
+        return H5RedisAttributeManager(
+            h5imp=super(H5RedisGroup, self).attributes)
 
     class H5RedisGroupIter(object):
 
-        def __init__(self, group):
+        def __init__(self, group=None):
             """ constructor
 
             :param group: group object
-            :type manager: :obj:`H5CppGroup`
+            :type group: :obj:`H5RedisGroup`
             """
-            self.__h5groupiter = H5GroupIter(self, group)
+            self.__group = group
+            self.__names = group.names()
 
         def __next__(self):
             """ the next attribute
@@ -512,7 +463,10 @@ class H5RedisGroup(filewriter.FTGroup):
             :returns: attribute object
             :rtype: :class:`FTAtribute`
             """
-            self.__h5groupiter.__next__()
+            if self.__names:
+                return self.__group.open(self.__names.pop(0))
+            else:
+                raise StopIteration()
 
         next = __next__
 
@@ -520,41 +474,41 @@ class H5RedisGroup(filewriter.FTGroup):
             """ attribute iterator
 
             :returns: attribute iterator
-            :rtype: :class:`H5CppAttrIter`
+            :rtype: :class:`H5RedisAttrIter`
             """
-            return self.__h5groupiter.__iter__()
+            return self
 
     def __iter__(self):
         """ attribute iterator
 
         :returns: attribute iterator
-        :rtype: :class:`H5CppAttrIter`
+        :rtype: :class:`H5RedisAttrIter`
         """
-        return self.__h5group.__iter__()
+        return self.H5RedisGroupIter(self)
 
-    @property
-    def is_valid(self):
-        """ check if field is valid
+ 
 
-        :returns: valid flag
-        :rtype: :obj:`bool`
-        """
-        return self.__h5group.is_valid
-
-
-class H5RedisField(filewriter.FTField):
+class H5RedisField(H5Field):
 
     """ file tree file
     """
 
-    def __init__(self, h5object, tparent=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None):
         """ constructor
 
         :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
+        :param h5imp: h5 implementation field
+        :type h5imp: :class:`filewriter.FTField`
         """
+        if h5imp is not None:
+            H5Field.__init__(self, h5imp.h5object, h5imp._tparent)
+        else:
+            if h5object is None:
+                raise Exception("Undefined constructor parameters")
+            H5Field.__init__(self, h5object, tparent)
 
     @property
     def attributes(self):
@@ -563,117 +517,16 @@ class H5RedisField(filewriter.FTField):
         :returns: attribute manager
         :rtype: :class:`H5CppAttributeManager`
         """
-        return self.__h5field.attributes
-
-    def close(self):
-        """ close field
-        """
-        return self.__h5field.close()
-
-    def reopen(self):
-        """ reopen field
-        """
-        return self.__h5field.reopen()
-
-    def refresh(self):
-        """ refresh the field
-
-        :returns: refreshed
-        :rtype: :obj:`bool`
-        """
-        return self.__h5field.refresh()
-
-    def grow(self, dim=0, ext=1):
-        """ grow the field
-
-        :param dim: growing dimension
-        :type dim: :obj:`int`
-        :param dim: size of the grow
-        :type dim: :obj:`int`
-        """
-        return self.__h5field.grow(dim, ext)
-
-    def read(self):
-        """ read the field value
-
-        :returns: h5 object
-        :rtype: :obj:`any`
-        """
-        return self.__h5field.read()
-
-    def write(self, o):
-        """ write the field value
-
-        :param o: h5 object
-        :type o: :obj:`any`
-        """
-        return self.__h5field.read(o)
-
-    def __setitem__(self, t, o):
-        """ set value
-
-        :param t: slice tuple
-        :type t: :obj:`tuple`
-        :param o: h5 object
-        :type o: :obj:`any`
-        """
-        return self.__h5field.__setitem__(t, o)
-
-    def __getitem__(self, t):
-        """ get value
-
-        :param t: slice tuple
-        :type t: :obj:`tuple`
-        :returns: h5 object
-        :rtype: :obj:`any`
-        """
-        return self.__h5field.__getitem__(t)
-
-    @property
-    def is_valid(self):
-        """ check if field is valid
-
-        :returns: valid flag
-        :rtype: :obj:`bool`
-        """
-        return self.__h5field.is_valid
-
-    @property
-    def dtype(self):
-        """ field data type
-
-        :returns: field data type
-        :rtype: :obj:`str`
-        """
-        # if self.boolflag:
-        #     return "bool"
-        return self.__h5field.dtype
-
-    @property
-    def shape(self):
-        """ field shape
-
-        :returns: field shape
-        :rtype: :obj:`list` < :obj:`int` >
-        """
-        return self.__h5field.shape
-
-    @property
-    def size(self):
-        """ field size
-
-        :returns: field size
-        :rtype: :obj:`int`
-        """
-        return self.__h5field.size
+        return H5RedisAttributeManager(
+            h5imp=super(H5RedisField, self).attributes)
 
 
-class H5RedisLink(filewriter.FTLink):
+class H5RedisLink(H5Link):
 
     """ file tree link
     """
 
-    def __init__(self, h5object=None, tparent=None, h5link=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None):
         """ constructor
 
         :param h5object: h5 object
@@ -681,72 +534,51 @@ class H5RedisLink(filewriter.FTLink):
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
         """
-        if h5link is not None:
-            self.__h5link = h5link
+        if h5imp is not None:
+            H5Link.__init__(self, h5imp.h5object, h5imp._tparent)
         else:
             if h5object is None:
                 raise Exception("Undefined constructor parameters")
-            self.__h5link = H5Link(self, h5object, tparent)
-
-    @property
-    def is_valid(self):
-        """ check if link is valid
-
-        :returns: valid flag
-        :rtype: :obj:`bool`
-        """
-        return self.__h5link.is_valid
-
-    def refresh(self):
-        """ refresh the field
-
-        :returns: refreshed
-        :rtype: :obj:`bool`
-        """
-        return self.__h5link.refresh()
-
-    @classmethod
-    def getfilename(cls, obj):
-        """ provides a filename from h5 node
-
-        :param obj: h5 node
-        :type obj: :class:`FTObject`
-        :returns: file name
-        :rtype: :obj:`str`
-        """
-        return cls.__h5link.getfilename()
-
-    @property
-    def target_path(self):
-        """ target path
-
-        :returns: target path
-        :rtype: :obj:`str`
-        """
-        return self.__h5link.target_path
-
-    def reopen(self):
-        """ reopen field
-        """
-        return self.__h5link.reopen()
-
-    def close(self):
-        """ close group
-        """
-        return self.__h5link.close()
+            H5Link.__init__(self, h5object, tparent)
 
 
-class H5RedisDataFilter(h5writer.H5CppDataFilter):
+
+class H5RedisDataFilter(H5DataFilter):
 
     """ file tree deflate
     """
+    def __init__(self, h5object=None, tparent=None, h5imp=None):
+        """ constructor
+
+        :param h5object: h5 object
+        :type h5object: :obj:`any`
+        :param tparent: treee parent
+        :type tparent: :obj:`FTObject`
+        :param h5imp: h5 implementation data filter
+        :type h5imp: :class:`filewriter.FTDataFilter`
+        """
+        if h5imp is not None:
+            H5DataFilter.__init__(
+                self, h5imp.h5object, h5imp._tparent)
+            self.shuffle = h5imp.shuffle
+            self.rate = h5imp.rate
+            self.filterid = h5imp.filterid
+            self.options = h5imp.options
+            self.name = h5imp.name
+            self.availability = h5imp.availability
+        else:
+            if h5object is None:
+                raise Exception("Undefined constructor parameters")
+            H5DataFilter.__init__(self, h5object, tparent)
 
 
-class H5RedisVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
+
+class H5RedisVirtualFieldLayout(H5VirtualFieldLayout):
 
     """ virtual field layout """
 
-    def __init__(self, h5object, shape, dtype=None, maxshape=None):
+    def __init__(self, h5object=None, shape=None, dtype=None, maxshape=None,
+                 h5imp=None):
         """ constructor
 
         :param h5object: h5 object
@@ -757,40 +589,26 @@ class H5RedisVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         :type dtype: :obj:`str`
         :param maxshape: shape
         :type maxshape: :obj:`list` < :obj:`int` >
+        :param h5imp: h5 implementation  virtual field layout
+        :type h5imp: :class:`filewriter.FTVirtualFieldLayout`
         """
-        self.__h5virtualfieldlayout = H5VirtualFieldLayout(
-            h5object, shape, dtype, maxshape)
-
-    def __setitem__(self, key, source):
-        """ add target field to layout
-
-        :param key: slide
-        :type key: :obj:`tuple`
-        :param source: target field view
-        :type source: :class:`H5PYTargetFieldView`
-        """
-        return self.__h5virtualfieldlayout.__item__(key, source)
-
-    def add(self, key, source, sourcekey=None, shape=None):
-        """ add target field to layout
-
-        :param key: slide
-        :type key: :obj:`tuple`
-        :param source: target field view
-        :type source: :class:`H5PYTargetFieldView`
-        :param sourcekey: slide or selection
-        :type sourcekey: :obj:`tuple`
-        :param shape: target shape in the layout
-        :type shape: :obj:`tuple`
-        """
-        return self.__h5virtualfieldlayout.add(key, source, sourcekey, shape)
+        if h5imp is not None:
+            H5VirtualFieldLayout.__init__(
+                self, h5imp.h5object, h5imp.shape, h5imp.dtype,
+                h5imp.maxshape)
+        else:
+            if h5object is None or shape is None:
+                raise Exception("Undefined constructor parameters")
+            H5VirtualFieldLayout.__init__(
+                self, h5object, shape, dtype, maxshape)
 
 
-class H5RedisTargetFieldView(filewriter.FTTargetFieldView):
+class H5RedisTargetFieldView(H5TargetFieldView):
 
     """ target field for VDS """
 
-    def __init__(self, filename, fieldpath, shape, dtype=None, maxshape=None):
+    def __init__(self, filename=None, fieldpath=None, shape=None, dtype=None,
+                 maxshape=None, h5imp=None):
         """ constructor
 
         :param filename: file name
@@ -803,31 +621,46 @@ class H5RedisTargetFieldView(filewriter.FTTargetFieldView):
         :type dtype: :obj:`str`
         :param maxshape: shape
         :type maxshape: :obj:`list` < :obj:`int` >
+        :param h5imp: h5 implementation targetfieldview
+        :type h5imp: :class:`filewriter.FTTargetFieldView`
         """
-        self.__h5targetfieldview = H5TargetFieldView(
-            filename, fieldpath, shape, dtype, maxshape)
+        if h5imp is not None:
+            H5TargetFieldView.__init__(
+                self, h5imp.filename, h5imp.fieldpath, h5imp.shape,
+                h5imp.dtype, h5imp.maxshape)
+        else:
+            if fieldpath is None or shape is None or filename is None:
+                raise Exception("Undefined constructor parameters")
+            H5TargetFieldView.__init__(
+                self, filename, fieldpath, shape, dtype, maxshape)
 
 
-class H5RedisDeflate(H5DataFilter):
+class H5RedisDeflate(H5RedisDataFilter):
 
     """ deflate filter """
 
 
-class H5RedisAttributeManager(filewriter.FTAttributeManager):
+class H5RedisAttributeManager(H5AttributeManager):
 
     """ file tree attribute
     """
 
-    def __init__(self, h5object, tparent=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None):
         """ constructor
 
         :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
+        :param h5imp: h5 implementation attributemanager
+        :type h5imp: :class:`filewriter.FTAttributeManager`
         """
-        self.__h5attributemanager = H5AttributeManager(
-            h5object, tparent)
+        if h5imp is not None:
+            H5AttributeManager.__init__(self, h5imp.h5object, h5imp._tparent)
+        else:
+            if h5object is None:
+                raise Exception("Undefined constructor parameters")
+            H5AttributeManager.__init__(self, h5object, tparent)
 
     def create(self, name, dtype, shape=None, overwrite=False):
         """ create a new attribute
@@ -841,17 +674,11 @@ class H5RedisAttributeManager(filewriter.FTAttributeManager):
         :param overwrite: overwrite flag
         :type overwrite: :obj:`bool`
         :returns: attribute object
-        :rtype: :class:`H5CppAtribute`
+        :rtype: :class:`H5RedisAttribute`
         """
-        return self.__h5attributemanager.create(name, dtype, shape, overwrite)
-
-    def __len__(self):
-        """ number of attributes
-
-        :returns: number of attributes
-        :rtype: :obj:`int`
-        """
-        return self.__h5attributemanager.__len__()
+        return H5RedisAttribute(
+            h5imp=H5AttributeManager.create(
+                self, name, dtype, shape, overwrite))
 
     def __getitem__(self, name):
         """ get value
@@ -861,123 +688,29 @@ class H5RedisAttributeManager(filewriter.FTAttributeManager):
         :returns: attribute object
         :rtype: :class:`FTAtribute`
         """
-        return self.__h5attributemanager.__getitem__(name)
-
-    def names(self):
-        """ key values
-
-        :returns: attribute names
-        :rtype: :obj:`list` <:obj:`str`>
-        """
-        return self.__h5attributemanager.names()
-
-    def close(self):
-        """ close attribure manager
-        """
-        return self.__h5attributemanager.close()
-
-    def reopen(self):
-        """ reopen field
-        """
-        return self.__h5attributemanager.reopen()
-
-    @property
-    def is_valid(self):
-        """ check if link is valid
-
-        :returns: valid flag
-        :rtype: :obj:`bool`
-        """
-        return self.__h5attributemanager.is_valid
+        return H5RedisAttribute(
+            h5imp=H5AttributeManager.__getitem__(self, name))
 
 
-class H5RedisAttribute(filewriter.FTAttribute):
+class H5RedisAttribute(H5Attribute):
 
     """ file tree attribute
     """
 
-    def __init__(self, h5object, tparent=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None):
         """ constructor
 
         :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
+        :param h5imp: h5 implementation attribute
+        :type h5imp: :class:`filewriter.FTAttribute`
         """
-        self.__h5attribute = H5Attribute(h5object, tparent)
+        if h5imp is not None:
+            H5Attribute.__init__(self, h5imp.h5object, h5imp._tparent)
+        else:
+            if h5object is None:
+                raise Exception("Undefined constructor parameters")
+            H5Attribute.__init__(self, h5object, tparent)
 
-        #: (:obj:`bool`) bool flag
-        # self.boolflag = False
-
-    def close(self):
-        """ close attribute
-        """
-        return self.__h5attribute.close()
-
-    def read(self):
-        """ read attribute value
-
-        :returns: python object
-        :rtype: :obj:`any`
-        """
-        return self.__h5attribute.read()
-
-    def write(self, o):
-        """ write attribute value
-
-        :param o: python object
-        :type o: :obj:`any`
-        """
-        return self.__h5attribute.write(o)
-
-    def __setitem__(self, t, o):
-        """ write attribute value
-
-        :param t: slice tuple
-        :type t: :obj:`tuple`
-        :param o: python object
-        :type o: :obj:`any`
-        """
-        return self.__h5attribute.__setitem__(t, o)
-
-    def __getitem__(self, t):
-        """ read attribute value
-
-        :param t: slice tuple
-        :type t: :obj:`tuple`
-        :returns: python object
-        :rtype: :obj:`any`
-        """
-        return self.__h5attribute.__getitem__(t)
-
-    @property
-    def is_valid(self):
-        """ check if attribute is valid
-
-        :returns: valid flag
-        :rtype: :obj:`bool`
-        """
-        return self.__h5attribute.is_valid
-
-    @property
-    def dtype(self):
-        """ field data type
-
-        :returns: field data type
-        :rtype: :obj:`str`
-        """
-        return self.__h5attribute.dtype
-
-    @property
-    def shape(self):
-        """ attribute shape
-
-        :returns: attribute shape
-        :rtype: :obj:`list` < :obj:`int` >
-        """
-        return self.__h5attribute.shape
-
-    def reopen(self):
-        """ reopen attribute
-        """
-        return self.__h5attribute.reopen()
