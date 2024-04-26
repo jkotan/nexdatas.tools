@@ -585,6 +585,8 @@ class H5CppFile(filewriter.FTFile):
         filewriter.FTFile.__init__(self, h5object, filename)
         #: (:obj:`str`) object nexus path
         self.path = None
+        #: (:obj:`str`) nexus file name
+        self.filename = filename
         if hasattr(h5object, "path"):
             self.path = h5object.path
 
@@ -696,7 +698,7 @@ class H5CppGroup(filewriter.FTGroup):
         if hasattr(h5object, "link"):
             self.name = h5object.link.path.name
             if tparent and tparent.path:
-                if isinstance(tparent, H5CppFile):
+                if hasattr(tparent, "root"):
                     if self.name == ".":
                         self.path = u"/"
                     else:
@@ -919,7 +921,7 @@ class H5CppGroup(filewriter.FTGroup):
     def reopen(self):
         """ reopen group
         """
-        if isinstance(self._tparent, H5CppFile):
+        if hasattr(self._tparent.h5object, "root"):
             self._h5object = self._tparent.h5object.root()
         else:
             try:
@@ -1352,8 +1354,8 @@ class H5CppLink(filewriter.FTLink):
             par = obj.parent
             if par is None:
                 break
-            if isinstance(par, H5CppFile):
-                filename = par.name
+            if hasattr(par, "filename"):
+                filename = par.filename
                 break
             else:
                 obj = par

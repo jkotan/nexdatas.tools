@@ -19,8 +19,9 @@
 """ Provides redis h5cpp file writer """
 
 # import math
-# import os
+import os
 import sys
+import time
 # import numpy as np
 # from pninexus import h5cpp
 
@@ -338,7 +339,8 @@ class H5RedisFile(H5File):
         #: (:obj:`str`) redis url
         self.__redisurl = redisurl or "redis://localhost:6380"
         self.__datastore = None
-        if REDIS:
+        if REDIS and self.__redisurl:
+            # print("FILENAME", self.name)
             self.__datastore = getDataStore(self.__redisurl)
 
     def root(self):
@@ -371,7 +373,7 @@ class H5RedisGroup(H5Group):
             if h5object is None:
                 raise Exception("Undefined constructor parameters")
             H5Group.__init__(self, h5object, tparent)
-        self.redis = redis
+        self.__redis = redis
 
     def open(self, name):
         """ open a file tree element
@@ -383,7 +385,7 @@ class H5RedisGroup(H5Group):
         """
         h5obj = H5Group.open(self, name)
         if isinstance(h5obj, H5Group):
-            # if self.redis is not None:
+            # if self.__redis is not None:
 
             return H5RedisGroup(h5imp=h5obj)
         elif isinstance(h5obj, H5Field):
@@ -418,7 +420,41 @@ class H5RedisGroup(H5Group):
         #      "data_policy": "no_policy"})
         # scan.prepare()
         # scan.start()
-        return H5RedisGroup(h5imp=H5Group.create_group(self, n, nxclass))
+        redis = self.__redis
+        if nxclass in ["NXentry"] and self.__redis is not None \
+           and str(type(self.__redis).__name__) == "DataStore":
+            localfname = H5RedisLink.getfilename(self)
+            # print("FILE", localfname, n, nxclass)
+            if localfname:
+                dr, fn = os.path.split(localfname)
+                fbase, ext = os.path.splitext(fn)
+                sfbase = fbase.rsplit("_", 1)
+                sn = n.rsplit("_", 1)
+                number = 0
+                scanname = "scan"
+                try:
+                    number = int(sn[1])
+                    if sn[0]:
+                        scanname = sn[0]
+                except Exception:
+                    try:
+                        number = int(sfbase[1])
+                        if sfbase[0]:
+                            scanname = sfbase[0]
+                    except Exception:
+                        number = int(time.time() * 10)
+                        scanname = fbase
+                # print("SCAN", scanname, number)
+                scan = redis.create_scan(
+                    {"name": scanname,
+                     "number": number,
+                     "data_policy": "no_policy"}
+                )
+                scan.prepare()
+                scan.start()
+                redis = scan
+        return H5RedisGroup(
+            h5imp=H5Group.create_group(self, n, nxclass), redis=redis)
 
     def create_virtual_field(self, name, layout, fillvalue=0):
         """ creates a virtual filed tres element
