@@ -336,7 +336,6 @@ class H5RedisFile(H5File):
         return H5RedisGroup(self._h5object.root(), self)
 
 
-
 class H5RedisGroup(H5Group):
 
     """ file tree group
@@ -486,7 +485,6 @@ class H5RedisGroup(H5Group):
         """
         return self.H5RedisGroupIter(self)
 
- 
 
 class H5RedisField(H5Field):
 
@@ -542,7 +540,6 @@ class H5RedisLink(H5Link):
             H5Link.__init__(self, h5object, tparent)
 
 
-
 class H5RedisDataFilter(H5DataFilter):
 
     """ file tree deflate
@@ -570,7 +567,6 @@ class H5RedisDataFilter(H5DataFilter):
             if h5object is None:
                 raise Exception("Undefined constructor parameters")
             H5DataFilter.__init__(self, h5object, tparent)
-
 
 
 class H5RedisVirtualFieldLayout(H5VirtualFieldLayout):
@@ -713,4 +709,3 @@ class H5RedisAttribute(H5Attribute):
             if h5object is None:
                 raise Exception("Undefined constructor parameters")
             H5Attribute.__init__(self, h5object, tparent)
-
