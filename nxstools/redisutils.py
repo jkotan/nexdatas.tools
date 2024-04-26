@@ -29,7 +29,6 @@ except Exception as e:
     print("Redis or blissdata cannot be imported: %s" % str(e))
     REDIS = False
 
-DESYIdentityModel = None
 
 if REDIS:
 
@@ -56,6 +55,9 @@ if REDIS:
 
         # Without data policy
         path: Optional[str] = Field(index=True)
+
+else:
+    DESYIdentityModel = None
 
 
 def getDataStore(redisURL):
