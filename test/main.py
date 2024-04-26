@@ -155,13 +155,13 @@ if H5CPP_AVAILABLE:
     import FileWriterH5Cpp_test
     import NXSCollectH5Cpp_test
     import NXSFileInfoH5Cpp_test
+    import H5CppRedisWriter_test
 if H5PY_AVAILABLE and H5CPP_AVAILABLE:
     import FileWriterH5CppH5PY_test
 
 if H5CPP_AVAILABLE or H5PY_AVAILABLE:
     import NXSCollect_test
     import NXSFileInfo_test
-    import H5RedisWriter_test
 
 
 if PYTANGO_AVAILABLE:
@@ -293,6 +293,9 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreatePyEvalH5Cpp_test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                H5CppRedisWriter_test))
     if H5CPP_AVAILABLE and H5PY_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
@@ -305,9 +308,6 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSFileInfo_test))
-        suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(
-                H5RedisWriter_test))
 
     if PYTANGO_AVAILABLE:
         suite.addTests(

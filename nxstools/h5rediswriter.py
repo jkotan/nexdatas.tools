@@ -16,7 +16,7 @@
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-""" Provides h5cpp file writer """
+""" Provides redis h5cpp file writer """
 
 # import math
 # import os
@@ -25,6 +25,8 @@ import sys
 # from pninexus import h5cpp
 
 # from . import filewriter
+from . redisutils import REDIS, getDataStore
+
 
 H5CPP = False
 try:
@@ -125,19 +127,22 @@ def unlimited(parent=None):
     return h5writer.unlimited(parent)
 
 
-def open_file(filename, readonly=False, **pars):
+def open_file(filename, readonly=False, redisurl=None, **pars):
     """ open the new file
 
     :param filename: file name
     :type filename: :obj:`str`
     :param readonly: readonly flag
     :type readonly: :obj:`bool`
+    :param redisurl: redis URL
+    :type redisurl: :obj:`str`
     :param libver: library version: 'lastest' or 'earliest'
     :type libver: :obj:`str`
     :returns: file object
     :rtype: :class:`H5RedisFile`
     """
-    return H5RedisFile(h5imp=h5writer.open_file(filename, readonly, **pars))
+    return H5RedisFile(h5imp=h5writer.open_file(filename, readonly, **pars),
+                       redisurl=redisurl)
 
 
 def is_image_file_supported():
@@ -185,7 +190,7 @@ def load_file(membuffer, filename=None, readonly=False, **pars):
         h5imp=h5writer.load_file(membuffer, filename, readonly, **pars))
 
 
-def create_file(filename, overwrite=False, **pars):
+def create_file(filename, overwrite=False, redisurl=None, **pars):
     """ create a new file
 
     :param filename: file name
@@ -194,11 +199,14 @@ def create_file(filename, overwrite=False, **pars):
     :type overwrite: :obj:`bool`
     :param libver: library version: 'lastest' or 'earliest'
     :type libver: :obj:`str`
+    :param redisurl: redis URL
+    :type redisurl: :obj:`str`
     :returns: file object
     :rtype: :class:`H5RedisFile`
     """
     return H5RedisFile(
-        h5imp=h5writer.create_file(filename, overwrite, **pars))
+        h5imp=h5writer.create_file(filename, overwrite, **pars),
+        redisurl=redisurl)
 
 
 def link(target, parent, name):
@@ -310,7 +318,8 @@ class H5RedisFile(H5File):
     """ file tree file
     """
 
-    def __init__(self, h5object=None, filename=None, h5imp=None):
+    def __init__(self, h5object=None, filename=None, h5imp=None,
+                 redisurl=None):
         """ constructor
 
         :param h5object: h5 object
@@ -326,6 +335,11 @@ class H5RedisFile(H5File):
             if h5object is None or filename is None:
                 raise Exception("Undefined constructor parameters")
             H5File.__init__(self, h5object, filename)
+        #: (:obj:`str`) redis url
+        self.__redisurl = redisurl or "redis://localhost:6380"
+        self.__datastore = None
+        if REDIS:
+            self.__datastore = getDataStore(self.__redisurl)
 
     def root(self):
         """ root object
@@ -333,7 +347,7 @@ class H5RedisFile(H5File):
         :returns: parent object
         :rtype: :class:`H5RedisGroup`
         """
-        return H5RedisGroup(self._h5object.root(), self)
+        return H5RedisGroup(h5imp=H5File.root(self), redis=self.__datastore)
 
 
 class H5RedisGroup(H5Group):
@@ -341,7 +355,7 @@ class H5RedisGroup(H5Group):
     """ file tree group
     """
 
-    def __init__(self, h5object=None, tparent=None, h5imp=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None, redis=None):
         """ constructor
 
         :param h5object: h5 object
@@ -357,6 +371,7 @@ class H5RedisGroup(H5Group):
             if h5object is None:
                 raise Exception("Undefined constructor parameters")
             H5Group.__init__(self, h5object, tparent)
+        self.redis = redis
 
     def open(self, name):
         """ open a file tree element
@@ -368,6 +383,8 @@ class H5RedisGroup(H5Group):
         """
         h5obj = H5Group.open(self, name)
         if isinstance(h5obj, H5Group):
+            # if self.redis is not None:
+
             return H5RedisGroup(h5imp=h5obj)
         elif isinstance(h5obj, H5Field):
             return H5RedisField(h5imp=h5obj)
@@ -395,6 +412,12 @@ class H5RedisGroup(H5Group):
         :returns: file tree group
         :rtype: :class:`H5RedisGroup`
         """
+        # scan = data_store.create_scan(   ## create_group nxclass='NXentry'
+        #     {"name": "myscan",           # filename    "{name}_{number}.nxs"
+        #      "number": 1234,             # or NXentry name  "{name}_{number}"
+        #      "data_policy": "no_policy"})
+        # scan.prepare()
+        # scan.start()
         return H5RedisGroup(h5imp=H5Group.create_group(self, n, nxclass))
 
     def create_virtual_field(self, name, layout, fillvalue=0):
@@ -430,6 +453,30 @@ class H5RedisGroup(H5Group):
         :returns: file tree field
         :rtype: :class:`H5RedisField`
         """
+        # encoder = NumericStreamEncoder(
+        #     dtype="int",
+        #     shape=[]
+        # )
+        # scalar_stream = scan.create_stream(
+        #     "exp_c01",                 # @nexdatas_name <= @nexdatas_source
+        #     encoder,                   # @type,  data.shape
+        #     info={"unit": "counts"}    # @units
+        # )
+
+        # stream_list = {}
+        # stream_list["exp_c01"] = scalar_stream
+        #
+        # # record
+        # scalar_stream.send(12)
+        # scalar_stream.send(22)
+        #
+        #
+        # # end
+        # stream.seal()
+        #
+        # scan.stop()
+        # scan.close()
+        #
         return H5RedisField(
             h5imp=H5Group.create_field(
                 self, name, type_code, shape, chunk,
@@ -621,14 +668,20 @@ class H5RedisTargetFieldView(H5TargetFieldView):
         :type h5imp: :class:`filewriter.FTTargetFieldView`
         """
         if h5imp is not None:
-            H5TargetFieldView.__init__(
-                self, h5imp.filename, h5imp.fieldpath, h5imp.shape,
-                h5imp.dtype, h5imp.maxshape)
+            if H5CPP:
+                H5TargetFieldView.__init__(
+                    self, h5imp.filename, h5imp.fieldpath, h5imp.shape,
+                    h5imp.dtype, h5imp.maxshape)
+            else:
+                H5TargetFieldView.__init__(
+                    self, h5imp.filename, h5imp.fieldpath, h5imp.shape,
+                    h5imp.dtype, h5imp.maxshape)
         else:
             if fieldpath is None or shape is None or filename is None:
                 raise Exception("Undefined constructor parameters")
-            H5TargetFieldView.__init__(
-                self, filename, fieldpath, shape, dtype, maxshape)
+            if H5CPP:
+                H5TargetFieldView.__init__(
+                    self, filename, fieldpath, shape, dtype, maxshape)
 
 
 class H5RedisDeflate(H5RedisDataFilter):
