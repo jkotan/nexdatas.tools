@@ -645,7 +645,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(strscalar.dtype, 'string')
             self.assertEqual(strscalar.shape, ())
 
-            self.assertTrue(isinstance(floatscalar, H5RedisWriter.H5RedisField))
+            self.assertTrue(isinstance(
+                floatscalar, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(floatscalar.h5object, h5cpp._node.Dataset))
             self.assertEqual(floatscalar.name, 'floatscalar')
@@ -764,7 +765,8 @@ class H5RedisWriterTest(unittest.TestCase):
             floatvec_op = det.open("floatvec")
             intvec_op = det.open("intvec")
 
-            self.assertTrue(isinstance(strscalar_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(strscalar_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(strscalar_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(strscalar_op.name, 'strscalar')
@@ -773,7 +775,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(strscalar_op.dtype, 'string')
             self.assertEqual(strscalar_op.shape, ())
 
-            self.assertTrue(isinstance(floatscalar_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(floatscalar_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(floatscalar_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(floatscalar_op.name, 'floatscalar')
@@ -782,7 +785,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(floatscalar_op.dtype, 'float64')
             self.assertEqual(floatscalar_op.shape, (1,))
 
-            self.assertTrue(isinstance(intscalar_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(intscalar_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(intscalar_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(intscalar_op.name, 'intscalar')
@@ -801,7 +805,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(strspec_op.dtype, 'string')
             self.assertEqual(strspec_op.shape, (10,))
 
-            self.assertTrue(isinstance(floatspec_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(floatspec_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(floatspec_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(floatspec_op.name, 'floatspec')
@@ -821,7 +826,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(intspec_op.dtype, 'int64')
             self.assertEqual(intspec_op.shape, (30,))
 
-            self.assertTrue(isinstance(strimage_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(strimage_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(strimage_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(strimage_op.name, 'strimage')
@@ -844,7 +850,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(floatimage_op.dtype, 'float64')
             self.assertEqual(floatimage_op.shape, (20, 10))
 
-            self.assertTrue(isinstance(intimage_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(intimage_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(intimage_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(intimage_op.name, 'intimage')
@@ -866,7 +873,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(strvec_op.dtype, 'string')
             self.assertEqual(strvec_op.shape, (0, 2, 2))
 
-            self.assertTrue(isinstance(floatvec_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(floatvec_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(floatvec_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(floatvec_op.name, 'floatvec')
@@ -935,7 +943,8 @@ class H5RedisWriterTest(unittest.TestCase):
             dt.open("lkdet")
             lkno_op = dt.open("lkno")
 
-            self.assertTrue(isinstance(lkintimage_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(lkintimage_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(lkintimage_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(lkintimage_op.name, 'lkintimage')
@@ -945,7 +954,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(lkintimage_op.dtype, 'uint32')
             self.assertEqual(lkintimage_op.shape, (0, 30))
 
-            self.assertTrue(isinstance(lkfloatvec_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(lkfloatvec_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(lkfloatvec_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(lkfloatvec_op.name, 'lkfloatvec')
@@ -1142,7 +1152,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(attrs.parent, strscalar)
             self.assertEqual(len(attrs), 0)
 
-            self.assertTrue(isinstance(floatscalar, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(floatscalar, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(floatscalar.h5object, h5cpp._node.Dataset))
             self.assertEqual(floatscalar.name, 'floatscalar')
@@ -1570,10 +1581,11 @@ class H5RedisWriterTest(unittest.TestCase):
 
             fl.reopen()
             self.assertEqual(fl.name, self._fname)
-            self.assertEqual(fl.path,
-                             "%s/%s" % (
-                                 os.getcwd(),
-                                 "H5RedisWriterTesttest_h5cppfield_spectrum.h5"))
+            self.assertEqual(
+                fl.path,
+                "%s/%s" % (
+                    os.getcwd(),
+                    "H5RedisWriterTesttest_h5cppfield_spectrum.h5"))
             self.assertTrue(
                 isinstance(fl.h5object, h5cpp._file.File))
             self.assertEqual(fl.parent, None)
@@ -1584,10 +1596,11 @@ class H5RedisWriterTest(unittest.TestCase):
 
             fl.reopen(True)
             self.assertEqual(fl.name, self._fname)
-            self.assertEqual(fl.path,
-                             "%s/%s" % (
-                                 os.getcwd(),
-                                 "H5RedisWriterTesttest_h5cppfield_spectrum.h5"))
+            self.assertEqual(
+                fl.path,
+                "%s/%s" % (
+                    os.getcwd(),
+                    "H5RedisWriterTesttest_h5cppfield_spectrum.h5"))
             self.assertTrue(
                 isinstance(fl.h5object, h5cpp._file.File))
             self.assertEqual(fl.parent, None)
@@ -2599,7 +2612,8 @@ class H5RedisWriterTest(unittest.TestCase):
             dt.open("lkdet")
             lkno_op = dt.open("lkno")
 
-            self.assertTrue(isinstance(lkintimage_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(lkintimage_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(lkintimage_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(lkintimage_op.name, 'lkintimage')
@@ -2609,7 +2623,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(lkintimage_op.dtype, 'uint32')
             self.assertEqual(lkintimage_op.shape, (0, 30))
 
-            self.assertTrue(isinstance(lkfloatvec_op, H5RedisWriter.H5RedisField))
+            self.assertTrue(
+                isinstance(lkfloatvec_op, H5RedisWriter.H5RedisField))
             self.assertTrue(
                 isinstance(lkfloatvec_op.h5object, h5cpp._node.Dataset))
             self.assertEqual(lkfloatvec_op.name, 'lkfloatvec')
@@ -2841,7 +2856,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(list(atfloatspec.h5object.read()), [0.] * 12)
             self.assertEqual(list(atfloatspec.h5object[...]), [0.] * 12)
 
-            self.assertTrue(isinstance(atstrimage, H5RedisWriter.H5RedisAttribute))
+            self.assertTrue(
+                isinstance(atstrimage, H5RedisWriter.H5RedisAttribute))
             self.assertTrue(
                 isinstance(atstrimage.h5object, h5cpp._attribute.Attribute))
             self.assertEqual(atstrimage.parent, rt)
@@ -2886,7 +2902,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(atstrscalar.h5object.read(), '')
             self.assertEqual(atstrscalar.h5object[...], '')
 
-            self.assertTrue(isinstance(atintspec, H5RedisWriter.H5RedisAttribute))
+            self.assertTrue(
+                isinstance(atintspec, H5RedisWriter.H5RedisAttribute))
             self.assertTrue(
                 isinstance(atintspec.h5object, h5cpp._attribute.Attribute))
             self.assertEqual(atintspec.parent, entry)
@@ -3177,7 +3194,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(atfloatscalar.h5object.read(), 0)
             self.assertEqual(atfloatscalar.h5object[...], 0)
 
-            self.assertTrue(isinstance(atstrspec, H5RedisWriter.H5RedisAttribute))
+            self.assertTrue(
+                isinstance(atstrspec, H5RedisWriter.H5RedisAttribute))
             self.assertTrue(
                 isinstance(atstrspec.h5object, h5cpp._attribute.Attribute))
             self.assertEqual(atstrspec.parent, intscalar)
@@ -3200,7 +3218,8 @@ class H5RedisWriterTest(unittest.TestCase):
             self.assertEqual(list(atstrspec.h5object.read()), [''] * 4)
             self.assertEqual(list(atstrspec.h5object[...]), [''] * 4)
 
-            self.assertTrue(isinstance(atintimage, H5RedisWriter.H5RedisAttribute))
+            self.assertTrue(
+                isinstance(atintimage, H5RedisWriter.H5RedisAttribute))
             self.assertTrue(
                 isinstance(atintimage.h5object, h5cpp._attribute.Attribute))
             self.assertEqual(atintimage.parent, intscalar)
@@ -3227,7 +3246,8 @@ class H5RedisWriterTest(unittest.TestCase):
                 Exception, attr2.create, "atintimage", "uint64", [4])
             atintimage = attr2.create("atintimage", "uint64", [4], True)
 
-            self.assertTrue(isinstance(atintimage, H5RedisWriter.H5RedisAttribute))
+            self.assertTrue(
+                isinstance(atintimage, H5RedisWriter.H5RedisAttribute))
             self.assertTrue(
                 isinstance(atintimage.h5object, h5cpp._attribute.Attribute))
             self.assertEqual(atintimage.parent, intscalar)
@@ -3897,7 +3917,8 @@ class H5RedisWriterTest(unittest.TestCase):
 
             atintspec.write(itvl[0])
 
-            self.assertTrue(isinstance(atintspec, H5RedisWriter.H5RedisAttribute))
+            self.assertTrue(
+                isinstance(atintspec, H5RedisWriter.H5RedisAttribute))
             self.assertTrue(isinstance(
                 atintspec.h5object, h5cpp._attribute.Attribute))
             self.assertEqual(atintspec.parent, entry)
@@ -3956,7 +3977,8 @@ class H5RedisWriterTest(unittest.TestCase):
 
             atstrspec.write(stvl[0])
 
-            self.assertTrue(isinstance(atstrspec, H5RedisWriter.H5RedisAttribute))
+            self.assertTrue(isinstance(
+                atstrspec, H5RedisWriter.H5RedisAttribute))
             self.assertTrue(isinstance(atstrspec.h5object,
                                        h5cpp._attribute.Attribute))
             self.assertEqual(atstrspec.parent, intscalar)
@@ -4354,7 +4376,8 @@ class H5RedisWriterTest(unittest.TestCase):
 
             atintimage.write(itvl[0])
 
-            self.assertTrue(isinstance(atintimage, H5RedisWriter.H5RedisAttribute))
+            self.assertTrue(
+                isinstance(atintimage, H5RedisWriter.H5RedisAttribute))
             self.assertTrue(isinstance(
                 atintimage.h5object, h5cpp._attribute.Attribute))
             self.assertEqual(atintimage.parent, intscalar)
