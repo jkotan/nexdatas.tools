@@ -24,10 +24,11 @@ import sys
 import time
 # import numpy as np
 # from pninexus import h5cpp
+import threading
 
-# from . import filewriter
-from . redisutils import REDIS, getDataStore
-
+from . import filewriter
+from .redisutils import REDIS, getDataStore
+from .nxsfileparser import getdsname
 
 H5CPP = False
 try:
@@ -55,6 +56,15 @@ except Exception:
     H5Deflate = h5writer.H5PYDeflate
     H5AttributeManager = h5writer.H5PYAttributeManager
     H5Attribute = h5writer.H5PYAttribute
+
+try:
+    from blissdata.redis_engine.encoding.numeric import NumericStreamEncoder
+except Exception:
+    NumericStreamEncoder = None
+try:
+    from blissdata.redis_engine.encoding.json import JsonStreamEncoder
+except Exception:
+    JsonStreamEncoder = None
 
 
 def nptype(dtype):
@@ -329,6 +339,8 @@ class H5RedisFile(H5File):
         :type filename: :obj:`str`
         :param h5imp: h5 implementation file
         :type h5imp: :class:`filewriter.FTFile`
+        :param redisurl: redis url string
+        :type redisurl: :obj:`str`
         """
         if h5imp is not None:
             H5File.__init__(self, h5imp.h5object, h5imp.name)
@@ -339,6 +351,9 @@ class H5RedisFile(H5File):
         #: (:obj:`str`) redis url
         self.__redisurl = redisurl or "redis://localhost:6380"
         self.__datastore = None
+        self.__scan = None
+        self.__scan_info = {}
+        self.__scan_lock = threading.Lock()
         if REDIS and self.__redisurl:
             # print("FILENAME", self.name)
             self.__datastore = getDataStore(self.__redisurl)
@@ -349,7 +364,112 @@ class H5RedisFile(H5File):
         :returns: parent object
         :rtype: :class:`H5RedisGroup`
         """
-        return H5RedisGroup(h5imp=H5File.root(self), redis=self.__datastore)
+        return H5RedisGroup(h5imp=H5File.root(self), redis=self.__datastore,
+                            nxclass="NXroot")
+
+    def set_scan(self, scan):
+        """ scan object
+
+        :param scan: scan object
+        :param type: :class:`Scan`
+        """
+        with self.__scan_lock:
+            self.__scan = scan
+
+    def set_scaninfo(self, value, keys=None):
+        """ set scan info parameters
+
+        :param value: scan parameter value
+        :type value: :obj:`any`
+        :param keys: scan parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        with self.__scan_lock:
+            if keys is None:
+                self.__scaninfo = dict(value)
+                return
+            sinfo = self.__scaninfo
+
+            rkeys = reversed(keys)
+            while rkeys:
+                ky = rkeys.pop()
+                if len(rkeys) > 0:
+                    sinfo = sinfo[ky]
+                else:
+                    sinfo[ky] = value
+
+    def get_scaninfo(self, keys=None):
+        """ get scan info parameters
+
+        :param keys: scan parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: scan parameter value
+        :rtype value: :obj:`any`
+        """
+        with self.__scan_lock:
+            if keys is None:
+                return dict(self.__scaninfo)
+            sinfo = self.__scaninfo
+
+            rkeys = reversed(keys)
+            while rkeys:
+                ky = rkeys.pop()
+                sinfo = sinfo[ky]
+            return sinfo
+
+    def scan_command(self, command, *args, **kwargs):
+        """ set scan attribute
+
+        :param command: scan command
+        :type command: :obj:`str`
+        :param args: function list arguments
+        :type args: :obj:`list` <`any`>
+        :param kwargs: function dict arguments
+        :type kwargs: :obj:`dict` <:obj:`str` , `any`>
+        :returns: scan command value
+        :rtype:  :obj:`any`
+        """
+        vl = None
+        with self.__scan_lock:
+            if hasattr(self.__scan, command):
+                cmd = getattr(self.__scan, command)
+                if callable(cmd):
+                    vl = cmd(*args, **kwargs)
+        return vl
+
+    def scan_getattr(self, attr):
+        """ get scan attribute
+
+        :param attr: scan attr
+        :type attr: :obj:`str`
+        :returns: scan attr value
+        :rtype:  :obj:`any`
+        """
+        attr = None
+        with self.__scan_lock:
+            if hasattr(self.__scan, attr):
+                attr = getattr(self.__scan, attr)
+        return attr
+
+    def scan_setattr(self, attr, value):
+        """ set attribute
+
+        :param attr: scan attr
+        :type attr: :obj:`str`
+        :param value: scan attr value
+        :type value: :obj:`any`
+        """
+        with self.__scan_lock:
+            if hasattr(self.__scan, attr):
+                attr = setattr(self.__scan, attr, value)
+
+    def start(self):
+        """ start scan
+
+        """
+
+        self.scan_command("prepare")
+        self.scan_command("start")
 
 
 class H5RedisGroup(H5Group):
@@ -357,7 +477,8 @@ class H5RedisGroup(H5Group):
     """ file tree group
     """
 
-    def __init__(self, h5object=None, tparent=None, h5imp=None, redis=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None,
+                 redis=None, nxclass=None):
         """ constructor
 
         :param h5object: h5 object
@@ -366,6 +487,10 @@ class H5RedisGroup(H5Group):
         :type tparent: :obj:`FTObject`
         :param h5imp: h5 implementation group
         :type h5imp: :class:`filewriter.FTGroup`
+        :param redis: redis object
+        :type redis: :obj:`any`
+        :param nxclass: nxclass
+        :type nxclass: :obj:`str`
         """
         if h5imp is not None:
             H5Group.__init__(self, h5imp.h5object, h5imp._tparent)
@@ -374,6 +499,7 @@ class H5RedisGroup(H5Group):
                 raise Exception("Undefined constructor parameters")
             H5Group.__init__(self, h5object, tparent)
         self.__redis = redis
+        self.__nxclass = nxclass
 
     def open(self, name):
         """ open a file tree element
@@ -386,8 +512,12 @@ class H5RedisGroup(H5Group):
         h5obj = H5Group.open(self, name)
         if isinstance(h5obj, H5Group):
             # if self.__redis is not None:
+            nxclass = None
+            if u"NX_class" in [at.name for at in h5obj.attributes]:
+                nxclass = filewriter.first(
+                    h5obj.attributes["NX_class"]).read()
 
-            return H5RedisGroup(h5imp=h5obj)
+            return H5RedisGroup(h5imp=h5obj, nxclass=nxclass)
         elif isinstance(h5obj, H5Field):
             return H5RedisField(h5imp=h5obj)
         elif isinstance(h5obj, H5Attribute):
@@ -403,6 +533,74 @@ class H5RedisGroup(H5Group):
         :rtype: :class:`H5RedisLink`
         """
         return H5RedisLink(h5imp=H5Group.open_link(self, name))
+
+    def set_scan(self, scan):
+        """ scan object
+
+        :param scan: scan object
+        :param type: :class:`Scan`
+        """
+        if hasattr(self._tparent, "set_scan"):
+            return self._tparent.set_scan(scan)
+
+    def set_scaninfo(self, value, keys=None):
+        """ set scan info parameters
+
+        :param value: scan parameter value
+        :type value: :obj:`any`
+        :param keys: scan parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "set_scaninfo"):
+            return self._tparent.set_scaninfo(value, keys)
+
+    def get_scaninfo(self, value, keys=None):
+        """ get scan info parameters
+
+        :param keys: scan parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: scan parameter value
+        :rtype value: :obj:`any`
+        """
+        if hasattr(self._tparent, "get_scaninfo"):
+            return self._tparent.get_scaninfo(keys)
+
+    def scan_command(self, command, *args, **kwargs):
+        """ set scan attribute
+
+        :param command: scan command
+        :type command: :obj:`str`
+        :param args: function list arguments
+        :type args: :obj:`list` <`any`>
+        :param kwargs: function dict arguments
+        :type kwargs: :obj:`dict` <:obj:`str` , `any`>
+        :returns: scan command value
+        :rtype:  :obj:`any`
+        """
+        if hasattr(self._tparent, "scan_command"):
+            return self._tparent.scan_command(command, *args, **kwargs)
+
+    def scan_getattr(self, attr):
+        """ get scan attribute
+
+        :param attr: scan attr
+        :type attr: :obj:`str`
+        :returns: scan attr value
+        :rtype:  :obj:`any`
+        """
+        if hasattr(self._tparent, "scan_getattr"):
+            return self._tparent.scan_getattr(attr)
+
+    def scan_setattr(self, attr, value):
+        """ set attribute
+
+        :param attr: scan attr
+        :type attr: :obj:`str`
+        :param value: scan attr value
+        :type value: :obj:`any`
+        """
+        if hasattr(self._tparent, "scan_setattr"):
+            return self._tparent.scan_getattr(attr, value)
 
     def create_group(self, n, nxclass=None):
         """ open a file tree element
@@ -420,41 +618,68 @@ class H5RedisGroup(H5Group):
         #      "data_policy": "no_policy"})
         # scan.prepare()
         # scan.start()
-        redis = self.__redis
-        if nxclass in ["NXentry"] and self.__redis is not None \
-           and str(type(self.__redis).__name__) == "DataStore":
-            localfname = H5RedisLink.getfilename(self)
-            # print("FILE", localfname, n, nxclass)
-            if localfname:
-                dr, fn = os.path.split(localfname)
-                fbase, ext = os.path.splitext(fn)
-                sfbase = fbase.rsplit("_", 1)
-                sn = n.rsplit("_", 1)
-                number = 0
-                scanname = "scan"
-                try:
-                    number = int(sn[1])
-                    if sn[0]:
-                        scanname = sn[0]
-                except Exception:
+        if REDIS:
+            redis = self.__redis
+            if nxclass in ["NXentry", u'NXentry'] \
+               and self.__redis is not None \
+               and str(type(self.__redis).__name__) == "DataStore":
+                localfname = H5RedisLink.getfilename(self)
+                # print("FILE", localfname, n, nxclass)
+                if localfname:
+                    dr, fn = os.path.split(localfname)
+                    fbase, ext = os.path.splitext(fn)
+                    sfbase = fbase.rsplit("_", 1)
+                    sn = n.rsplit("_", 1)
+                    number = 0
+                    measurement = "scan"
                     try:
-                        number = int(sfbase[1])
-                        if sfbase[0]:
-                            scanname = sfbase[0]
+                        number = int(sn[1])
+                        if sn[0]:
+                            measurement = sn[0]
                     except Exception:
-                        number = int(time.time() * 10)
-                        scanname = fbase
-                # print("SCAN", scanname, number)
-                scan = redis.create_scan(
-                    {"name": scanname,
-                     "number": number,
-                     "data_policy": "no_policy"}
-                )
-                scan.prepare()
-                scan.start()
-                redis = scan
+                        try:
+                            number = int(sfbase[1])
+                            if sfbase[0]:
+                                measurement = sfbase[0]
+                        except Exception:
+                            number = int(time.time() * 10)
+                            measurement = fbase
+                    # print("SCAN", measurement, number)
+                    # proposal = ''
+                    # print("NAMES", self.names())
+                    # if "experiment_identifier" in self.names():
+                    #     proposal = filewriter.first(
+                    #         self.open("experiment_identifier").read())
+                    # beamline = ''
+                    # if "instrument" in self.names():
+                    #     ins = self.open("instrument")
+                    #     print("INSNAMES", ins.names())
+                    #     if "name" in ins.names():
+                    #         insname = self.open("name")
+                    #         print("INSNAMES", insname.attributes.names())
+                    #         if insname.attributes.exists("short_name"):
+                    #             beamline = filewriter.first(
+                    #                 insname.attributes["short_name"].read())
+                    scandct = {"name": fbase,
+                               "number": number,
+                               "dataset": fbase,
+                               "path": dr,
+                               "session": "test_session",
+                               "collection": measurement,
+                               "data_policy": "no_policy"}
+                    # if beamline:
+                    #     scandct["beamline"] = beamline
+                    # if proposal:
+                    #     scandct["proposal"] = proposal
+                    scan = redis.create_scan(scandct, info={"name": fbase})
+                    self.set_scan(scan)
+                    # scan.prepare()
+                    # scan.start()
+                    redis = scan
+        # print("CREATe", n, nxclass)
         return H5RedisGroup(
-            h5imp=H5Group.create_group(self, n, nxclass), redis=redis)
+            h5imp=H5Group.create_group(self, n, nxclass), redis=redis,
+            nxclass=nxclass)
 
     def create_virtual_field(self, name, layout, fillvalue=0):
         """ creates a virtual filed tres element
@@ -513,10 +738,14 @@ class H5RedisGroup(H5Group):
         # scan.stop()
         # scan.close()
         #
+        # print("NAMES", self.names())
+        # if type_code not in ["string", "str"]:
+        #     print("CREATE FIELD", name, shape, chunk, type_code)
+        redis = self.__redis
         return H5RedisField(
             h5imp=H5Group.create_field(
                 self, name, type_code, shape, chunk,
-                (dfilter if dfilter is None else dfilter)))
+                (dfilter if dfilter is None else dfilter)), redis=redis)
 
     @property
     def attributes(self):
@@ -527,6 +756,27 @@ class H5RedisGroup(H5Group):
         """
         return H5RedisAttributeManager(
             h5imp=super(H5RedisGroup, self).attributes)
+
+    def __del__(self):
+        """ close the group
+        """
+        # print("CLOSE GROUP", self.__nxclass, self.name)
+        if REDIS:
+            if self.__nxclass in ['NXentry', u'NXentry'] and \
+                    str(type(self.__redis).__name__) == "Scan":
+                if hasattr(self.__redis, "stop"):
+                    self.scan_command("stop")
+                    print("stop SCAN", self.__redis)
+                if hasattr(self.__redis, "close"):
+                    self.scan_command("close")
+                    print("close SCAN", self.__redis)
+        H5File.close(self)
+        H5File.__del__(self)
+
+    def close(self):
+        """ close the group
+        """
+        H5File.close(self)
 
     class H5RedisGroupIter(object):
 
@@ -574,7 +824,7 @@ class H5RedisField(H5Field):
     """ file tree file
     """
 
-    def __init__(self, h5object=None, tparent=None, h5imp=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None, redis=None):
         """ constructor
 
         :param h5object: h5 object
@@ -583,6 +833,8 @@ class H5RedisField(H5Field):
         :type tparent: :obj:`FTObject`
         :param h5imp: h5 implementation field
         :type h5imp: :class:`filewriter.FTField`
+        :param redis: redis object
+        :type redis: :obj:`any`
         """
         if h5imp is not None:
             H5Field.__init__(self, h5imp.h5object, h5imp._tparent)
@@ -590,6 +842,78 @@ class H5RedisField(H5Field):
             if h5object is None:
                 raise Exception("Undefined constructor parameters")
             H5Field.__init__(self, h5object, tparent)
+        self.__dsname = None
+        self.__stream = None
+        self.__jstream = None
+        self.__scan = redis
+
+    def set_scan(self, scan):
+        """ scan object
+
+        :param scan: scan object
+        :param type: :class:`Scan`
+        """
+        if hasattr(self._tparent, "set_scan"):
+            return self._tparent.set_scan(scan)
+
+    def get_scaninfo(self, value, keys=None):
+        """ get scan info parameters
+
+        :param keys: scan parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: scan parameter value
+        :rtype value: :obj:`any`
+        """
+        if hasattr(self._tparent, "get_scaninfo"):
+            return self._tparent.get_scaninfo(keys)
+
+    def set_scaninfo(self, value, keys=None):
+        """ set scan info parameters
+
+        :param value: scan parameter value
+        :type value: :obj:`any`
+        :param keys: scan parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "set_scaninfo"):
+            return self._tparent.set_scaninfo(value, keys)
+
+    def scan_command(self, command, *args, **kwargs):
+        """ set scan attribute
+
+        :param command: scan command
+        :type command: :obj:`str`
+        :param args: function list arguments
+        :type args: :obj:`list` <`any`>
+        :param kwargs: function dict arguments
+        :type kwargs: :obj:`dict` <:obj:`str` , `any`>
+        :returns: scan command value
+        :rtype:  :obj:`any`
+        """
+        if hasattr(self._tparent, "scan_command"):
+            return self._tparent.scan_command(command, *args, **kwargs)
+
+    def scan_getattr(self, attr):
+        """ get scan attribute
+
+        :param attr: scan attr
+        :type attr: :obj:`str`
+        :returns: scan attr value
+        :rtype:  :obj:`any`
+        """
+        if hasattr(self._tparent, "scan_getattr"):
+            return self._tparent.scan_getattr(attr)
+
+    def scan_setattr(self, attr, value):
+        """ set attribute
+
+        :param attr: scan attr
+        :type attr: :obj:`str`
+        :param value: scan attr value
+        :type value: :obj:`any`
+        """
+        if hasattr(self._tparent, "scan_setattr"):
+            return self._tparent.scan_getattr(attr, value)
 
     @property
     def attributes(self):
@@ -600,6 +924,71 @@ class H5RedisField(H5Field):
         """
         return H5RedisAttributeManager(
             h5imp=super(H5RedisField, self).attributes)
+
+    def __setitem__(self, t, o):
+        """ set value
+
+        :param t: slice tuple
+        :type t: :obj:`tuple`
+        :param o: h5 object
+        :type o: :obj:`any`
+        """
+        if REDIS:
+            if self.__dsname is None and \
+               "nexdatas_strategy" in self.attributes.names():
+                attrs = self.attributes
+                strategy = filewriter.first(attrs["nexdatas_strategy"].read())
+                dsname = self.name
+                if "nexdatas_source" in attrs.names():
+                    dsname = getdsname(
+                        filewriter.first(attrs["nexdatas_source"].read()))
+                units = ""
+                if "units" in attrs.names():
+                    units = filewriter.first(attrs["units"].read())
+                self.__dsname = dsname
+                shape = []
+                if hasattr(o, "shape"):
+                    shape = o.shape
+                print("SETITEM", self, self.name, self.shape,
+                      self.attributes.names(),
+                      self.__dsname, strategy, self.dtype,
+                      type(o), str(t), units)
+                if strategy in ["STEP"]:
+                    if self.dtype not in ['string', b'string']:
+                        # if self.shape == (1,) or self.shape == [1,]:
+                        encoder = NumericStreamEncoder(
+                            dtype=self.dtype,
+                            shape=shape)
+                        self.__stream = self.scan_command(
+                            "create_stream",
+                            dsname,
+                            encoder,
+                            info={"unit": units})
+                    else:
+                        self.__jstream = self.scan_command(
+                            "create_stream",
+                            dsname, JsonStreamEncoder())
+        if self.__dsname is not None:
+            if hasattr(self.__stream, "send"):
+                self.__stream.send(o)
+            jo = o
+            if hasattr(self.__jstream, "send"):
+                if not isinstance(o, dict):
+                    jo = {"value": o}
+                self.__jstream.send(jo)
+        H5Field.__setitem__(self, t, o)
+
+    def __del__(self):
+        """ close the field
+        """
+        if REDIS:
+            if hasattr(self.__stream, "seal"):
+                # print("STREAM SEAL", self.__dsname)
+                self.__stream.seal()
+            if hasattr(self.__jstream, "seal"):
+                # print("STREAM SEAL", self.__dsname)
+                self.__jstream.seal()
+        H5Field.__del__(self)
 
 
 class H5RedisLink(H5Link):
