@@ -618,8 +618,8 @@ class H5RedisGroup(H5Group):
         #      "data_policy": "no_policy"})
         # scan.prepare()
         # scan.start()
+        redis = self.__redis
         if REDIS:
-            redis = self.__redis
             if nxclass in ["NXentry", u'NXentry'] \
                and self.__redis is not None \
                and str(type(self.__redis).__name__) == "DataStore":
