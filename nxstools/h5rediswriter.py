@@ -25,6 +25,8 @@ import time
 # import numpy as np
 # from pninexus import h5cpp
 import threading
+import getpass
+import datetime
 
 from . import filewriter
 from .redisutils import REDIS, getDataStore
@@ -65,6 +67,16 @@ try:
     from blissdata.redis_engine.encoding.json import JsonStreamEncoder
 except Exception:
     JsonStreamEncoder = None
+
+try:
+    from blissdata.schemas.scan_info import (
+        ScanInfoDict,
+        DeviceDict, ChainDict, ChannelDict)
+except Exception:
+    ScanInfoDict = None
+    DeviceDict = None
+    ChainDict = None
+    ChannelDict = None
 
 
 def nptype(dtype):
@@ -352,8 +364,10 @@ class H5RedisFile(H5File):
         self.__redisurl = redisurl or "redis://localhost:6380"
         self.__datastore = None
         self.__scan = None
-        self.__scan_info = {}
         self.__scan_lock = threading.Lock()
+        self.__scaninfo = {}
+        self.__devices = {}
+        self.__channels = {}
         if REDIS and self.__redisurl:
             # print("FILENAME", self.name)
             self.__datastore = getDataStore(self.__redisurl)
@@ -376,21 +390,131 @@ class H5RedisFile(H5File):
         with self.__scan_lock:
             self.__scan = scan
 
-    def set_scaninfo(self, value, keys=None):
+    def append_devices(self, value, keys=None):
+        """ append device info parameters
+
+        :param value: device parameter value
+        :type value: :obj:`any`
+        :param keys: device parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        with self.__scan_lock:
+            if keys is None:
+                return
+            dinfo = self.__devices
+            rkeys = list(reversed(keys or []))
+            while rkeys:
+                ky = rkeys.pop()
+                if len(rkeys) > 0:
+                    dinfo = dinfo[ky]
+                else:
+                    dinfo[ky].append(value)
+
+    def set_devices(self, value, keys=None):
+        """ set device info parameters
+
+        :param value: device parameter value
+        :type value: :obj:`any`
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        with self.__scan_lock:
+            if keys is None:
+                self.__devices = dict(value)
+                return
+            dinfo = self.__devices
+
+            rkeys = list(reversed(keys or []))
+            while rkeys:
+                ky = rkeys.pop()
+                if len(rkeys) > 0:
+                    dinfo = dinfo[ky]
+                else:
+                    dinfo[ky] = value
+
+    def get_devices(self, keys=None):
+        """ get devices info parameters
+
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: device parameter value
+        :rtype value: :obj:`any`
+        """
+        with self.__scan_lock:
+            dinfo = self.__devices
+            if keys is None:
+                return dict(dinfo)
+
+            rkeys = list(reversed(keys or []))
+            while rkeys:
+                ky = rkeys.pop()
+                dinfo = dinfo[ky]
+            return dinfo
+
+    def set_channels(self, value, keys=None):
+        """ set channel info parameters
+
+        :param value: channel parameter value
+        :type value: :obj:`any`
+        :param keys: channel parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        with self.__scan_lock:
+            if keys is None:
+                self.__channels = dict(value)
+                return
+            dinfo = self.__channels
+
+            rkeys = list(reversed(keys or []))
+            while rkeys:
+                ky = rkeys.pop()
+                if len(rkeys) > 0:
+                    dinfo = dinfo[ky]
+                else:
+                    dinfo[ky] = value
+
+    def get_channels(self, keys=None):
+        """ get channel info parameters
+
+        :param keys: channel parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: channel parameter value
+        :rtype value: :obj:`any`
+        """
+        with self.__scan_lock:
+            dinfo = self.__channels
+            if keys is None:
+                return dict(dinfo)
+
+            rkeys = list(reversed(keys or []))
+            while rkeys:
+                ky = rkeys.pop()
+                dinfo = dinfo[ky]
+            return dinfo
+
+    def set_scaninfo(self, value, keys=None, direct=False):
         """ set scan info parameters
 
         :param value: scan parameter value
         :type value: :obj:`any`
         :param keys: scan parameter value
         :type key: :obj:`list` <:obj:`str`>
+        :param direct: scan info direct flag
+        :type direct: :obj:`any`
         """
         with self.__scan_lock:
             if keys is None:
-                self.__scaninfo = dict(value)
+                if direct is False:
+                    self.__scaninfo = dict(value)
+                else:
+                    self.__scan.info = ScanInfoDict(value)
                 return
-            sinfo = self.__scaninfo
+            if direct is False:
+                sinfo = self.__scaninfo
+            else:
+                sinfo = self.__scan.info
 
-            rkeys = reversed(keys)
+            rkeys = list(reversed(keys or []))
             while rkeys:
                 ky = rkeys.pop()
                 if len(rkeys) > 0:
@@ -398,24 +522,58 @@ class H5RedisFile(H5File):
                 else:
                     sinfo[ky] = value
 
-    def get_scaninfo(self, keys=None):
+    def get_scaninfo(self, keys=None, direct=False):
         """ get scan info parameters
 
         :param keys: scan parameter value
         :type key: :obj:`list` <:obj:`str`>
         :returns value: scan parameter value
         :rtype value: :obj:`any`
+        :param direct: scan info direct flag
+        :type direct: :obj:`any`
         """
         with self.__scan_lock:
+            if direct is False:
+                sinfo = self.__scaninfo
+            else:
+                sinfo = self.__scan.info
             if keys is None:
-                return dict(self.__scaninfo)
-            sinfo = self.__scaninfo
-
-            rkeys = reversed(keys)
+                return dict(sinfo)
+            # print("KEYS", keys)
+            rkeys = list(reversed(keys or []))
             while rkeys:
                 ky = rkeys.pop()
                 sinfo = sinfo[ky]
             return sinfo
+
+    def append_scaninfo(self, value, keys=None, direct=False):
+        """ append scan info parameters
+
+        :param value: scan parameter value
+        :type value: :obj:`any`
+        :param keys: scan parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        :param direct: scan info direct flag
+        :type direct: :obj:`any`
+        """
+        with self.__scan_lock:
+            if keys is None:
+                return
+            if direct is False:
+                sinfo = self.__scaninfo
+            else:
+                sinfo = self.__scan.info
+            rkeys = list(reversed(keys or []))
+            while rkeys:
+                ky = rkeys.pop()
+                if len(rkeys) > 0:
+                    if ky not in sinfo:
+                        sinfo[ky] = {}
+                    sinfo = sinfo[ky]
+                else:
+                    if ky not in sinfo:
+                        sinfo[ky] = []
+                    sinfo[ky].append(value)
 
     def scan_command(self, command, *args, **kwargs):
         """ set scan attribute
@@ -445,7 +603,6 @@ class H5RedisFile(H5File):
         :returns: scan attr value
         :rtype:  :obj:`any`
         """
-        attr = None
         with self.__scan_lock:
             if hasattr(self.__scan, attr):
                 attr = getattr(self.__scan, attr)
@@ -467,9 +624,26 @@ class H5RedisFile(H5File):
         """ start scan
 
         """
+        if REDIS:
+            acq_chain = {}
+            devices = self.get_devices()
+            self.set_scaninfo(devices, ["devices"])
+            acq_chain["axis"] = ChainDict(
+                top_master="time",
+                devices=list(devices.keys()),
+                scalars=[],
+                spectra=[],
+                images=[],
+                master={})
+            self.set_scaninfo(acq_chain, ["acquisition_chain"])
+            self.set_scaninfo(self.get_channels(), ["channels"])
 
-        self.scan_command("prepare")
-        self.scan_command("start")
+            info = self.scan_getattr("info")
+            sinfo = self.get_scaninfo()
+            # print("SCAN INFO", sinfo)
+            info.update(sinfo)
+            self.scan_command("prepare")
+            self.scan_command("start")
 
 
 class H5RedisGroup(H5Group):
@@ -543,27 +717,99 @@ class H5RedisGroup(H5Group):
         if hasattr(self._tparent, "set_scan"):
             return self._tparent.set_scan(scan)
 
-    def set_scaninfo(self, value, keys=None):
+    def append_devices(self, value, keys=None):
+        """ append device parameters
+
+        :param value: device value
+        :type value: :obj:`any`
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "append_devices"):
+            return self._tparent.append_devices(value, keys)
+
+    def set_devices(self, value, keys=None):
+        """ set device parameters
+
+        :param value: device parameter value
+        :type value: :obj:`any`
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "set_devices"):
+            return self._tparent.set_devices(value, keys)
+
+    def get_devices(self, value, keys=None):
+        """ get scan info parameters
+
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: device parameter value
+        :rtype value: :obj:`any`
+        """
+        if hasattr(self._tparent, "get_devices"):
+            return self._tparent.get_devices(keys)
+
+    def set_channels(self, value, keys=None):
+        """ set device parameters
+
+        :param value: device parameter value
+        :type value: :obj:`any`
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "set_channels"):
+            return self._tparent.set_channels(value, keys)
+
+    def get_channels(self, value, keys=None):
+        """ get scan info parameters
+
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: device parameter value
+        :rtype value: :obj:`any`
+        """
+        if hasattr(self._tparent, "get_channels"):
+            return self._tparent.get_channels(keys)
+
+    def set_scaninfo(self, value, keys=None, direct=False):
         """ set scan info parameters
 
         :param value: scan parameter value
         :type value: :obj:`any`
-        :param keys: scan parameter value
+        :param keys: scan parameter keys
         :type key: :obj:`list` <:obj:`str`>
+        :param direct: scan info direct flag
+        :type direct: :obj:`any`
         """
         if hasattr(self._tparent, "set_scaninfo"):
-            return self._tparent.set_scaninfo(value, keys)
+            return self._tparent.set_scaninfo(value, keys, direct)
 
-    def get_scaninfo(self, value, keys=None):
+    def get_scaninfo(self, keys=None, direct=False):
         """ get scan info parameters
 
-        :param keys: scan parameter value
+        :param keys: scan parameter keys
         :type key: :obj:`list` <:obj:`str`>
         :returns value: scan parameter value
         :rtype value: :obj:`any`
+        :param direct: scan info direct flag
+        :type direct: :obj:`any`
         """
         if hasattr(self._tparent, "get_scaninfo"):
-            return self._tparent.get_scaninfo(keys)
+            return self._tparent.get_scaninfo(keys, direct)
+
+    def append_scaninfo(self, value, keys=None, direct=False):
+        """ append scan info parameters
+
+        :param value: scan parameter value
+        :type value: :obj:`any`
+        :param keys: scan parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        :param direct: scan info direct flag
+        :type direct: :obj:`any`
+        """
+        if hasattr(self._tparent, "append_scaninfo"):
+            return self._tparent.append_scaninfo(value, keys, direct)
 
     def scan_command(self, command, *args, **kwargs):
         """ set scan attribute
@@ -676,6 +922,83 @@ class H5RedisGroup(H5Group):
                     # scan.prepare()
                     # scan.start()
                     redis = scan
+                    scinfo = {
+                        "name": scan.name,
+                        "scan_nb": scan.number,
+                        "session_name": scan.session,
+                        "data_policy": scan.data_policy,
+                        "start_time":
+                        datetime.datetime.now().astimezone().isoformat(),
+                        "title": scan.name,  # self.macro.macro_command,
+                        "type": "scan",   # self.macro._name,
+                        # "npoints": self.macro.nb_points,
+                        # "count_time": self.macro.integ_time,
+                        ##################################
+                        # Device information
+                        ##################################
+                        # "acquisition_chain": self.acq_chain,
+                        # "devices": self.devices,
+                        # "channels": self.channels,
+                        ##################################
+                        # Plot metadata
+                        ##################################
+                        "display_extra": {"plotselect": []},
+                        "plots": [{"kind": "curve-plot", "items": []}],
+                        ##################################
+                        # NeXus writer metadata
+                        ##################################
+                        # "save": self.nexus_save,
+                        "filename": localfname,
+                        # "images_path": images_path,
+                        "publisher": "test",
+                        "publisher_version": "1.0",
+                        # "data_writer": "nexus",
+                        # "writer_options": {
+                        #      "chunk_options": {},
+                        #      "separate_scan_files": False},
+                        # "scan_meta_categories": [
+                        #     "positioners",
+                        #     "nexuswriter",
+                        #     "instrument",
+                        #     "technique",
+                        #     "snapshot",
+                        #     "datadesc",
+                        # ],
+                        # "nexuswriter": {
+                        #     "devices": {},
+                        #     "instrument_info": {
+                        #         "name": "desy-"+self.scan.beamline,
+                        #         "name@short_name": self.scan.beamline},
+                        #     "masterfiles": masterfiles,
+                        #     "technique": {},
+                        # },
+                        # "positioners": {},
+                        # "instrument": {},
+                        # "snapshot": snap_dict,    # only in ALBA
+                        # "datadesc": ddesc_dict,   # only in ALBA
+                        "parameters": {},  # only in DESY
+                        ##################################
+                        # Mandatory by the schema
+                        ##################################
+                        "user_name": getpass.getuser(),
+                    }
+                    self.set_scaninfo(scinfo)
+                    self.set_devices({})
+                    self.set_devices(
+                        DeviceDict(name="time", channels=[], metadata={}),
+                        ["time"])
+                    # self.set_devices(
+                    #     DeviceDict(name="counters", channels=[],
+                    #   metadata={}),
+                    #     ["counters"])
+                    # self.set_devices(
+                    #     DeviceDict(name="axis", channels=[], metadata={}),
+                    #     ["axis"])
+                    self.set_devices(
+                        DeviceDict(
+                            name="datasources", channels=[], metadata={}),
+                        ["datasources"])
+                    self.set_channels({})
         # print("CREATe", n, nxclass)
         return H5RedisGroup(
             h5imp=H5Group.create_group(self, n, nxclass), redis=redis,
@@ -766,10 +1089,20 @@ class H5RedisGroup(H5Group):
                     str(type(self.__redis).__name__) == "Scan":
                 if hasattr(self.__redis, "stop"):
                     self.scan_command("stop")
-                    print("stop SCAN", self.__redis)
+                    lpars = (self.get_scaninfo(["parameters"]) or {})
+                    pars = (self.get_scaninfo(
+                        ["parameters"], direct=True) or {})
+                    pars.update(lpars)
+                    self.set_scaninfo(pars, ["parameters"])
+
+                    self.set_scaninfo(
+                        datetime.datetime.now().astimezone().isoformat(),
+                        ['end_time'], direct=True)
+                    self.set_scaninfo('SUCCESS', ['end_reason'], direct=True)
+                    # print("stop SCAN", self.__redis)
                 if hasattr(self.__redis, "close"):
                     self.scan_command("close")
-                    print("close SCAN", self.__redis)
+                    # print("close SCAN", self.__redis)
         H5File.close(self)
         H5File.__del__(self)
 
@@ -856,7 +1189,73 @@ class H5RedisField(H5Field):
         if hasattr(self._tparent, "set_scan"):
             return self._tparent.set_scan(scan)
 
-    def get_scaninfo(self, value, keys=None):
+    def append_devices(self, value, keys=None):
+        """ append device parameters
+
+        :param value: device value
+        :type value: :obj:`any`
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "append_devices"):
+            return self._tparent.append_devices(value, keys)
+
+    def set_devices(self, value, keys=None):
+        """ set device parameters
+
+        :param value: device parameter value
+        :type value: :obj:`any`
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "set_devices"):
+            return self._tparent.set_devices(value, keys)
+
+    def get_devices(self, value, keys=None):
+        """ get scan info parameters
+
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: device parameter value
+        :rtype value: :obj:`any`
+        """
+        if hasattr(self._tparent, "get_devices"):
+            return self._tparent.get_devices(keys)
+
+    def set_channels(self, value, keys=None):
+        """ set device parameters
+
+        :param value: device parameter value
+        :type value: :obj:`any`
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "set_channels"):
+            return self._tparent.set_channels(value, keys)
+
+    def get_channels(self, value, keys=None):
+        """ get scan info parameters
+
+        :param keys: device parameter keys
+        :type key: :obj:`list` <:obj:`str`>
+        :returns value: device parameter value
+        :rtype value: :obj:`any`
+        """
+        if hasattr(self._tparent, "get_channels"):
+            return self._tparent.get_channels(keys)
+
+    def append_scaninfo(self, value, keys=None, direct=False):
+        """ append scan info parameters
+
+        :param value: scan parameter value
+        :type value: :obj:`any`
+        :param keys: scan parameter value
+        :type key: :obj:`list` <:obj:`str`>
+        """
+        if hasattr(self._tparent, "append_scaninfo"):
+            return self._tparent.append_scaninfo(value, keys, direct)
+
+    def get_scaninfo(self, keys=None, direct=False):
         """ get scan info parameters
 
         :param keys: scan parameter value
@@ -865,9 +1264,9 @@ class H5RedisField(H5Field):
         :rtype value: :obj:`any`
         """
         if hasattr(self._tparent, "get_scaninfo"):
-            return self._tparent.get_scaninfo(keys)
+            return self._tparent.get_scaninfo(keys, direct)
 
-    def set_scaninfo(self, value, keys=None):
+    def set_scaninfo(self, value, keys=None, direct=False):
         """ set scan info parameters
 
         :param value: scan parameter value
@@ -876,7 +1275,7 @@ class H5RedisField(H5Field):
         :type key: :obj:`list` <:obj:`str`>
         """
         if hasattr(self._tparent, "set_scaninfo"):
-            return self._tparent.set_scaninfo(value, keys)
+            return self._tparent.set_scaninfo(value, keys, direct)
 
     def scan_command(self, command, *args, **kwargs):
         """ set scan attribute
@@ -949,13 +1348,29 @@ class H5RedisField(H5Field):
                 shape = []
                 if hasattr(o, "shape"):
                     shape = o.shape
-                print("SETITEM", self, self.name, self.shape,
-                      self.attributes.names(),
-                      self.__dsname, strategy, self.dtype,
-                      type(o), str(t), units)
+                # print("SETITEM", self, self.name, self.shape,
+                #       self.attributes.names(),
+                #        self.__dsname, strategy, self.dtype,
+                #       type(o), str(t), units)
                 if strategy in ["STEP"]:
                     if self.dtype not in ['string', b'string']:
                         # if self.shape == (1,) or self.shape == [1,]:
+                        # print("dsname", dsname, "point_nb" in dsname)
+                        device_type = "datasources"
+                        # if "timestamp" in dsname or "point_nb" in dsname:
+                        if "timestamp" in dsname:
+                            device_type = "time"
+                        # elif "ct" in dsname:
+                        #     device_type = "counters"
+
+                        self.append_devices(dsname, [device_type, 'channels'])
+                        ch = ChannelDict(
+                            device=device_type, dim=len(shape),
+                            display_name=dsname)
+                        if units:
+                            ch.unit = units
+                        self.set_channels(ch, [dsname])
+
                         encoder = NumericStreamEncoder(
                             dtype=self.dtype,
                             shape=shape)
@@ -964,10 +1379,30 @@ class H5RedisField(H5Field):
                             dsname,
                             encoder,
                             info={"unit": units})
+                        if not shape:
+                            # plot_type = 1
+                            # plot_axes = []
+                            axes = []
+                            self.append_scaninfo(
+                                {"kind": "curve-plot",
+                                 "name": dsname,
+                                 "items": axes}, ["plots"])
                     else:
                         self.__jstream = self.scan_command(
                             "create_stream",
                             dsname, JsonStreamEncoder())
+                else:
+                    ids = {"name": dsname,
+                           "value": o,
+                           "strategy": strategy,
+                           "dtype": self.dtype}
+                    if units:
+                        ids["unit"] = "units"
+                    pars = (self.get_scaninfo(["parameters"]) or {}).keys()
+                    dsn = dsname
+                    while dsn in pars:
+                        dsn = dsn + "_"
+                    self.append_scaninfo(ids, ["parameters", dsn])
         if self.__dsname is not None:
             if hasattr(self.__stream, "send"):
                 self.__stream.send(o)
