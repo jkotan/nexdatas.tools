@@ -1378,7 +1378,7 @@ class H5RedisField(H5Field):
                             "create_stream",
                             dsname,
                             encoder,
-                            info={"unit": units})
+                            info={"unit": units, "nexus_path": self.path})
                         if not shape:
                             # plot_type = 1
                             # plot_axes = []
@@ -1404,6 +1404,7 @@ class H5RedisField(H5Field):
                            "dtype": self.dtype}
                     if units:
                         ids["unit"] = "units"
+                    ids["nexus_path"] = self.path
                     pars = (self.get_scaninfo(["parameters"]) or {}).keys()
                     dsn = dsname
                     while dsn in pars:
