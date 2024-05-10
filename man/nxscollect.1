@@ -1,8 +1,5 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCOLLECT" "1" "Mar 27, 2024" "3.67" "NXSTools"
-.SH NAME
-nxscollect \- upload external images into NeXus/HDF5 file
 .
 .nr rst2man-indent-level 0
 .
@@ -30,6 +27,9 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
+.TH "NXSCOLLECT" "1" "May 10, 2024" "3.68" "NXSTools"
+.SH NAME
+nxscollect \- upload external images into NeXus/HDF5 file
 .SH DESCRIPTION
 .sp
 The nxscollect is  a command\-line tool dedicated to collect detector images.
@@ -61,7 +61,7 @@ nexus_file            nexus files to be collected
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-c \ COMPRESSION\fR,\fB \ \-\-compression \ COMPRESSION
@@ -88,20 +88,20 @@ datatype of input data \- only for raw data, e.g.
 shape of input data \- only for raw data, e.g.
 \(aq[4096,2048]\(aq
 .TP
-.B \-s\fP,\fB  \-\-skip_missing
+.B  \-s\fP,\fB  \-\-skip_missing
 skip missing files
 .TP
-.B \-r\fP,\fB  \-\-replace_nexus_file
+.B  \-r\fP,\fB  \-\-replace_nexus_file
 if it is set the old file is not copied into a file
 with .__nxscollect__old__* extension
 .TP
-.B \-\-test
+.B  \-\-test
 execute in the test mode
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader/writer
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader/writer
 .UNINDENT
 .UNINDENT
@@ -142,7 +142,7 @@ nexus_file_path       nexus files with the nexus directory to place the link
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-n \ NAME\fR,\fB \ \-\-name \ NAME
@@ -151,17 +151,17 @@ link name
 .BI \-t \ TARGET\fR,\fB \ \-\-target \ TARGET
 link target with the file name if external
 .TP
-.B \-r\fP,\fB  \-\-replace_nexus_file
+.B  \-r\fP,\fB  \-\-replace_nexus_file
 if it is set the old file is not copied into a file
 with .__nxscollect__old__* extension
 .TP
-.B \-\-test
+.B  \-\-test
 execute in the test mode
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader/writer
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -205,7 +205,7 @@ Options:
 .INDENT 3.5
 .INDENT 0.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-t \ DTYPE\fR,\fB \ \-\-dtype \ DTYPE
@@ -304,17 +304,17 @@ sepatated by \(aq,\(aq and different fields separated by \(aq;\(aq
 or spaces e.g. \(aq:,0:50,: :,0:50,:\(aq where U means span
 along the layout
 .TP
-.B \-r\fP,\fB  \-\-replace\-nexus\-file
+.B  \-r\fP,\fB  \-\-replace\-nexus\-file
 if it is set the old file is not copied into a file
 with .__nxscollect__old__* extension
 .TP
-.B \-\-test
+.B  \-\-test
 execute in the test mode
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader/writer
 .UNINDENT
 .UNINDENT
