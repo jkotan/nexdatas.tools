@@ -1387,6 +1387,12 @@ class H5RedisField(H5Field):
                                 {"kind": "curve-plot",
                                  "name": dsname,
                                  "items": axes}, ["plots"])
+                        else:
+                            self.append_scaninfo(
+                                {"kind": "1d-plot",
+                                 "name": dsname,
+                                 "items": []},
+                                ["plots"])
                     else:
                         self.__jstream = self.scan_command(
                             "create_stream",
