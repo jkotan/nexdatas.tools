@@ -1379,7 +1379,7 @@ class H5RedisField(H5Field):
                "nexdatas_strategy" in self.attributes.names():
                 attrs = self.attributes
                 strategy = filewriter.first(attrs["nexdatas_strategy"].read())
-                dsname = self.name
+                dsname = "%s_%s" % (self._tparent.name, self.name)
                 if "nexdatas_source" in attrs.names():
                     dsname = getdsname(
                         filewriter.first(attrs["nexdatas_source"].read()))
