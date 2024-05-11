@@ -30,7 +30,38 @@ import datetime
 
 from . import filewriter
 from .redisutils import REDIS, getDataStore
-from .nxsfileparser import getdsname
+from .nxsfileparser import (getdsname, getdssource,
+                            # getdstype
+                            )
+
+
+# 'datadesc': {'#Pt No': {'name': 'point_nb',
+#   'label': '#Pt No',
+#   'dtype': 'int64',
+#   'shape': []},
+#  'exp_mot03': {'min_value': 1.0,
+#   'max_value': 5.0,
+#   'instrument': '',
+#   'name': 'exp_mot03',
+#   'label': 'exp_mot03',
+#   'dtype': 'float64',
+#   'shape': [],
+#   'is_reference': True},
+
+# 'snapshot': {'exp_dmy01':
+# {'source': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/1/position',
+#   'name': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/1/position',
+#   'label': 'exp_dmy01',
+#   'dtype': 'float64',
+#   'shape': [],
+#   'value': 0.0},
+#  'exp_dmy02':
+# {'source': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/2/position',
+#   'name': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/2/position',
+#   'label': 'exp_dmy02',
+#   'dtype': 'float64',
+#   'shape': [],
+#   'value': 0.0},
 
 H5CPP = False
 try:
@@ -956,14 +987,14 @@ class H5RedisGroup(H5Group):
                         # "writer_options": {
                         #      "chunk_options": {},
                         #      "separate_scan_files": False},
-                        # "scan_meta_categories": [
-                        #     "positioners",
-                        #     "nexuswriter",
-                        #     "instrument",
-                        #     "technique",
-                        #     "snapshot",
-                        #     "datadesc",
-                        # ],
+                        "scan_meta_categories": [
+                            #     "positioners",
+                            #     "nexuswriter",
+                            #     "instrument",
+                            #     "technique",
+                            "snapshot",
+                            "datadesc",
+                        ],
                         # "nexuswriter": {
                         #     "devices": {},
                         #     "instrument_info": {
@@ -974,9 +1005,8 @@ class H5RedisGroup(H5Group):
                         # },
                         # "positioners": {},
                         # "instrument": {},
-                        # "snapshot": snap_dict,    # only in ALBA
-                        # "datadesc": ddesc_dict,   # only in ALBA
-                        "parameters": {},  # only in DESY
+                        "datadesc": {},
+                        "snapshot": {},
                         ##################################
                         # Mandatory by the schema
                         ##################################
@@ -1089,11 +1119,11 @@ class H5RedisGroup(H5Group):
                     str(type(self.__redis).__name__) == "Scan":
                 if hasattr(self.__redis, "stop"):
                     self.scan_command("stop")
-                    lpars = (self.get_scaninfo(["parameters"]) or {})
+                    lpars = (self.get_scaninfo(["snapshot"]) or {})
                     pars = (self.get_scaninfo(
-                        ["parameters"], direct=True) or {})
+                        ["snapshot"], direct=True) or {})
                     pars.update(lpars)
-                    self.set_scaninfo(pars, ["parameters"])
+                    self.set_scaninfo(pars, ["snapshot"])
 
                     self.set_scaninfo(
                         datetime.datetime.now().astimezone().isoformat(),
@@ -1179,6 +1209,18 @@ class H5RedisField(H5Field):
         self.__stream = None
         self.__jstream = None
         self.__scan = redis
+        self.attrdesc = {
+            "nexus_type": ["type", str],
+            "units": ["units", str],
+            "depends_on": ["depends_on", str],
+            "trans_type": ["transformation_type", str],
+            "trans_vector": ["vector", str],
+            "trans_offset": ["offset", str],
+            # "source_name": ["nexdatas_source", getdsname],
+            # "source_type": ["nexdatas_source", getdstype],
+            "source": ["nexdatas_source", getdssource],
+            # "strategy": ["nexdatas_strategy", str],
+        }
 
     def set_scan(self, scan):
         """ scan object
@@ -1353,6 +1395,19 @@ class H5RedisField(H5Field):
                 #        self.__dsname, strategy, self.dtype,
                 #       type(o), str(t), units)
                 if strategy in ["STEP"]:
+                    sds = {
+                        "name": dsname,
+                        "label": dsname,
+                        "strategy": strategy,
+                        "dtype": self.dtype
+                    }
+                    anames = [at.name for at in attrs]
+                    for key, vl in self.attrdesc.items():
+                        if vl[0] in anames:
+                            sds[key] = vl[1](
+                                filewriter.first(attrs[vl[0]].read()))
+                    self.append_scaninfo(sds, ["datadesc", dsname])
+
                     if self.dtype not in ['string', b'string']:
                         # if self.shape == (1,) or self.shape == [1,]:
                         # print("dsname", dsname, "point_nb" in dsname)
@@ -1398,18 +1453,25 @@ class H5RedisField(H5Field):
                             "create_stream",
                             dsname, JsonStreamEncoder())
                 else:
-                    ids = {"name": dsname,
-                           "value": o,
-                           "strategy": strategy,
-                           "dtype": self.dtype}
-                    if units:
-                        ids["unit"] = "units"
+                    ids = {
+                        "name": dsname,
+                        "label": dsname,
+                        "value": o,
+                        "strategy": strategy,
+                        "dtype": self.dtype
+                    }
+
+                    anames = [at.name for at in attrs]
+                    for key, vl in self.attrdesc.items():
+                        if vl[0] in anames:
+                            ids[key] = vl[1](
+                                filewriter.first(attrs[vl[0]].read()))
                     ids["nexus_path"] = self.path
-                    pars = (self.get_scaninfo(["parameters"]) or {}).keys()
+                    pars = (self.get_scaninfo(["snapshot"]) or {}).keys()
                     dsn = dsname
                     while dsn in pars:
                         dsn = dsn + "_"
-                    self.append_scaninfo(ids, ["parameters", dsn])
+                    self.append_scaninfo(ids, ["snapshot", dsn])
         if self.__dsname is not None:
             if hasattr(self.__stream, "send"):
                 self.__stream.send(o)
