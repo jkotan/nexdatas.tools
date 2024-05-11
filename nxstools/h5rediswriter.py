@@ -669,6 +669,29 @@ class H5RedisFile(H5File):
             self.set_scaninfo(acq_chain, ["acquisition_chain"])
             self.set_scaninfo(self.get_channels(), ["channels"])
 
+            # print("SCAN", measurement, number)
+            # proposal = ''
+            # root = self.root()
+
+            # print("NAMES", self.names())
+            # if "experiment_identifier" in self.names():
+            #     proposal = filewriter.first(
+            #         self.open("experiment_identifier").read())
+            # beamline = ''
+            # if "instrument" in self.names():
+            #     ins = self.open("instrument")
+            #     print("INSNAMES", ins.names())
+            #     if "name" in ins.names():
+            #         insname = self.open("name")
+            #         print("INSNAMES", insname.attributes.names())
+            #         if insname.attributes.exists("short_name"):
+            #             beamline = filewriter.first(
+            #                 insname.attributes["short_name"].read())
+            # if beamline:
+            #     scandct["beamline"] = beamline
+            # if proposal:
+            #     scandct["proposal"] = proposal
+
             info = self.scan_getattr("info")
             sinfo = self.get_scaninfo()
             # print("SCAN INFO", sinfo)
@@ -716,7 +739,6 @@ class H5RedisGroup(H5Group):
         """
         h5obj = H5Group.open(self, name)
         if isinstance(h5obj, H5Group):
-            # if self.__redis is not None:
             nxclass = None
             if u"NX_class" in [at.name for at in h5obj.attributes]:
                 nxclass = filewriter.first(
@@ -921,22 +943,6 @@ class H5RedisGroup(H5Group):
                         except Exception:
                             number = int(time.time() * 10)
                             measurement = fbase
-                    # print("SCAN", measurement, number)
-                    # proposal = ''
-                    # print("NAMES", self.names())
-                    # if "experiment_identifier" in self.names():
-                    #     proposal = filewriter.first(
-                    #         self.open("experiment_identifier").read())
-                    # beamline = ''
-                    # if "instrument" in self.names():
-                    #     ins = self.open("instrument")
-                    #     print("INSNAMES", ins.names())
-                    #     if "name" in ins.names():
-                    #         insname = self.open("name")
-                    #         print("INSNAMES", insname.attributes.names())
-                    #         if insname.attributes.exists("short_name"):
-                    #             beamline = filewriter.first(
-                    #                 insname.attributes["short_name"].read())
                     scandct = {"name": fbase,
                                "number": number,
                                "dataset": fbase,
@@ -944,10 +950,6 @@ class H5RedisGroup(H5Group):
                                "session": "test_session",
                                "collection": measurement,
                                "data_policy": "no_policy"}
-                    # if beamline:
-                    #     scandct["beamline"] = beamline
-                    # if proposal:
-                    #     scandct["proposal"] = proposal
                     scan = redis.create_scan(scandct, info={"name": fbase})
                     self.set_scan(scan)
                     # scan.prepare()
@@ -1094,11 +1096,10 @@ class H5RedisGroup(H5Group):
         # print("NAMES", self.names())
         # if type_code not in ["string", "str"]:
         #     print("CREATE FIELD", name, shape, chunk, type_code)
-        redis = self.__redis
         return H5RedisField(
             h5imp=H5Group.create_field(
                 self, name, type_code, shape, chunk,
-                (dfilter if dfilter is None else dfilter)), redis=redis)
+                (dfilter if dfilter is None else dfilter)))
 
     @property
     def attributes(self):
@@ -1187,7 +1188,7 @@ class H5RedisField(H5Field):
     """ file tree file
     """
 
-    def __init__(self, h5object=None, tparent=None, h5imp=None, redis=None):
+    def __init__(self, h5object=None, tparent=None, h5imp=None):
         """ constructor
 
         :param h5object: h5 object
@@ -1196,8 +1197,6 @@ class H5RedisField(H5Field):
         :type tparent: :obj:`FTObject`
         :param h5imp: h5 implementation field
         :type h5imp: :class:`filewriter.FTField`
-        :param redis: redis object
-        :type redis: :obj:`any`
         """
         if h5imp is not None:
             H5Field.__init__(self, h5imp.h5object, h5imp._tparent)
@@ -1208,7 +1207,6 @@ class H5RedisField(H5Field):
         self.__dsname = None
         self.__stream = None
         self.__jstream = None
-        self.__scan = redis
         self.attrdesc = {
             "nexus_type": ["type", str],
             "units": ["units", str],
@@ -1474,6 +1472,23 @@ class H5RedisField(H5Field):
                     while dsn in pars:
                         dsn = dsn + "_"
                     self.append_scaninfo(ids, ["snapshot", dsn])
+                    if self.name in ["program_name"]:
+                        if "npoints" in anames:
+                            try:
+                                np = int(
+                                    filewriter.first(attrs["npoints"].read()))
+                                self.set_scaninfo(np, ["npoints"])
+                            except Exception:
+                                pass
+                        if "count_time" in anames:
+                            try:
+                                ct = float(
+                                    filewriter.first(attrs["count_time"]
+                                                     .read()))
+                                self.set_scaninfo(ct, ["count_time"])
+                            except Exception:
+                                pass
+
         if self.__dsname is not None:
             if hasattr(self.__stream, "send"):
                 self.__stream.send(o)
