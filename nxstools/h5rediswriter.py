@@ -399,6 +399,8 @@ class H5RedisFile(H5File):
         self.__scaninfo = {}
         self.__devices = {}
         self.__channels = {}
+        self.__datastore = None
+        self.__entryname = ''
         if REDIS and self.__redisurl:
             # print("FILENAME", self.name)
             self.__datastore = getDataStore(self.__redisurl)
@@ -409,17 +411,26 @@ class H5RedisFile(H5File):
         :returns: parent object
         :rtype: :class:`H5RedisGroup`
         """
-        return H5RedisGroup(h5imp=H5File.root(self), redis=self.__datastore,
+        return H5RedisGroup(h5imp=H5File.root(self),
                             nxclass="NXroot")
 
     def set_scan(self, scan):
         """ scan object
 
         :param scan: scan object
-        :param type: :class:`Scan`
+        :type scan: :class:`Scan`
         """
         with self.__scan_lock:
             self.__scan = scan
+
+    def set_entryname(self, entryname):
+        """ set entry name
+
+        :param entryname: entry name
+        :type entryname: :obj:`str`
+        """
+        with self.__scan_lock:
+            self.__entryname = entryname
 
     def append_devices(self, value, keys=None):
         """ append device info parameters
@@ -651,23 +662,45 @@ class H5RedisFile(H5File):
             if hasattr(self.__scan, attr):
                 attr = setattr(self.__scan, attr, value)
 
-    def start(self):
+    def prepare(self):
         """ start scan
 
         """
         if REDIS:
-            acq_chain = {}
-            devices = self.get_devices()
-            self.set_scaninfo(devices, ["devices"])
-            acq_chain["axis"] = ChainDict(
-                top_master="time",
-                devices=list(devices.keys()),
-                scalars=[],
-                spectra=[],
-                images=[],
-                master={})
-            self.set_scaninfo(acq_chain, ["acquisition_chain"])
-            self.set_scaninfo(self.get_channels(), ["channels"])
+            localfname = H5RedisLink.getfilename(self.root())
+            # print("FILE", localfname, n, nxclass)
+            n = self.__entryname
+            if localfname:
+                dr, fn = os.path.split(localfname)
+                fbase, ext = os.path.splitext(fn)
+                sfbase = fbase.rsplit("_", 1)
+                sn = n.rsplit("_", 1)
+                number = 0
+                measurement = "scan"
+                try:
+                    number = int(sn[1])
+                    if sn[0]:
+                        measurement = sn[0]
+                except Exception:
+                    try:
+                        number = int(sfbase[1])
+                        if sfbase[0]:
+                            measurement = sfbase[0]
+                    except Exception:
+                        number = int(time.time() * 10)
+                        measurement = fbase
+                scandct = {"name": fbase,
+                           "number": number,
+                           "dataset": fbase,
+                           "path": dr,
+                           "session": "test_session",
+                           "collection": measurement,
+                           "data_policy": "no_policy"}
+                scan = self.__datastore.create_scan(
+                    scandct, info={"name": fbase})
+                self.set_scan(scan)
+                # scan.prepare()
+                # scan.start()
 
             # print("SCAN", measurement, number)
             # proposal = ''
@@ -692,10 +725,29 @@ class H5RedisFile(H5File):
             # if proposal:
             #     scandct["proposal"] = proposal
 
+    def start(self):
+        """ start scan
+
+        """
+        if REDIS:
+            acq_chain = {}
+            devices = self.get_devices()
+            self.set_scaninfo(devices, ["devices"])
+            acq_chain["axis"] = ChainDict(
+                top_master="time",
+                devices=list(devices.keys()),
+                scalars=[],
+                spectra=[],
+                images=[],
+                master={})
+            self.set_scaninfo(acq_chain, ["acquisition_chain"])
+            self.set_scaninfo(self.get_channels(), ["channels"])
+
             info = self.scan_getattr("info")
             sinfo = self.get_scaninfo()
             # print("SCAN INFO", sinfo)
             info.update(sinfo)
+
             self.scan_command("prepare")
             self.scan_command("start")
 
@@ -706,7 +758,7 @@ class H5RedisGroup(H5Group):
     """
 
     def __init__(self, h5object=None, tparent=None, h5imp=None,
-                 redis=None, nxclass=None):
+                 nxclass=None):
         """ constructor
 
         :param h5object: h5 object
@@ -726,7 +778,6 @@ class H5RedisGroup(H5Group):
             if h5object is None:
                 raise Exception("Undefined constructor parameters")
             H5Group.__init__(self, h5object, tparent)
-        self.__redis = redis
         self.__nxclass = nxclass
 
     def open(self, name):
@@ -769,6 +820,15 @@ class H5RedisGroup(H5Group):
         """
         if hasattr(self._tparent, "set_scan"):
             return self._tparent.set_scan(scan)
+
+    def set_entryname(self, entryname):
+        """ set entry name
+
+        :param entryname: entry name
+        :type entryname: :obj:`str`
+        """
+        if hasattr(self._tparent, "set_entryname"):
+            return self._tparent.set_scan(entryname)
 
     def append_devices(self, value, keys=None):
         """ append device parameters
@@ -917,123 +977,121 @@ class H5RedisGroup(H5Group):
         #      "data_policy": "no_policy"})
         # scan.prepare()
         # scan.start()
-        redis = self.__redis
-        if REDIS:
-            if nxclass in ["NXentry", u'NXentry'] \
-               and self.__redis is not None \
-               and str(type(self.__redis).__name__) == "DataStore":
-                localfname = H5RedisLink.getfilename(self)
-                # print("FILE", localfname, n, nxclass)
-                if localfname:
-                    dr, fn = os.path.split(localfname)
-                    fbase, ext = os.path.splitext(fn)
-                    sfbase = fbase.rsplit("_", 1)
-                    sn = n.rsplit("_", 1)
-                    number = 0
-                    measurement = "scan"
+        if REDIS and nxclass in ["NXentry", u'NXentry']:
+            self.set_entryname(n)
+
+            # redis = self.__redis
+            # if REDIS:
+            #     if nxclass in ["NXentry", u'NXentry'] \
+            #        and self.__redis is not None \
+            #        and str(type(self.__redis).__name__) == "DataStore":
+            localfname = H5RedisLink.getfilename(self)
+            # print("FILE", localfname, n, nxclass)
+            if localfname:
+                dr, fn = os.path.split(localfname)
+                fbase, ext = os.path.splitext(fn)
+                sfbase = fbase.rsplit("_", 1)
+                sn = n.rsplit("_", 1)
+                number = 0
+                measurement = "scan"
+                try:
+                    number = int(sn[1])
+                    if sn[0]:
+                        measurement = sn[0]
+                except Exception:
                     try:
-                        number = int(sn[1])
-                        if sn[0]:
-                            measurement = sn[0]
+                        number = int(sfbase[1])
+                        if sfbase[0]:
+                            measurement = sfbase[0]
                     except Exception:
-                        try:
-                            number = int(sfbase[1])
-                            if sfbase[0]:
-                                measurement = sfbase[0]
-                        except Exception:
-                            number = int(time.time() * 10)
-                            measurement = fbase
-                    scandct = {"name": fbase,
-                               "number": number,
-                               "dataset": fbase,
-                               "path": dr,
-                               "session": "test_session",
-                               "collection": measurement,
-                               "data_policy": "no_policy"}
-                    scan = redis.create_scan(scandct, info={"name": fbase})
-                    self.set_scan(scan)
-                    # scan.prepare()
-                    # scan.start()
-                    redis = scan
-                    scinfo = {
-                        "name": scan.name,
-                        "scan_nb": scan.number,
-                        "session_name": scan.session,
-                        "data_policy": scan.data_policy,
-                        "start_time":
-                        datetime.datetime.now().astimezone().isoformat(),
-                        "title": scan.name,  # self.macro.macro_command,
-                        "type": "scan",   # self.macro._name,
-                        # "npoints": self.macro.nb_points,
-                        # "count_time": self.macro.integ_time,
-                        ##################################
-                        # Device information
-                        ##################################
-                        # "acquisition_chain": self.acq_chain,
-                        # "devices": self.devices,
-                        # "channels": self.channels,
-                        ##################################
-                        # Plot metadata
-                        ##################################
-                        "display_extra": {"plotselect": []},
-                        "plots": [{"kind": "curve-plot", "items": []}],
-                        ##################################
-                        # NeXus writer metadata
-                        ##################################
-                        # "save": self.nexus_save,
-                        "filename": localfname,
-                        # "images_path": images_path,
-                        "publisher": "test",
-                        "publisher_version": "1.0",
-                        # "data_writer": "nexus",
-                        # "writer_options": {
-                        #      "chunk_options": {},
-                        #      "separate_scan_files": False},
-                        "scan_meta_categories": [
-                            #     "positioners",
-                            #     "nexuswriter",
-                            #     "instrument",
-                            #     "technique",
-                            "snapshot",
-                            "datadesc",
-                        ],
-                        # "nexuswriter": {
-                        #     "devices": {},
-                        #     "instrument_info": {
-                        #         "name": "desy-"+self.scan.beamline,
-                        #         "name@short_name": self.scan.beamline},
-                        #     "masterfiles": masterfiles,
-                        #     "technique": {},
-                        # },
-                        # "positioners": {},
-                        # "instrument": {},
-                        "datadesc": {},
-                        "snapshot": {},
-                        ##################################
-                        # Mandatory by the schema
-                        ##################################
-                        "user_name": getpass.getuser(),
-                    }
-                    self.set_scaninfo(scinfo)
-                    self.set_devices({})
-                    self.set_devices(
-                        DeviceDict(name="time", channels=[], metadata={}),
-                        ["time"])
-                    # self.set_devices(
-                    #     DeviceDict(name="counters", channels=[],
-                    #   metadata={}),
-                    #     ["counters"])
-                    # self.set_devices(
-                    #     DeviceDict(name="axis", channels=[], metadata={}),
-                    #     ["axis"])
-                    self.set_devices(
-                        DeviceDict(
-                            name="datasources", channels=[], metadata={}),
-                        ["datasources"])
-                    self.set_channels({})
-        # print("CREATe", n, nxclass)
+                        number = int(time.time() * 10)
+                        measurement = fbase
+            scandct = {"name": fbase,
+                       "number": number,
+                       "dataset": fbase,
+                       "path": dr,
+                       "session": "test_session",
+                       "collection": measurement,
+                       "data_policy": "no_policy"}
+            scinfo = {
+                "name": scandct["name"],
+                "scan_nb": scandct["number"],
+                "session_name": scandct["session"],
+                "data_policy": scandct["data_policy"],
+                "start_time":
+                datetime.datetime.now().astimezone().isoformat(),
+                "title": scandct["name"],  # self.macro.macro_command,
+                "type": "scan",   # self.macro._name,
+                # "npoints": self.macro.nb_points,
+                # "count_time": self.macro.integ_time,
+                ##################################
+                # Device information
+                ##################################
+                # "acquisition_chain": self.acq_chain,
+                # "devices": self.devices,
+                # "channels": self.channels,
+                ##################################
+                # Plot metadata
+                ##################################
+                "display_extra": {"plotselect": []},
+                "plots": [{"kind": "curve-plot", "items": []}],
+                ##################################
+                # NeXus writer metadata
+                ##################################
+                # "save": self.nexus_save,
+                "filename": localfname,
+                # "images_path": images_path,
+                "publisher": "test",
+                "publisher_version": "1.0",
+                # "data_writer": "nexus",
+                # "writer_options": {
+                #      "chunk_options": {},
+                #      "separate_scan_files": False},
+                "scan_meta_categories": [
+                    #     "positioners",
+                    #     "nexuswriter",
+                    #     "instrument",
+                    #     "technique",
+                    "snapshot",
+                    "datadesc",
+                ],
+                # "nexuswriter": {
+                #     "devices": {},
+                #     "instrument_info": {
+                #         "name": "desy-"+self.scan.beamline,
+                #         "name@short_name": self.scan.beamline},
+                #     "masterfiles": masterfiles,
+                #     "technique": {},
+                # },
+                # "positioners": {},
+                # "instrument": {},
+                "datadesc": {},
+                "snapshot": {},
+                ##################################
+                # Mandatory by the schema
+                ##################################
+                "user_name": getpass.getuser(),
+            }
+            self.set_scaninfo(scinfo)
+            self.set_devices({})
+            self.set_devices(
+                DeviceDict(name="time", channels=[], metadata={}),
+                ["time"])
+            # self.set_devices(
+            #     DeviceDict(name="counters", channels=[],
+            #   metadata={}),
+            #     ["counters"])
+            # self.set_devices(
+            #     DeviceDict(name="axis", channels=[], metadata={}),
+            #     ["axis"])
+            self.set_devices(
+                DeviceDict(
+                    name="datasources", channels=[], metadata={}),
+                ["datasources"])
+            self.set_channels({})
+            # print("CREATe", n, nxclass)
         return H5RedisGroup(
-            h5imp=H5Group.create_group(self, n, nxclass), redis=redis,
+            h5imp=H5Group.create_group(self, n, nxclass),
             nxclass=nxclass)
 
     def create_virtual_field(self, name, layout, fillvalue=0):
@@ -1116,24 +1174,21 @@ class H5RedisGroup(H5Group):
         """
         # print("CLOSE GROUP", self.__nxclass, self.name)
         if REDIS:
-            if self.__nxclass in ['NXentry', u'NXentry'] and \
-                    str(type(self.__redis).__name__) == "Scan":
-                if hasattr(self.__redis, "stop"):
-                    self.scan_command("stop")
-                    lpars = (self.get_scaninfo(["snapshot"]) or {})
-                    pars = (self.get_scaninfo(
-                        ["snapshot"], direct=True) or {})
-                    pars.update(lpars)
-                    self.set_scaninfo(pars, ["snapshot"])
+            if self.__nxclass in ['NXentry', u'NXentry']:
+                self.scan_command("stop")
+                lpars = (self.get_scaninfo(["snapshot"]) or {})
+                pars = (self.get_scaninfo(
+                    ["snapshot"], direct=True) or {})
+                pars.update(lpars)
+                self.set_scaninfo(pars, ["snapshot"])
 
-                    self.set_scaninfo(
-                        datetime.datetime.now().astimezone().isoformat(),
-                        ['end_time'], direct=True)
-                    self.set_scaninfo('SUCCESS', ['end_reason'], direct=True)
-                    # print("stop SCAN", self.__redis)
-                if hasattr(self.__redis, "close"):
-                    self.scan_command("close")
-                    # print("close SCAN", self.__redis)
+                self.set_scaninfo(
+                    datetime.datetime.now().astimezone().isoformat(),
+                    ['end_time'], direct=True)
+                self.set_scaninfo('SUCCESS', ['end_reason'], direct=True)
+                print("stop SCAN")
+                self.scan_command("close")
+                print("close SCAN")
         H5File.close(self)
         H5File.__del__(self)
 
