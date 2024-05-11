@@ -1380,9 +1380,11 @@ class H5RedisField(H5Field):
                 attrs = self.attributes
                 strategy = filewriter.first(attrs["nexdatas_strategy"].read())
                 dsname = "%s_%s" % (self._tparent.name, self.name)
+                dsnm = ""
                 if "nexdatas_source" in attrs.names():
-                    dsname = getdsname(
+                    dsnm = getdsname(
                         filewriter.first(attrs["nexdatas_source"].read()))
+                    dsname = dsnm
                 units = ""
                 if "units" in attrs.names():
                     units = filewriter.first(attrs["units"].read())
@@ -1394,7 +1396,7 @@ class H5RedisField(H5Field):
                 #       self.attributes.names(),
                 #        self.__dsname, strategy, self.dtype,
                 #       type(o), str(t), units)
-                if strategy in ["STEP"]:
+                if strategy in ["STEP"] and dsnm:
                     sds = {
                         "name": dsname,
                         "label": dsname,
