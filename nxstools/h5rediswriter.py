@@ -965,24 +965,12 @@ class H5RedisGroup(H5Group):
         :returns: file tree group
         :rtype: :class:`H5RedisGroup`
         """
-        # scan = data_store.create_scan(   ## create_group nxclass='NXentry'
-        #     {"name": "myscan",           # filename    "{name}_{number}.nxs"
-        #      "number": 1234,             # or NXentry name  "{name}_{number}"
-        #      "data_policy": "no_policy"})
-        # scan.prepare()
-        # scan.start()
         if REDIS and nxclass in ["NXinstrument", u'NXinstrument']:
             self.set_insname(n)
         if REDIS and nxclass in ["NXentry", u'NXentry']:
             self.set_entryname(n)
 
-            # redis = self.__redis
-            # if REDIS:
-            #     if nxclass in ["NXentry", u'NXentry'] \
-            #        and self.__redis is not None \
-            #        and str(type(self.__redis).__name__) == "DataStore":
             localfname = H5RedisLink.getfilename(self)
-            # print("FILE", localfname, n, nxclass)
             if localfname:
                 dr, fn = os.path.split(localfname)
                 fbase, ext = os.path.splitext(fn)
@@ -1003,23 +991,17 @@ class H5RedisGroup(H5Group):
                 "data_policy": 'no_policy',
                 "start_time":
                 datetime.datetime.now().astimezone().isoformat(),
-                "title": fbase,  # self.macro.macro_command,
-                "type": "scan",   # self.macro._name,
+                "title": fbase,
+                "type": "scan",
                 # "npoints": self.macro.nb_points,
                 # "count_time": self.macro.integ_time,
-                ##################################
-                # Device information
                 ##################################
                 # "acquisition_chain": self.acq_chain,
                 # "devices": self.devices,
                 # "channels": self.channels,
                 ##################################
-                # Plot metadata
-                ##################################
                 "display_extra": {"plotselect": []},
                 "plots": [{"kind": "curve-plot", "items": []}],
-                ##################################
-                # NeXus writer metadata
                 ##################################
                 # "save": self.nexus_save,
                 "filename": localfname,
@@ -1421,14 +1403,9 @@ class H5RedisField(H5Field):
                         self.append_scaninfo(sds, ["datadesc", dsname])
 
                         if self.dtype not in ['string', b'string']:
-                            # if self.shape == (1,) or self.shape == [1,]:
-                            # print("dsname", dsname, "point_nb" in dsname)
                             device_type = "datasources"
-                            # if "timestamp" in dsname or "point_nb" in dsname:
                             if "timestamp" in dsname:
                                 device_type = "time"
-                            # elif "ct" in dsname:
-                            #     device_type = "counters"
 
                             self.append_devices(
                                 dsname, [device_type, 'channels'])
