@@ -401,6 +401,7 @@ class H5RedisFile(H5File):
         self.__channels = {}
         self.__datastore = None
         self.__entryname = ''
+        self.__insname = ''
         if REDIS and self.__redisurl:
             # print("FILENAME", self.name)
             self.__datastore = getDataStore(self.__redisurl)
@@ -431,6 +432,15 @@ class H5RedisFile(H5File):
         """
         with self.__scan_lock:
             self.__entryname = entryname
+
+    def set_insname(self, insname):
+        """ set instrument name
+
+        :param insname: instrument name
+        :type insname: :obj:`str`
+        """
+        with self.__scan_lock:
+            self.__insname = insname
 
     def append_devices(self, value, keys=None):
         """ append device info parameters
@@ -670,6 +680,7 @@ class H5RedisFile(H5File):
             localfname = H5RedisLink.getfilename(self.root())
             # print("FILE", localfname, n, nxclass)
             n = self.__entryname
+            insn = self.__insname
             if localfname:
                 dr, fn = os.path.split(localfname)
                 fbase, ext = os.path.splitext(fn)
@@ -696,6 +707,20 @@ class H5RedisFile(H5File):
                 if "beamtime_id" in sinfo:
                     scandct["proposal"] = sinfo["beamtime_id"]
                     sinfo.pop("beamtime_id")
+
+                beamline = ''
+                root = self.root()
+                if n in root.names():
+                    entry = root().open(n)
+                    if insn in entry.names():
+                        ins = entry.open(insn)
+                        if "name" in ins.names():
+                            insname = ins.open("name")
+                            if insname.attributes.exists("short_name"):
+                                beamline = filewriter.first(
+                                    insname.attributes["short_name"].read())
+                                scandct["beamline"] = beamline
+
                 scan = self.__datastore.create_scan(
                     scandct, info={"name": fbase})
                 self.set_scan(scan)
@@ -704,24 +729,10 @@ class H5RedisFile(H5File):
 
             # print("SCAN", measurement, number)
             # proposal = ''
-            # root = self.root()
-
             # print("NAMES", self.names())
             # if "experiment_identifier" in self.names():
             #     proposal = filewriter.first(
             #         self.open("experiment_identifier").read())
-            # beamline = ''
-            # if "instrument" in self.names():
-            #     ins = self.open("instrument")
-            #     print("INSNAMES", ins.names())
-            #     if "name" in ins.names():
-            #         insname = self.open("name")
-            #         print("INSNAMES", insname.attributes.names())
-            #         if insname.attributes.exists("short_name"):
-            #             beamline = filewriter.first(
-            #                 insname.attributes["short_name"].read())
-            # if beamline:
-            #     scandct["beamline"] = beamline
             # if proposal:
             #     scandct["proposal"] = proposal
 
@@ -829,6 +840,15 @@ class H5RedisGroup(H5Group):
         """
         if hasattr(self._tparent, "set_entryname"):
             return self._tparent.set_scan(entryname)
+
+    def set_insname(self, insname):
+        """ set instrument name
+
+        :param insname: instrument name
+        :type insname: :obj:`str`
+        """
+        if hasattr(self._tparent, "set_insname"):
+            return self._tparent.set_scan(insname)
 
     def append_devices(self, value, keys=None):
         """ append device parameters
@@ -977,6 +997,8 @@ class H5RedisGroup(H5Group):
         #      "data_policy": "no_policy"})
         # scan.prepare()
         # scan.start()
+        if REDIS and nxclass in ["NXinstrument", u'NXinstrument']:
+            self.set_insname(n)
         if REDIS and nxclass in ["NXentry", u'NXentry']:
             self.set_entryname(n)
 
