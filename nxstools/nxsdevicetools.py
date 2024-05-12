@@ -410,7 +410,7 @@ def _remoteCall(server, func, *args, **kwargs):
     :param args: function list arguments
     :type args: :obj:`list` <`and`>
     :param kwargs: function dict arguments
-    :type args: :obj:`dict` <:obj:`str` , `any`>
+    :type kwargs: :obj:`dict` <:obj:`str` , `any`>
     :returns: function result
     :rtype: `any`
     """

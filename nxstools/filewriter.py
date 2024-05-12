@@ -298,13 +298,13 @@ class FTHyperslab(object):
         """ constructor
 
         :param offset: a list of offsets
-        :type offset: :tuple:`int`
+        :type offset: :obj:`tuple` <:obj:`int`>
         :param block: a list of blocks
-        :type block: :tuple:`int`
+        :type block: :obj:`tuple` <:obj:`int`>
         :param count: a list of counts
-        :type count: :tuple:`int`
+        :type count: :obj:`tuple` <:obj:`int`>
         :param stride: a list of strides
-        :type stride: :tuple:`int`
+        :type stride: :obj:`tuple` <:obj:`int`>
         """
         self.offset = offset
         self.block = block
@@ -1187,7 +1187,7 @@ class FTAttribute(FTObject):
         """ write attribute value
 
         :param t: slice tuple
-        :type t: :obj:`tuple`
+        :type t: :obj:`tuple` <:obj:`int`>
         :param o: python object
         :type o: :obj:`any`
         """
@@ -1196,7 +1196,7 @@ class FTAttribute(FTObject):
         """ read attribute value
 
         :param t: slice tuple
-        :type t: :obj:`tuple`
+        :type t: :obj:`tuple` <:obj:`int`>
         :returns: python object
         :rtype: :obj:`any`
         """

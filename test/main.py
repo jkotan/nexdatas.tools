@@ -155,6 +155,7 @@ if H5CPP_AVAILABLE:
     import FileWriterH5Cpp_test
     import NXSCollectH5Cpp_test
     import NXSFileInfoH5Cpp_test
+    import H5CppRedisWriter_test
 if H5PY_AVAILABLE and H5CPP_AVAILABLE:
     import FileWriterH5CppH5PY_test
 
@@ -292,6 +293,9 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreatePyEvalH5Cpp_test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                H5CppRedisWriter_test))
     if H5CPP_AVAILABLE and H5PY_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(

@@ -1,3 +1,8 @@
+2024-05-10 Jan Kotanski <jankotan@gmail.com>
+	* add support for h5redis writer
+	* drop support for python2
+	* tagged as v4.0.0
+
 2024-03-27 Jan Kotanski <jankotan@gmail.com>
 	* add nxsetup wait subcommand (#624)
 	* add --timeout -no-wait for  nonxsetup subcommands (#624)
