@@ -35,34 +35,6 @@ from .nxsfileparser import (getdsname, getdssource,
                             )
 
 
-# 'datadesc': {'#Pt No': {'name': 'point_nb',
-#   'label': '#Pt No',
-#   'dtype': 'int64',
-#   'shape': []},
-#  'exp_mot03': {'min_value': 1.0,
-#   'max_value': 5.0,
-#   'instrument': '',
-#   'name': 'exp_mot03',
-#   'label': 'exp_mot03',
-#   'dtype': 'float64',
-#   'shape': [],
-#   'is_reference': True},
-
-# 'snapshot': {'exp_dmy01':
-# {'source': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/1/position',
-#   'name': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/1/position',
-#   'label': 'exp_dmy01',
-#   'dtype': 'float64',
-#   'shape': [],
-#   'value': 0.0},
-#  'exp_dmy02':
-# {'source': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/2/position',
-#   'name': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/2/position',
-#   'label': 'exp_dmy02',
-#   'dtype': 'float64',
-#   'shape': [],
-#   'value': 0.0},
-
 H5CPP = False
 try:
     from . import h5cppwriter as h5writer
@@ -401,6 +373,7 @@ class H5RedisFile(H5File):
         self.__channels = {}
         self.__datastore = None
         self.__entryname = ''
+        self.__insname = ''
         if REDIS and self.__redisurl:
             # print("FILENAME", self.name)
             self.__datastore = getDataStore(self.__redisurl)
@@ -431,6 +404,15 @@ class H5RedisFile(H5File):
         """
         with self.__scan_lock:
             self.__entryname = entryname
+
+    def set_insname(self, insname):
+        """ set instrument name
+
+        :param insname: instrument name
+        :type insname: :obj:`str`
+        """
+        with self.__scan_lock:
+            self.__insname = insname
 
     def append_devices(self, value, keys=None):
         """ append device info parameters
@@ -670,6 +652,7 @@ class H5RedisFile(H5File):
             localfname = H5RedisLink.getfilename(self.root())
             # print("FILE", localfname, n, nxclass)
             n = self.__entryname
+            insn = self.__insname
             if localfname:
                 dr, fn = os.path.split(localfname)
                 fbase, ext = os.path.splitext(fn)
@@ -696,6 +679,27 @@ class H5RedisFile(H5File):
                 if "beamtime_id" in sinfo:
                     scandct["proposal"] = sinfo["beamtime_id"]
                     sinfo.pop("beamtime_id")
+
+                beamline = ''
+                proposal = ''
+                root = self.root()
+                if n in root.names():
+                    entry = root().open(n)
+                    if insn in entry.names():
+                        ins = entry.open(insn)
+                        if "name" in ins.names():
+                            insname = ins.open("name")
+                            if insname.attributes.exists("short_name"):
+                                beamline = filewriter.first(
+                                    insname.attributes["short_name"].read())
+                                scandct["beamline"] = beamline
+                    if 'proposal' not in scandct or not scandct["proposal"]:
+                        if "experiment_identifier" in entry.names():
+                            proposal = filewriter.first(
+                                self.open("experiment_identifier").read())
+                            if proposal:
+                                scandct["proposal"] = proposal
+
                 scan = self.__datastore.create_scan(
                     scandct, info={"name": fbase})
                 self.set_scan(scan)
@@ -703,27 +707,7 @@ class H5RedisFile(H5File):
                 # scan.start()
 
             # print("SCAN", measurement, number)
-            # proposal = ''
-            # root = self.root()
-
             # print("NAMES", self.names())
-            # if "experiment_identifier" in self.names():
-            #     proposal = filewriter.first(
-            #         self.open("experiment_identifier").read())
-            # beamline = ''
-            # if "instrument" in self.names():
-            #     ins = self.open("instrument")
-            #     print("INSNAMES", ins.names())
-            #     if "name" in ins.names():
-            #         insname = self.open("name")
-            #         print("INSNAMES", insname.attributes.names())
-            #         if insname.attributes.exists("short_name"):
-            #             beamline = filewriter.first(
-            #                 insname.attributes["short_name"].read())
-            # if beamline:
-            #     scandct["beamline"] = beamline
-            # if proposal:
-            #     scandct["proposal"] = proposal
 
     def start(self):
         """ start scan
@@ -829,6 +813,15 @@ class H5RedisGroup(H5Group):
         """
         if hasattr(self._tparent, "set_entryname"):
             return self._tparent.set_scan(entryname)
+
+    def set_insname(self, insname):
+        """ set instrument name
+
+        :param insname: instrument name
+        :type insname: :obj:`str`
+        """
+        if hasattr(self._tparent, "set_insname"):
+            return self._tparent.set_scan(insname)
 
     def append_devices(self, value, keys=None):
         """ append device parameters
@@ -971,22 +964,12 @@ class H5RedisGroup(H5Group):
         :returns: file tree group
         :rtype: :class:`H5RedisGroup`
         """
-        # scan = data_store.create_scan(   ## create_group nxclass='NXentry'
-        #     {"name": "myscan",           # filename    "{name}_{number}.nxs"
-        #      "number": 1234,             # or NXentry name  "{name}_{number}"
-        #      "data_policy": "no_policy"})
-        # scan.prepare()
-        # scan.start()
+        if REDIS and nxclass in ["NXinstrument", u'NXinstrument']:
+            self.set_insname(n)
         if REDIS and nxclass in ["NXentry", u'NXentry']:
             self.set_entryname(n)
 
-            # redis = self.__redis
-            # if REDIS:
-            #     if nxclass in ["NXentry", u'NXentry'] \
-            #        and self.__redis is not None \
-            #        and str(type(self.__redis).__name__) == "DataStore":
             localfname = H5RedisLink.getfilename(self)
-            # print("FILE", localfname, n, nxclass)
             if localfname:
                 dr, fn = os.path.split(localfname)
                 fbase, ext = os.path.splitext(fn)
@@ -1007,23 +990,17 @@ class H5RedisGroup(H5Group):
                 "data_policy": 'no_policy',
                 "start_time":
                 datetime.datetime.now().astimezone().isoformat(),
-                "title": fbase,  # self.macro.macro_command,
-                "type": "scan",   # self.macro._name,
+                "title": fbase,
+                "type": "scan",
                 # "npoints": self.macro.nb_points,
                 # "count_time": self.macro.integ_time,
-                ##################################
-                # Device information
                 ##################################
                 # "acquisition_chain": self.acq_chain,
                 # "devices": self.devices,
                 # "channels": self.channels,
                 ##################################
-                # Plot metadata
-                ##################################
                 "display_extra": {"plotselect": []},
                 "plots": [{"kind": "curve-plot", "items": []}],
-                ##################################
-                # NeXus writer metadata
                 ##################################
                 # "save": self.nexus_save,
                 "filename": localfname,
@@ -1114,33 +1091,6 @@ class H5RedisGroup(H5Group):
         :returns: file tree field
         :rtype: :class:`H5RedisField`
         """
-        # encoder = NumericStreamEncoder(
-        #     dtype="int",
-        #     shape=[]
-        # )
-        # scalar_stream = scan.create_stream(
-        #     "exp_c01",                 # @nexdatas_name <= @nexdatas_source
-        #     encoder,                   # @type,  data.shape
-        #     info={"unit": "counts"}    # @units
-        # )
-
-        # stream_list = {}
-        # stream_list["exp_c01"] = scalar_stream
-        #
-        # # record
-        # scalar_stream.send(12)
-        # scalar_stream.send(22)
-        #
-        #
-        # # end
-        # stream.seal()
-        #
-        # scan.stop()
-        # scan.close()
-        #
-        # print("NAMES", self.names())
-        # if type_code not in ["string", "str"]:
-        #     print("CREATE FIELD", name, shape, chunk, type_code)
         return H5RedisField(
             h5imp=H5Group.create_field(
                 self, name, type_code, shape, chunk,
@@ -1452,14 +1402,9 @@ class H5RedisField(H5Field):
                         self.append_scaninfo(sds, ["datadesc", dsname])
 
                         if self.dtype not in ['string', b'string']:
-                            # if self.shape == (1,) or self.shape == [1,]:
-                            # print("dsname", dsname, "point_nb" in dsname)
                             device_type = "datasources"
-                            # if "timestamp" in dsname or "point_nb" in dsname:
                             if "timestamp" in dsname:
                                 device_type = "time"
-                            # elif "ct" in dsname:
-                            #     device_type = "counters"
 
                             self.append_devices(
                                 dsname, [device_type, 'channels'])

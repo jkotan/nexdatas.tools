@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSTOOLS" "1" "May 10, 2024" "4.0" "NXSTools"
+.TH "NXSTOOLS" "1" "May 12, 2024" "4.0" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .sp
@@ -6302,7 +6302,7 @@ constructor
 .UNINDENT
 .INDENT 0.0
 .TP
-.B class  nxstools.h5rediswriter.H5RedisField(h5object=None, tparent=None, h5imp=None, redis=None)
+.B class  nxstools.h5rediswriter.H5RedisField(h5object=None, tparent=None, h5imp=None)
 Bases: \fI\%H5CppField\fP
 .sp
 file tree file
@@ -6318,8 +6318,6 @@ constructor
 \fBtparent\fP (\fBFTObject\fP) \-\- treee parent
 .IP \(bu 2
 \fBh5imp\fP (\fBfilewriter.FTField\fP) \-\- h5 implementation field
-.IP \(bu 2
-\fBredis\fP (\fI\%any\fP) \-\- redis object
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6637,6 +6635,11 @@ scan parameter value
 .UNINDENT
 .INDENT 7.0
 .TP
+.B prepare()
+start scan
+.UNINDENT
+.INDENT 7.0
+.TP
 .B root()
 root object
 .INDENT 7.0
@@ -6734,17 +6737,32 @@ set device info parameters
 .UNINDENT
 .INDENT 7.0
 .TP
+.B set_entryname(entryname)
+set entry name
+.INDENT 7.0
+.TP
+.B Parameters
+\fBentryname\fP (\fI\%str\fP) \-\- entry name
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B set_insname(insname)
+set instrument name
+.INDENT 7.0
+.TP
+.B Parameters
+\fBinsname\fP (\fI\%str\fP) \-\- instrument name
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
 .B set_scan(scan)
 scan object
 .INDENT 7.0
 .TP
 .B Parameters
-.INDENT 7.0
-.IP \(bu 2
-\fBscan\fP \-\- scan object
-.IP \(bu 2
-\fBtype\fP \-\- \fBScan\fP
-.UNINDENT
+\fBscan\fP (\fBScan\fP) \-\- scan object
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6772,7 +6790,7 @@ start scan
 .UNINDENT
 .INDENT 0.0
 .TP
-.B class  nxstools.h5rediswriter.H5RedisGroup(h5object=None, tparent=None, h5imp=None, redis=None, nxclass=None)
+.B class  nxstools.h5rediswriter.H5RedisGroup(h5object=None, tparent=None, h5imp=None, nxclass=None)
 Bases: \fI\%H5CppGroup\fP
 .sp
 file tree group
@@ -7107,6 +7125,26 @@ set device parameters
 .IP \(bu 2
 \fBkeys\fP \-\- device parameter keys
 .UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B set_entryname(entryname)
+set entry name
+.INDENT 7.0
+.TP
+.B Parameters
+\fBentryname\fP (\fI\%str\fP) \-\- entry name
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B set_insname(insname)
+set instrument name
+.INDENT 7.0
+.TP
+.B Parameters
+\fBinsname\fP (\fI\%str\fP) \-\- instrument name
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
