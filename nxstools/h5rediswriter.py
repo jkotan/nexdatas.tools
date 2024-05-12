@@ -707,7 +707,6 @@ class H5RedisFile(H5File):
                 # scan.start()
 
             # print("SCAN", measurement, number)
-            # proposal = ''
             # print("NAMES", self.names())
 
     def start(self):
