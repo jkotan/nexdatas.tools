@@ -675,27 +675,27 @@ class H5RedisFile(H5File):
                 fbase, ext = os.path.splitext(fn)
                 sfbase = fbase.rsplit("_", 1)
                 sn = n.rsplit("_", 1)
-                number = 0
                 measurement = "scan"
                 try:
-                    number = int(sn[1])
                     if sn[0]:
                         measurement = sn[0]
                 except Exception:
                     try:
-                        number = int(sfbase[1])
                         if sfbase[0]:
                             measurement = sfbase[0]
                     except Exception:
-                        number = int(time.time() * 10)
                         measurement = fbase
-                scandct = {"name": fbase,
-                           "number": number,
+                sinfo = self.get_scaninfo()
+                scandct = {"name": sinfo["name"],
+                           "number": sinfo["scan_nb"],
                            "dataset": fbase,
                            "path": dr,
                            "session": "test_session",
                            "collection": measurement,
                            "data_policy": "no_policy"}
+                if "beamtime_id" in sinfo:
+                    scandct["proposal"] = sinfo["beamtime_id"]
+                    sinfo.pop("beamtime_id")
                 scan = self.__datastore.create_scan(
                     scandct, info={"name": fbase})
                 self.set_scan(scan)
@@ -993,34 +993,21 @@ class H5RedisGroup(H5Group):
                 sfbase = fbase.rsplit("_", 1)
                 sn = n.rsplit("_", 1)
                 number = 0
-                measurement = "scan"
                 try:
                     number = int(sn[1])
-                    if sn[0]:
-                        measurement = sn[0]
                 except Exception:
                     try:
                         number = int(sfbase[1])
-                        if sfbase[0]:
-                            measurement = sfbase[0]
                     except Exception:
                         number = int(time.time() * 10)
-                        measurement = fbase
-            scandct = {"name": fbase,
-                       "number": number,
-                       "dataset": fbase,
-                       "path": dr,
-                       "session": "test_session",
-                       "collection": measurement,
-                       "data_policy": "no_policy"}
             scinfo = {
-                "name": scandct["name"],
-                "scan_nb": scandct["number"],
-                "session_name": scandct["session"],
-                "data_policy": scandct["data_policy"],
+                "name": fbase,
+                "scan_nb": number,
+                "session_name": 'test_session',
+                "data_policy": 'no_policy',
                 "start_time":
                 datetime.datetime.now().astimezone().isoformat(),
-                "title": scandct["name"],  # self.macro.macro_command,
+                "title": fbase,  # self.macro.macro_command,
                 "type": "scan",   # self.macro._name,
                 # "npoints": self.macro.nb_points,
                 # "count_time": self.macro.integ_time,
@@ -1186,9 +1173,9 @@ class H5RedisGroup(H5Group):
                     datetime.datetime.now().astimezone().isoformat(),
                     ['end_time'], direct=True)
                 self.set_scaninfo('SUCCESS', ['end_reason'], direct=True)
-                print("stop SCAN")
+                # print("stop SCAN")
                 self.scan_command("close")
-                print("close SCAN")
+                # print("close SCAN")
         H5File.close(self)
         H5File.__del__(self)
 
@@ -1450,63 +1437,65 @@ class H5RedisField(H5Field):
                 #        self.__dsname, strategy, self.dtype,
                 #       type(o), str(t), units)
                 if strategy in ["STEP"] and dsnm:
-                    sds = {
-                        "name": dsname,
-                        "label": dsname,
-                        "strategy": strategy,
-                        "dtype": self.dtype
-                    }
-                    anames = [at.name for at in attrs]
-                    for key, vl in self.attrdesc.items():
-                        if vl[0] in anames:
-                            sds[key] = vl[1](
-                                filewriter.first(attrs[vl[0]].read()))
-                    self.append_scaninfo(sds, ["datadesc", dsname])
+                    if not shape or len(shape) < 2:
+                        sds = {
+                            "name": dsname,
+                            "label": dsname,
+                            "strategy": strategy,
+                            "dtype": self.dtype
+                        }
+                        anames = [at.name for at in attrs]
+                        for key, vl in self.attrdesc.items():
+                            if vl[0] in anames:
+                                sds[key] = vl[1](
+                                    filewriter.first(attrs[vl[0]].read()))
+                        self.append_scaninfo(sds, ["datadesc", dsname])
 
-                    if self.dtype not in ['string', b'string']:
-                        # if self.shape == (1,) or self.shape == [1,]:
-                        # print("dsname", dsname, "point_nb" in dsname)
-                        device_type = "datasources"
-                        # if "timestamp" in dsname or "point_nb" in dsname:
-                        if "timestamp" in dsname:
-                            device_type = "time"
-                        # elif "ct" in dsname:
-                        #     device_type = "counters"
+                        if self.dtype not in ['string', b'string']:
+                            # if self.shape == (1,) or self.shape == [1,]:
+                            # print("dsname", dsname, "point_nb" in dsname)
+                            device_type = "datasources"
+                            # if "timestamp" in dsname or "point_nb" in dsname:
+                            if "timestamp" in dsname:
+                                device_type = "time"
+                            # elif "ct" in dsname:
+                            #     device_type = "counters"
 
-                        self.append_devices(dsname, [device_type, 'channels'])
-                        ch = ChannelDict(
-                            device=device_type, dim=len(shape),
-                            display_name=dsname)
-                        if units:
-                            ch.unit = units
-                        self.set_channels(ch, [dsname])
+                            self.append_devices(
+                                dsname, [device_type, 'channels'])
+                            ch = ChannelDict(
+                                device=device_type, dim=len(shape),
+                                display_name=dsname)
+                            if units:
+                                ch.unit = units
+                            self.set_channels(ch, [dsname])
 
-                        encoder = NumericStreamEncoder(
-                            dtype=self.dtype,
-                            shape=shape)
-                        self.__stream = self.scan_command(
-                            "create_stream",
-                            dsname,
-                            encoder,
-                            info={"unit": units, "nexus_path": self.path})
-                        if not shape:
-                            # plot_type = 1
-                            # plot_axes = []
-                            axes = []
-                            self.append_scaninfo(
-                                {"kind": "curve-plot",
-                                 "name": dsname,
-                                 "items": axes}, ["plots"])
+                            encoder = NumericStreamEncoder(
+                                dtype=self.dtype,
+                                shape=shape)
+                            self.__stream = self.scan_command(
+                                "create_stream",
+                                dsname,
+                                encoder,
+                                info={"unit": units})
+                            if not shape:
+                                # plot_type = 1
+                                # plot_axes = []
+                                axes = []
+                                self.append_scaninfo(
+                                    {"kind": "curve-plot",
+                                     "name": dsname,
+                                     "items": axes}, ["plots"])
+                            else:
+                                self.append_scaninfo(
+                                    {"kind": "1d-plot",
+                                     "name": dsname,
+                                     "items": []},
+                                    ["plots"])
                         else:
-                            self.append_scaninfo(
-                                {"kind": "1d-plot",
-                                 "name": dsname,
-                                 "items": []},
-                                ["plots"])
-                    else:
-                        self.__jstream = self.scan_command(
-                            "create_stream",
-                            dsname, JsonStreamEncoder())
+                            self.__jstream = self.scan_command(
+                                "create_stream",
+                                dsname, JsonStreamEncoder())
                 else:
                     ids = {
                         "name": dsname,
@@ -1528,6 +1517,7 @@ class H5RedisField(H5Field):
                         dsn = dsn + "_"
                     self.append_scaninfo(ids, ["snapshot", dsn])
                     if self.name in ["program_name"]:
+                        # print("PROGRAM_NAME", anames)
                         if "npoints" in anames:
                             try:
                                 np = int(
@@ -1541,6 +1531,26 @@ class H5RedisField(H5Field):
                                     filewriter.first(attrs["count_time"]
                                                      .read()))
                                 self.set_scaninfo(ct, ["count_time"])
+                            except Exception:
+                                pass
+
+                        if "scan_command" in anames:
+                            try:
+                                sc = filewriter.first(
+                                    attrs["scan_command"].read())
+                                if sc:
+                                    self.set_scaninfo(
+                                        sc.split(" ")[0], ["name"])
+                                    self.set_scaninfo(sc, ["title"])
+                            except Exception:
+                                pass
+
+                        if "beamtime_id" in anames:
+                            try:
+                                btid = filewriter.first(
+                                    attrs["beamtime_id"].read())
+                                if btid:
+                                    self.set_scaninfo(btid, ["beamtime_id"])
                             except Exception:
                                 pass
 
