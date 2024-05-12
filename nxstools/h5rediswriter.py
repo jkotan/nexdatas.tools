@@ -35,34 +35,6 @@ from .nxsfileparser import (getdsname, getdssource,
                             )
 
 
-# 'datadesc': {'#Pt No': {'name': 'point_nb',
-#   'label': '#Pt No',
-#   'dtype': 'int64',
-#   'shape': []},
-#  'exp_mot03': {'min_value': 1.0,
-#   'max_value': 5.0,
-#   'instrument': '',
-#   'name': 'exp_mot03',
-#   'label': 'exp_mot03',
-#   'dtype': 'float64',
-#   'shape': [],
-#   'is_reference': True},
-
-# 'snapshot': {'exp_dmy01':
-# {'source': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/1/position',
-#   'name': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/1/position',
-#   'label': 'exp_dmy01',
-#   'dtype': 'float64',
-#   'shape': [],
-#   'value': 0.0},
-#  'exp_dmy02':
-# {'source': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/2/position',
-#   'name': 'tango://haso228jk.desy.de:10000/motor/dummy_mot_ctrl/2/position',
-#   'label': 'exp_dmy02',
-#   'dtype': 'float64',
-#   'shape': [],
-#   'value': 0.0},
-
 H5CPP = False
 try:
     from . import h5cppwriter as h5writer
@@ -709,6 +681,7 @@ class H5RedisFile(H5File):
                     sinfo.pop("beamtime_id")
 
                 beamline = ''
+                proposal = ''
                 root = self.root()
                 if n in root.names():
                     entry = root().open(n)
@@ -720,6 +693,12 @@ class H5RedisFile(H5File):
                                 beamline = filewriter.first(
                                     insname.attributes["short_name"].read())
                                 scandct["beamline"] = beamline
+                    if 'proposal' not in scandct or not scandct["proposal"]:
+                        if "experiment_identifier" in entry.names():
+                            proposal = filewriter.first(
+                                self.open("experiment_identifier").read())
+                            if proposal:
+                                scandct["proposal"] = proposal
 
                 scan = self.__datastore.create_scan(
                     scandct, info={"name": fbase})
@@ -730,11 +709,6 @@ class H5RedisFile(H5File):
             # print("SCAN", measurement, number)
             # proposal = ''
             # print("NAMES", self.names())
-            # if "experiment_identifier" in self.names():
-            #     proposal = filewriter.first(
-            #         self.open("experiment_identifier").read())
-            # if proposal:
-            #     scandct["proposal"] = proposal
 
     def start(self):
         """ start scan
@@ -1136,33 +1110,6 @@ class H5RedisGroup(H5Group):
         :returns: file tree field
         :rtype: :class:`H5RedisField`
         """
-        # encoder = NumericStreamEncoder(
-        #     dtype="int",
-        #     shape=[]
-        # )
-        # scalar_stream = scan.create_stream(
-        #     "exp_c01",                 # @nexdatas_name <= @nexdatas_source
-        #     encoder,                   # @type,  data.shape
-        #     info={"unit": "counts"}    # @units
-        # )
-
-        # stream_list = {}
-        # stream_list["exp_c01"] = scalar_stream
-        #
-        # # record
-        # scalar_stream.send(12)
-        # scalar_stream.send(22)
-        #
-        #
-        # # end
-        # stream.seal()
-        #
-        # scan.stop()
-        # scan.close()
-        #
-        # print("NAMES", self.names())
-        # if type_code not in ["string", "str"]:
-        #     print("CREATE FIELD", name, shape, chunk, type_code)
         return H5RedisField(
             h5imp=H5Group.create_field(
                 self, name, type_code, shape, chunk,
