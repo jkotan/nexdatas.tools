@@ -50,6 +50,7 @@ install_requires = [
     # 'pytango',
     # 'pninexus',
     # 'h5py',
+    # 'blissdata',
 ]
 
 
