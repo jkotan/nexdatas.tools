@@ -735,6 +735,31 @@ class H5RedisFile(H5File):
             self.scan_command("prepare")
             self.scan_command("start")
 
+    def finish(self):
+        """ start scan
+
+        """
+        # print("FINISH")
+        # print("CLOSE GROUP", self.__nxclass, self.name)
+        if REDIS:
+            # print("DELETE", self.name ,self.__nxclass)
+            self.scan_command("stop")
+            lpars = (self.get_scaninfo(["snapshot"]) or {})
+            pars = (self.get_scaninfo(
+                ["snapshot"], direct=True) or {})
+            pars.update(lpars)
+            self.set_scaninfo(pars, ["snapshot"])
+
+            self.set_scaninfo(
+                datetime.datetime.now().astimezone().isoformat(),
+                ['end_time'], direct=True)
+            self.set_scaninfo('SUCCESS', ['end_reason'], direct=True)
+            # print("stop SCAN")
+            self.scan_command("close")
+            # print("close SCAN")
+            # self.set_scan(None)
+            #    print("SCAN None")
+
 
 class H5RedisGroup(H5Group):
 
@@ -1109,23 +1134,6 @@ class H5RedisGroup(H5Group):
     def __del__(self):
         """ close the group
         """
-        # print("CLOSE GROUP", self.__nxclass, self.name)
-        if REDIS:
-            if self.__nxclass in ['NXentry', u'NXentry']:
-                self.scan_command("stop")
-                lpars = (self.get_scaninfo(["snapshot"]) or {})
-                pars = (self.get_scaninfo(
-                    ["snapshot"], direct=True) or {})
-                pars.update(lpars)
-                self.set_scaninfo(pars, ["snapshot"])
-
-                self.set_scaninfo(
-                    datetime.datetime.now().astimezone().isoformat(),
-                    ['end_time'], direct=True)
-                self.set_scaninfo('SUCCESS', ['end_reason'], direct=True)
-                # print("stop SCAN")
-                self.scan_command("close")
-                # print("close SCAN")
         H5File.close(self)
         H5File.__del__(self)
 
@@ -1408,11 +1416,15 @@ class H5RedisField(H5Field):
 
                             self.append_devices(
                                 dsname, [device_type, 'channels'])
-                            ch = ChannelDict(
-                                device=device_type, dim=len(shape),
-                                display_name=dsname)
                             if units:
-                                ch.unit = units
+                                ch = ChannelDict(
+                                    device=device_type, dim=len(shape),
+                                    display_name=dsname, unit=units)
+                            else:
+                                ch = ChannelDict(
+                                    device=device_type, dim=len(shape),
+                                    display_name=dsname)
+                            # print("CHANNEL", dsname)
                             self.set_channels(ch, [dsname])
 
                             encoder = NumericStreamEncoder(
