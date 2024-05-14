@@ -371,6 +371,7 @@ class H5RedisFile(H5File):
         self.__scaninfo = {}
         self.__devices = {}
         self.__channels = {}
+        self.__streams = {}
         self.__datastore = None
         self.__entryname = ''
         self.__insname = ''
@@ -386,6 +387,17 @@ class H5RedisFile(H5File):
         """
         return H5RedisGroup(h5imp=H5File.root(self),
                             nxclass="NXroot")
+
+    def append_stream(self, name, stream):
+        """ scan object
+
+        :param name: stream name
+        :type name: :obj:`str`
+        :param scan: stream object
+        :type scan: :class:`Stream`
+        """
+        with self.__scan_lock:
+            self.__streams[name] = stream
 
     def set_scan(self, scan):
         """ scan object
@@ -742,7 +754,15 @@ class H5RedisFile(H5File):
         # print("FINISH")
         # print("CLOSE GROUP", self.__nxclass, self.name)
         if REDIS:
-            # print("DELETE", self.name ,self.__nxclass)
+            for stream in self.__streams.values():
+                try:
+                    if hasattr(stream, "seal"):
+                        stream.seal()
+                        # print("SEAL", stream.name)
+                except Exception as e:
+                    print("Error sealing stream %s" % stream.name)
+                    print(e)
+                continue
             self.scan_command("stop")
             lpars = (self.get_scaninfo(["snapshot"]) or {})
             pars = (self.get_scaninfo(
@@ -829,6 +849,17 @@ class H5RedisGroup(H5Group):
         """
         if hasattr(self._tparent, "set_scan"):
             return self._tparent.set_scan(scan)
+
+    def append_stream(self, name, stream):
+        """ scan object
+
+        :param name: stream name
+        :type name: :obj:`str`
+        :param scan: stream object
+        :type scan: :class:`Stream`
+        """
+        if hasattr(self._tparent, "append_stream"):
+            return self._tparent.append_stream(name, stream)
 
     def set_entryname(self, entryname):
         """ set entry name
@@ -1131,17 +1162,6 @@ class H5RedisGroup(H5Group):
         return H5RedisAttributeManager(
             h5imp=super(H5RedisGroup, self).attributes)
 
-    def __del__(self):
-        """ close the group
-        """
-        H5File.close(self)
-        H5File.__del__(self)
-
-    def close(self):
-        """ close the group
-        """
-        H5File.close(self)
-
     class H5RedisGroupIter(object):
 
         def __init__(self, group=None):
@@ -1219,6 +1239,17 @@ class H5RedisField(H5Field):
             "source": ["nexdatas_source", getdssource],
             # "strategy": ["nexdatas_strategy", str],
         }
+
+    def append_stream(self, name, stream):
+        """ scan object
+
+        :param name: stream name
+        :type name: :obj:`str`
+        :param scan: stream object
+        :type scan: :class:`Stream`
+        """
+        if hasattr(self._tparent, "append_stream"):
+            return self._tparent.append_stream(name, stream)
 
     def set_scan(self, scan):
         """ scan object
@@ -1411,7 +1442,8 @@ class H5RedisField(H5Field):
 
                         if self.dtype not in ['string', b'string']:
                             device_type = "datasources"
-                            if "timestamp" in dsname:
+                            if "timestamp" in dsname or \
+                               dsname.endswith("_time"):
                                 device_type = "time"
 
                             self.append_devices(
@@ -1449,10 +1481,12 @@ class H5RedisField(H5Field):
                                      "name": dsname,
                                      "items": []},
                                     ["plots"])
+                            self.append_stream(dsname, self.__stream)
                         else:
                             self.__jstream = self.scan_command(
                                 "create_stream",
                                 dsname, JsonStreamEncoder())
+                            self.append_stream(dsname, self.__jstream)
                 else:
                     ids = {
                         "name": dsname,
@@ -1520,18 +1554,6 @@ class H5RedisField(H5Field):
                     jo = {"value": o}
                 self.__jstream.send(jo)
         H5Field.__setitem__(self, t, o)
-
-    def __del__(self):
-        """ close the field
-        """
-        if REDIS:
-            if hasattr(self.__stream, "seal"):
-                # print("STREAM SEAL", self.__dsname)
-                self.__stream.seal()
-            if hasattr(self.__jstream, "seal"):
-                # print("STREAM SEAL", self.__dsname)
-                self.__jstream.seal()
-        H5Field.__del__(self)
 
 
 class H5RedisLink(H5Link):
