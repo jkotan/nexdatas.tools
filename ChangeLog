@@ -1,8 +1,12 @@
+2024-05-15 Jan Kotanski <jankotan@gmail.com>
+	* reduce number of plots in h5redis writer (#635)
+	* tagged as v4.0.2
+
 2024-05-12 Jan Kotanski <jankotan@gmail.com>
 	* add finish for h5redis writer
 	* tagged as v4.0.1
 
-2024-05-10 Jan Kotanski <jankotan@gmail.com>
+024-05-10 Jan Kotanski <jankotan@gmail.com>
 	* add support for h5redis writer
 	* drop support for python2
 	* tagged as v4.0.0
