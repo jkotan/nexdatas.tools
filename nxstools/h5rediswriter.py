@@ -82,6 +82,41 @@ except Exception:
     ChannelDict = None
 
 
+attrdesc = {
+    "nexus_type": ["type", str],
+    "unit": ["units", str],
+    "depends_on": ["depends_on", str],
+    "trans_type": ["transformation_type", str],
+    "trans_vector": ["vector", str],
+    "trans_offset": ["offset", str],
+    # "source_name": ["nexdatas_source", getdsname],
+    # "source_type": ["nexdatas_source", getdstype],
+    "source": ["nexdatas_source", getdssource],
+    # "strategy": ["nexdatas_strategy", str],
+}
+
+
+def splitstr(text):
+    """ split string separated by space
+
+    :param text: text to split
+    :type text: :obj:`str`
+    :param text: split text
+    :type text: :obj:`list` <:obj:`str`>
+    """
+    return text.split(" ")
+
+
+progattrdesc = {
+    "npoints": ["npoints", str, True],
+    "count_time": ["count_time", float, True],
+    "measurement_group_channels": [
+        "measurement_group_channels", splitstr, True],
+    "title": ["scan_command", str, False],
+    "beamtime_id": ["beamtime_id", str, False],
+}
+
+
 def nptype(dtype):
     """ converts to numpy types
 
@@ -371,6 +406,8 @@ class H5RedisFile(H5File):
         self.__scaninfo = {}
         self.__devices = {}
         self.__channels = {}
+        self.__streams = {}
+        self.__mgchannels = []
         self.__datastore = None
         self.__entryname = ''
         self.__insname = ''
@@ -386,6 +423,17 @@ class H5RedisFile(H5File):
         """
         return H5RedisGroup(h5imp=H5File.root(self),
                             nxclass="NXroot")
+
+    def append_stream(self, name, stream):
+        """ scan object
+
+        :param name: stream name
+        :type name: :obj:`str`
+        :param scan: stream object
+        :type scan: :class:`Stream`
+        """
+        with self.__scan_lock:
+            self.__streams[name] = stream
 
     def set_scan(self, scan):
         """ scan object
@@ -515,6 +563,102 @@ class H5RedisFile(H5File):
                 ky = rkeys.pop()
                 dinfo = dinfo[ky]
             return dinfo
+
+    def reset_scaninfo(self, entryname):
+        """ reset scan info
+
+        :param entryname: NXentry group name
+        :type entryname: :obj:`str`
+        """
+        self.set_entryname(entryname)
+
+        localfname = H5RedisLink.getfilename(self.root())
+        if localfname:
+            dr, fn = os.path.split(localfname)
+            fbase, ext = os.path.splitext(fn)
+            sfbase = fbase.rsplit("_", 1)
+            sn = entryname.rsplit("_", 1)
+            number = 0
+            try:
+                number = int(sn[1])
+            except Exception:
+                try:
+                    number = int(sfbase[1])
+                except Exception:
+                    number = int(time.time() * 10)
+        scinfo = {
+            "name": fbase,
+            "scan_nb": number,
+            "session_name": 'test_session',
+            "data_policy": 'no_policy',
+            "user_name": getpass.getuser(),
+            "start_time":
+            datetime.datetime.now().astimezone().isoformat(),
+            "title": fbase,
+            "type": "scan",
+            "npoints": 1,
+            "count_time": 0.0,
+            ##################################
+            "acquisition_chain": {},
+            "devices": {},
+            "channels": {},
+            ##################################
+            "display_extra": {"plotselect": []},
+            "plots": [{"kind": "curve-plot", "items": []}],
+            ##################################
+            "filename": localfname,
+            "images_path": os.path.splitext(localfname)[0],
+            "publisher": "test",
+            "publisher_version": "1.0",
+            "datadesc": {},
+            "snapshot": {},
+            "measurement_group_channels": [],
+            "beamtime_id": "",
+            "scan_meta_categories": [
+                "snapshot",
+                "datadesc",
+                #     "positioners",
+                #     "nexuswriter",
+                #     "instrument",
+                #     "technique",
+            ],
+            # "save": self.nexus_save,
+            # "data_writer": "nexus",
+            # "writer_options": {
+            #      "chunk_options": {},
+            #      "separate_scan_files": False},
+            # "nexuswriter": {
+            #     "devices": {},
+            #     "instrument_info": {
+            #         "name": "desy-"+self.scan.beamline,
+            #         "name@short_name": self.scan.beamline},
+            #     "masterfiles": masterfiles,
+            #     "technique": {},
+            # },
+            # "positioners": {},
+            # "instrument": {},
+        }
+        self.set_scaninfo(scinfo)
+        self.set_devices({})
+        # self.set_devices(
+        #     DeviceDict(name="counters", channels=[],
+        #   metadata={}),
+        #     ["counters"])
+        # self.set_devices(
+        #     DeviceDict(name="axis", channels=[], metadata={}),
+        #     ["axis"])
+        self.set_devices(
+            DeviceDict(
+                name="mg_channels", channels=[], metadata={}),
+            ["mg_channels"])
+        self.set_devices(
+            DeviceDict(name="time", channels=[], metadata={}),
+            ["time"])
+        self.set_devices(
+            DeviceDict(
+                name="observables", channels=[], metadata={}),
+            ["observables"])
+        self.set_channels({})
 
     def set_scaninfo(self, value, keys=None, direct=False):
         """ set scan info parameters
@@ -684,7 +828,7 @@ class H5RedisFile(H5File):
                 proposal = ''
                 root = self.root()
                 if n in root.names():
-                    entry = root().open(n)
+                    entry = root.open(n)
                     if insn in entry.names():
                         ins = entry.open(insn)
                         if "name" in ins.names():
@@ -716,6 +860,9 @@ class H5RedisFile(H5File):
         if REDIS:
             acq_chain = {}
             devices = self.get_devices()
+            for n, dd in devices.items():
+                if "channels" in dd:
+                    dd["channels"] = list(sorted(dd["channels"]))
             self.set_scaninfo(devices, ["devices"])
             acq_chain["axis"] = ChainDict(
                 top_master="time",
@@ -742,7 +889,15 @@ class H5RedisFile(H5File):
         # print("FINISH")
         # print("CLOSE GROUP", self.__nxclass, self.name)
         if REDIS:
-            # print("DELETE", self.name ,self.__nxclass)
+            for stream in self.__streams.values():
+                try:
+                    if hasattr(stream, "seal"):
+                        stream.seal()
+                        # print("SEAL", stream.name)
+                except Exception as e:
+                    print("Error sealing stream %s" % stream.name)
+                    print(e)
+                continue
             self.scan_command("stop")
             lpars = (self.get_scaninfo(["snapshot"]) or {})
             pars = (self.get_scaninfo(
@@ -830,6 +985,17 @@ class H5RedisGroup(H5Group):
         if hasattr(self._tparent, "set_scan"):
             return self._tparent.set_scan(scan)
 
+    def append_stream(self, name, stream):
+        """ scan object
+
+        :param name: stream name
+        :type name: :obj:`str`
+        :param scan: stream object
+        :type scan: :class:`Stream`
+        """
+        if hasattr(self._tparent, "append_stream"):
+            return self._tparent.append_stream(name, stream)
+
     def set_entryname(self, entryname):
         """ set entry name
 
@@ -902,6 +1068,15 @@ class H5RedisGroup(H5Group):
         """
         if hasattr(self._tparent, "get_channels"):
             return self._tparent.get_channels(keys)
+
+    def reset_scaninfo(self, entryname):
+        """ reset scan info
+
+        :param entryname: NXentry group name
+        :type entryname: :obj:`str`
+        """
+        if hasattr(self._tparent, "reset_scaninfo"):
+            return self._tparent.reset_scaninfo(entryname)
 
     def set_scaninfo(self, value, keys=None, direct=False):
         """ set scan info parameters
@@ -992,93 +1167,7 @@ class H5RedisGroup(H5Group):
         if REDIS and nxclass in ["NXinstrument", u'NXinstrument']:
             self.set_insname(n)
         if REDIS and nxclass in ["NXentry", u'NXentry']:
-            self.set_entryname(n)
-
-            localfname = H5RedisLink.getfilename(self)
-            if localfname:
-                dr, fn = os.path.split(localfname)
-                fbase, ext = os.path.splitext(fn)
-                sfbase = fbase.rsplit("_", 1)
-                sn = n.rsplit("_", 1)
-                number = 0
-                try:
-                    number = int(sn[1])
-                except Exception:
-                    try:
-                        number = int(sfbase[1])
-                    except Exception:
-                        number = int(time.time() * 10)
-            scinfo = {
-                "name": fbase,
-                "scan_nb": number,
-                "session_name": 'test_session',
-                "data_policy": 'no_policy',
-                "start_time":
-                datetime.datetime.now().astimezone().isoformat(),
-                "title": fbase,
-                "type": "scan",
-                # "npoints": self.macro.nb_points,
-                # "count_time": self.macro.integ_time,
-                ##################################
-                # "acquisition_chain": self.acq_chain,
-                # "devices": self.devices,
-                # "channels": self.channels,
-                ##################################
-                "display_extra": {"plotselect": []},
-                "plots": [{"kind": "curve-plot", "items": []}],
-                ##################################
-                # "save": self.nexus_save,
-                "filename": localfname,
-                # "images_path": images_path,
-                "publisher": "test",
-                "publisher_version": "1.0",
-                # "data_writer": "nexus",
-                # "writer_options": {
-                #      "chunk_options": {},
-                #      "separate_scan_files": False},
-                "scan_meta_categories": [
-                    #     "positioners",
-                    #     "nexuswriter",
-                    #     "instrument",
-                    #     "technique",
-                    "snapshot",
-                    "datadesc",
-                ],
-                # "nexuswriter": {
-                #     "devices": {},
-                #     "instrument_info": {
-                #         "name": "desy-"+self.scan.beamline,
-                #         "name@short_name": self.scan.beamline},
-                #     "masterfiles": masterfiles,
-                #     "technique": {},
-                # },
-                # "positioners": {},
-                # "instrument": {},
-                "datadesc": {},
-                "snapshot": {},
-                ##################################
-                # Mandatory by the schema
-                ##################################
-                "user_name": getpass.getuser(),
-            }
-            self.set_scaninfo(scinfo)
-            self.set_devices({})
-            self.set_devices(
-                DeviceDict(name="time", channels=[], metadata={}),
-                ["time"])
-            # self.set_devices(
-            #     DeviceDict(name="counters", channels=[],
-            #   metadata={}),
-            #     ["counters"])
-            # self.set_devices(
-            #     DeviceDict(name="axis", channels=[], metadata={}),
-            #     ["axis"])
-            self.set_devices(
-                DeviceDict(
-                    name="datasources", channels=[], metadata={}),
-                ["datasources"])
-            self.set_channels({})
-            # print("CREATe", n, nxclass)
+            self.reset_scaninfo(n)
         return H5RedisGroup(
             h5imp=H5Group.create_group(self, n, nxclass),
             nxclass=nxclass)
@@ -1130,17 +1219,6 @@ class H5RedisGroup(H5Group):
         """
         return H5RedisAttributeManager(
             h5imp=super(H5RedisGroup, self).attributes)
-
-    def __del__(self):
-        """ close the group
-        """
-        H5File.close(self)
-        H5File.__del__(self)
-
-    def close(self):
-        """ close the group
-        """
-        H5File.close(self)
 
     class H5RedisGroupIter(object):
 
@@ -1207,18 +1285,17 @@ class H5RedisField(H5Field):
         self.__dsname = None
         self.__stream = None
         self.__jstream = None
-        self.attrdesc = {
-            "nexus_type": ["type", str],
-            "units": ["units", str],
-            "depends_on": ["depends_on", str],
-            "trans_type": ["transformation_type", str],
-            "trans_vector": ["vector", str],
-            "trans_offset": ["offset", str],
-            # "source_name": ["nexdatas_source", getdsname],
-            # "source_type": ["nexdatas_source", getdstype],
-            "source": ["nexdatas_source", getdssource],
-            # "strategy": ["nexdatas_strategy", str],
-        }
+
+    def append_stream(self, name, stream):
+        """ scan object
+
+        :param name: stream name
+        :type name: :obj:`str`
+        :param scan: stream object
+        :type scan: :class:`Stream`
+        """
+        if hasattr(self._tparent, "append_stream"):
+            return self._tparent.append_stream(name, stream)
 
     def set_scan(self, scan):
         """ scan object
@@ -1364,6 +1441,168 @@ class H5RedisField(H5Field):
         return H5RedisAttributeManager(
             h5imp=super(H5RedisField, self).attributes)
 
+    def __set_step_channel_info(self, dsname, units, shape, strategy="STEP"):
+        """ set step channel info
+
+        :param dsname: datasource name
+        :type dsname: :obj:`str`
+        :param units: datasource units
+        :type units: :obj:`str`
+        :param shape: datasource shape
+        :type shape: :obj:`list` <:obj:`int`>
+        :param strategy: datasource strategy
+        :type strategy: :obj:`str`
+        """
+        attrs = self.attributes
+        sds = {
+            "name": dsname,
+            "label": dsname,
+            "strategy": strategy,
+            "dtype": self.dtype
+        }
+        anames = [at.name for at in attrs]
+        for key, vl in attrdesc.items():
+            if vl[0] in anames:
+                sds[key] = vl[1](
+                    filewriter.first(attrs[vl[0]].read()))
+        self.append_scaninfo(sds, ["datadesc", dsname])
+        if self.dtype not in ['string', b'string']:
+            mgchannels = self.get_scaninfo(
+                ["measurement_group_channels"])
+            device_type = "observables"
+            # if "timestamp" in dsname or \
+            #    dsname.endswith("_time"):
+            if "timestamp" in dsname:
+                device_type = "time"
+            elif dsname in mgchannels:
+                device_type = "mg_channels"
+
+            self.append_devices(
+                dsname, [device_type, 'channels'])
+            if units:
+                ch = ChannelDict(
+                    device=device_type, dim=len(shape),
+                    display_name=dsname, unit=units)
+            else:
+                ch = ChannelDict(
+                    device=device_type, dim=len(shape),
+                    display_name=dsname)
+            # print("CHANNEL", dsname)
+            self.set_channels(ch, [dsname])
+
+            encoder = NumericStreamEncoder(
+                dtype=self.dtype,
+                shape=shape)
+            self.__stream = self.scan_command(
+                "create_stream",
+                dsname,
+                encoder,
+                info={"unit": units})
+            if not shape:
+                # plot_type = 1
+                # plot_axes = []
+                # axes = []
+                # self.append_scaninfo(
+                #     {"kind": "curve-plot",
+                #      "name": dsname,
+                #      "items": axes}, ["plots"])
+                pass
+            else:
+                self.append_scaninfo(
+                    {"kind": "1d-plot",
+                     "name": dsname,
+                     "items": [
+                         # {
+                         #     "kind": "curve",
+                         #     "y": dsname
+                         # }
+                     ]},
+                    ["plots"])
+            self.append_stream(dsname, self.__stream)
+        else:
+            self.__jstream = self.scan_command(
+                "create_stream",
+                dsname, JsonStreamEncoder())
+            self.append_stream(dsname, self.__jstream)
+
+    def __set_init_channel_info(self, dsname, units, shape, strategy, o):
+        """ set init channel info
+
+        :param dsname: datasource name
+        :type dsname: :obj:`str`
+        :param units: datasource units
+        :type units: :obj:`str`
+        :param shape: datasource shape
+        :type shape: :obj:`list` <:obj:`int`>
+        :param strategy: datasource strategy i.e. INIT or FINAL
+        :type strategy: :obj:`str`
+        :param o: object value to write
+        :type o: :obj:`any`
+        """
+        attrs = self.attributes
+        ids = {
+            "name": dsname,
+            "label": dsname,
+            "value": o,
+            "strategy": strategy,
+            "dtype": self.dtype
+        }
+
+        anames = [at.name for at in attrs]
+        for key, vl in attrdesc.items():
+            if vl[0] in anames:
+                ids[key] = vl[1](
+                    filewriter.first(attrs[vl[0]].read()))
+        ids["nexus_path"] = self.path
+        pars = (self.get_scaninfo(["snapshot"]) or {}).keys()
+        dsn = dsname
+        while dsn in pars:
+            dsn = dsn + "_"
+        self.append_scaninfo(ids, ["snapshot", dsn])
+        if self.name in ["program_name"]:
+            for key, vl in progattrdesc.items():
+                if vl[0] in anames:
+                    try:
+                        np = vl[1](
+                            filewriter.first(attrs[vl[0]].read()))
+                        if vl[2] or np:
+                            self.set_scaninfo(np, [key])
+                    except Exception as e:
+                        print(str(e))
+                        pass
+
+    def __set_channel_info(self, o):
+        """ set channel value
+
+        :param o: object value to write
+        :type o: :obj:`any`
+        """
+
+        attrs = self.attributes
+        strategy = filewriter.first(attrs["nexdatas_strategy"].read())
+        dsname = "%s_%s" % (self._tparent.name, self.name)
+        dsnm = ""
+        if "nexdatas_source" in attrs.names():
+            dsnm = getdsname(
+                filewriter.first(attrs["nexdatas_source"].read()))
+            dsname = dsnm
+        units = ""
+        if "units" in attrs.names():
+            units = filewriter.first(attrs["units"].read())
+        self.__dsname = dsname
+        shape = []
+        if hasattr(o, "shape"):
+            shape = o.shape
+        # print("SETITEM", self, self.name, self.shape,
+        #       self.attributes.names(),
+        #        self.__dsname, strategy, self.dtype,
+        #       type(o), str(t), units)
+        if strategy in ["STEP"] and dsnm:
+            if not shape or len(shape) < 2:
+                self.__set_step_channel_info(dsname, units, shape, strategy)
+        else:
+            self.__set_init_channel_info(dsname, units, shape, strategy, o)
+
     def __setitem__(self, t, o):
         """ set value
 
@@ -1375,143 +1614,8 @@ class H5RedisField(H5Field):
         if REDIS:
             if self.__dsname is None and \
                "nexdatas_strategy" in self.attributes.names():
-                attrs = self.attributes
-                strategy = filewriter.first(attrs["nexdatas_strategy"].read())
-                dsname = "%s_%s" % (self._tparent.name, self.name)
-                dsnm = ""
-                if "nexdatas_source" in attrs.names():
-                    dsnm = getdsname(
-                        filewriter.first(attrs["nexdatas_source"].read()))
-                    dsname = dsnm
-                units = ""
-                if "units" in attrs.names():
-                    units = filewriter.first(attrs["units"].read())
-                self.__dsname = dsname
-                shape = []
-                if hasattr(o, "shape"):
-                    shape = o.shape
-                # print("SETITEM", self, self.name, self.shape,
-                #       self.attributes.names(),
-                #        self.__dsname, strategy, self.dtype,
-                #       type(o), str(t), units)
-                if strategy in ["STEP"] and dsnm:
-                    if not shape or len(shape) < 2:
-                        sds = {
-                            "name": dsname,
-                            "label": dsname,
-                            "strategy": strategy,
-                            "dtype": self.dtype
-                        }
-                        anames = [at.name for at in attrs]
-                        for key, vl in self.attrdesc.items():
-                            if vl[0] in anames:
-                                sds[key] = vl[1](
-                                    filewriter.first(attrs[vl[0]].read()))
-                        self.append_scaninfo(sds, ["datadesc", dsname])
-
-                        if self.dtype not in ['string', b'string']:
-                            device_type = "datasources"
-                            if "timestamp" in dsname:
-                                device_type = "time"
-
-                            self.append_devices(
-                                dsname, [device_type, 'channels'])
-                            if units:
-                                ch = ChannelDict(
-                                    device=device_type, dim=len(shape),
-                                    display_name=dsname, unit=units)
-                            else:
-                                ch = ChannelDict(
-                                    device=device_type, dim=len(shape),
-                                    display_name=dsname)
-                            # print("CHANNEL", dsname)
-                            self.set_channels(ch, [dsname])
-
-                            encoder = NumericStreamEncoder(
-                                dtype=self.dtype,
-                                shape=shape)
-                            self.__stream = self.scan_command(
-                                "create_stream",
-                                dsname,
-                                encoder,
-                                info={"unit": units})
-                            if not shape:
-                                # plot_type = 1
-                                # plot_axes = []
-                                axes = []
-                                self.append_scaninfo(
-                                    {"kind": "curve-plot",
-                                     "name": dsname,
-                                     "items": axes}, ["plots"])
-                            else:
-                                self.append_scaninfo(
-                                    {"kind": "1d-plot",
-                                     "name": dsname,
-                                     "items": []},
-                                    ["plots"])
-                        else:
-                            self.__jstream = self.scan_command(
-                                "create_stream",
-                                dsname, JsonStreamEncoder())
-                else:
-                    ids = {
-                        "name": dsname,
-                        "label": dsname,
-                        "value": o,
-                        "strategy": strategy,
-                        "dtype": self.dtype
-                    }
-
-                    anames = [at.name for at in attrs]
-                    for key, vl in self.attrdesc.items():
-                        if vl[0] in anames:
-                            ids[key] = vl[1](
-                                filewriter.first(attrs[vl[0]].read()))
-                    ids["nexus_path"] = self.path
-                    pars = (self.get_scaninfo(["snapshot"]) or {}).keys()
-                    dsn = dsname
-                    while dsn in pars:
-                        dsn = dsn + "_"
-                    self.append_scaninfo(ids, ["snapshot", dsn])
-                    if self.name in ["program_name"]:
-                        # print("PROGRAM_NAME", anames)
-                        if "npoints" in anames:
-                            try:
-                                np = int(
-                                    filewriter.first(attrs["npoints"].read()))
-                                self.set_scaninfo(np, ["npoints"])
-                            except Exception:
-                                pass
-                        if "count_time" in anames:
-                            try:
-                                ct = float(
-                                    filewriter.first(attrs["count_time"]
-                                                     .read()))
-                                self.set_scaninfo(ct, ["count_time"])
-                            except Exception:
-                                pass
-
-                        if "scan_command" in anames:
-                            try:
-                                sc = filewriter.first(
-                                    attrs["scan_command"].read())
-                                if sc:
-                                    self.set_scaninfo(
-                                        sc.split(" ")[0], ["name"])
-                                    self.set_scaninfo(sc, ["title"])
-                            except Exception:
-                                pass
-
-                        if "beamtime_id" in anames:
-                            try:
-                                btid = filewriter.first(
-                                    attrs["beamtime_id"].read())
-                                if btid:
-                                    self.set_scaninfo(btid, ["beamtime_id"])
-                            except Exception:
-                                pass
-
-        if self.__dsname is not None:
+                self.__set_channel_info(o)
+        if REDIS and self.__dsname is not None:
             if hasattr(self.__stream, "send"):
                 self.__stream.send(o)
             jo = o
@@ -1520,18 +1624,6 @@ class H5RedisField(H5Field):
                     jo = {"value": o}
                 self.__jstream.send(jo)
         H5Field.__setitem__(self, t, o)
-
-    def __del__(self):
-        """ close the field
-        """
-        if REDIS:
-            if hasattr(self.__stream, "seal"):
-                # print("STREAM SEAL", self.__dsname)
-                self.__stream.seal()
-            if hasattr(self.__jstream, "seal"):
-                # print("STREAM SEAL", self.__dsname)
-                self.__jstream.seal()
-        H5Field.__del__(self)
 
 
 class H5RedisLink(H5Link):
