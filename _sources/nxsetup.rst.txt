@@ -60,7 +60,7 @@ nxsetup set
      examples:
 	   nxsetup set
 	   nxsetup set -b p09 -m haso228 -u p09user -d nxsconfig NXSConfigServer
-	   nxsetup set nexuswriter/haso228  -k NexusWriter  -y '{"p00/bliss_nexuswriter/test_session":{"session":"test_session","beacon_host":"haso228:25000"}}'  -t
+	   nxsetup set NexusWriter/haso228  -k NexusWriter  -y '{"p00/bliss_nexuswriter/test_session":{"session":"test_session","beacon_host":"haso228:25000"}}'  -t
 
 
 nxsetup restart

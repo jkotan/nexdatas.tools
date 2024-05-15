@@ -4,6 +4,54 @@ nxstools package
 Submodules
 ----------
 
+nxstools.filenamegenerator module
+---------------------------------
+
+.. automodule:: nxstools.filenamegenerator
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.filewriter module
+--------------------------
+       
+.. automodule:: nxstools.filewriter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.h5cppwriter module
+---------------------------
+       
+.. automodule:: nxstools.h5cppwriter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.h5pywriter module
+--------------------------
+       
+.. automodule:: nxstools.h5pywriter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.h5rediswriter module
+-----------------------------
+       
+.. automodule:: nxstools.h5rediswriter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.nxsargparser module
+----------------------------
+
+.. automodule:: nxstools.nxsargparser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 nxstools.nxscollect module
 --------------------------
        
@@ -28,6 +76,14 @@ nxstools.nxscreate module
     :undoc-members:
     :show-inheritance:
 
+nxstools.nxscreator module
+--------------------------
+
+.. automodule:: nxstools.nxscreator
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 nxstools.nxsdata module
 -----------------------
 
@@ -36,18 +92,18 @@ nxstools.nxsdata module
     :undoc-members:
     :show-inheritance:
 
-nxstools.nxsetup module
------------------------
+nxstools.nxsdevicetools module
+------------------------------
 
-.. automodule:: nxstools.nxsetup
+.. automodule:: nxstools.nxsdevicetools
     :members:
     :undoc-members:
     :show-inheritance:
 
-nxstools.nxscreator module
---------------------------
+nxstools.nxsetup module
+-----------------------
 
-.. automodule:: nxstools.nxscreator
+.. automodule:: nxstools.nxsetup
     :members:
     :undoc-members:
     :show-inheritance:
@@ -64,14 +120,6 @@ nxstools.nxsfileparser module
 -----------------------------
 
 .. automodule:: nxstools.nxsfileparser
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxsargparser module
-----------------------------
-
-.. automodule:: nxstools.nxsargparser
     :members:
     :undoc-members:
     :show-inheritance:
@@ -93,26 +141,18 @@ nxstools.nxsxml module
     :show-inheritance:
 
 
-nxstools.nxsdevicetools module
-------------------------------
-
-.. automodule:: nxstools.nxsdevicetools
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.filenamegenerator module
----------------------------------
-
-.. automodule:: nxstools.filenamegenerator
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 nxstools.release module
 -----------------------
 
 .. automodule:: nxstools.release
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.redisutils module
+--------------------------
+
+.. automodule:: nxstools.redisutils
     :members:
     :undoc-members:
     :show-inheritance:
@@ -126,6 +166,11 @@ Module contents
     :show-inheritance:
 
 .. automodule:: nxstools.xmltemplates
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: nxstools.pyeval
     :members:
     :undoc-members:
     :show-inheritance:

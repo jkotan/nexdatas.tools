@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsdevicetools &#8212; NXSTools 3.67.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <title>nxstools.nxsdevicetools &#8212; NXSTools 4.0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
   </head><body>
@@ -35,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.67</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,20 +118,25 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxstools.html">nxstools package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filewriter">nxstools.filewriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5cppwriter">nxstools.h5cppwriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5pywriter">nxstools.h5pywriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5rediswriter">nxstools.h5rediswriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.release">nxstools.release module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.redisutils">nxstools.redisutils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -220,11 +227,11 @@
 
 <div class="viewcode-block" id="PackageHandler"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.PackageHandler">[docs]</a><span class="k">class</span> <span class="nc">PackageHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; xml templates package loader</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; xml templates package loader</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">packagename</span><span class="o">=</span><span class="s1">&#39;nxstools.xmltemplates&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param packagename: full package name</span>
 <span class="sd">        :type packagename: :obj:`str`</span>
@@ -235,7 +242,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">loadXMLTemplates</span><span class="p">(</span><span class="n">packagename</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PackageHandler.loadXMLTemplates"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.PackageHandler.loadXMLTemplates">[docs]</a>    <span class="k">def</span> <span class="nf">loadXMLTemplates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">packagename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; load xml template module variables</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; load xml template module variables</span>
 
 <span class="sd">        :param packagename: full package name</span>
 <span class="sd">        :type packagename: :obj:`str`</span>
@@ -355,7 +362,7 @@
 
 
 <div class="viewcode-block" id="generateDeviceNames"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.generateDeviceNames">[docs]</a><span class="k">def</span> <span class="nf">generateDeviceNames</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; generates device names</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; generates device names</span>
 
 <span class="sd">    :param prefix: device name prefix</span>
 <span class="sd">    :type prefix: :obj:`str`</span>
@@ -378,7 +385,7 @@
 
 
 <div class="viewcode-block" id="getAttributes"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.getAttributes">[docs]</a><span class="k">def</span> <span class="nf">getAttributes</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; provides a list of device attributes</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; provides a list of device attributes</span>
 
 <span class="sd">    :param device: tango device name</span>
 <span class="sd">    :type device: :obj:`str`</span>
@@ -398,7 +405,7 @@
 
 
 <div class="viewcode-block" id="openServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.openServer">[docs]</a><span class="k">def</span> <span class="nf">openServer</span><span class="p">(</span><span class="n">device</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; opens connection to the configuration server</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; opens connection to the configuration server</span>
 
 <span class="sd">    :param configuration: server device name</span>
 <span class="sd">    :type configuration: :obj:`str`</span>
@@ -440,7 +447,7 @@
 
 
 <div class="viewcode-block" id="storeDataSource"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.storeDataSource">[docs]</a><span class="k">def</span> <span class="nf">storeDataSource</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">xml</span><span class="p">,</span> <span class="n">server</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; stores datasources in Configuration Server</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; stores datasources in Configuration Server</span>
 
 <span class="sd">    :param name: datasource name</span>
 <span class="sd">    :type name: :obj:`str`</span>
@@ -456,7 +463,7 @@
 
 
 <div class="viewcode-block" id="getServerTangoHost"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.getServerTangoHost">[docs]</a><span class="k">def</span> <span class="nf">getServerTangoHost</span><span class="p">(</span><span class="n">server</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; fetches the server tango_host:tango_port</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; fetches the server tango_host:tango_port</span>
 
 <span class="sd">    :param server: tango server</span>
 <span class="sd">    :type server: :obj:`str`</span>
@@ -478,7 +485,7 @@
 
 
 <div class="viewcode-block" id="getDataSourceComponents"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.getDataSourceComponents">[docs]</a><span class="k">def</span> <span class="nf">getDataSourceComponents</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; gets datasource components</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; gets datasource components</span>
 
 <span class="sd">    :param server: configuration server</span>
 <span class="sd">    :type server: :obj:`str`</span>
@@ -519,7 +526,7 @@
 
 
 <div class="viewcode-block" id="storeComponent"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.storeComponent">[docs]</a><span class="k">def</span> <span class="nf">storeComponent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">xml</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; stores components in Configuration Server</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; stores components in Configuration Server</span>
 
 <span class="sd">    :param name: component name</span>
 <span class="sd">    :type name: :obj:`str`</span>
@@ -539,7 +546,7 @@
 
 
 <div class="viewcode-block" id="getClassName"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.getClassName">[docs]</a><span class="k">def</span> <span class="nf">getClassName</span><span class="p">(</span><span class="n">devicename</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; provides device class name</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; provides device class name</span>
 
 <span class="sd">    :param devicename: device name</span>
 <span class="sd">    :type devicename: :obj:`str`</span>
@@ -559,7 +566,7 @@
 
 
 <div class="viewcode-block" id="getServers"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.getServers">[docs]</a><span class="k">def</span> <span class="nf">getServers</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;NXSConfigServer&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; provides server device names</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; provides server device names</span>
 
 <span class="sd">    :param name: server instance name</span>
 <span class="sd">    :type name: :obj:`str`</span>
@@ -581,7 +588,7 @@
 
 
 <span class="k">def</span> <span class="nf">_remoteCall</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; executes function on remove tango host db setup</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; executes function on remove tango host db setup</span>
 
 <span class="sd">    :param server: remove tango server device name</span>
 <span class="sd">    :type server: :obj:`str`</span>
@@ -590,7 +597,7 @@
 <span class="sd">    :param args: function list arguments</span>
 <span class="sd">    :type args: :obj:`list` &lt;`and`&gt;</span>
 <span class="sd">    :param kwargs: function dict arguments</span>
-<span class="sd">    :type args: :obj:`dict` &lt;:obj:`str` , `any`&gt;</span>
+<span class="sd">    :type kwargs: :obj:`dict` &lt;:obj:`str` , `any`&gt;</span>
 <span class="sd">    :returns: function result</span>
 <span class="sd">    :rtype: `any`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -616,7 +623,7 @@
 
 
 <div class="viewcode-block" id="listServers"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.listServers">[docs]</a><span class="k">def</span> <span class="nf">listServers</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;NXSConfigServer&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; finds server names</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; finds server names</span>
 
 <span class="sd">    :param name: server instance name</span>
 <span class="sd">    :type name: :obj:`str`</span>
@@ -627,7 +634,7 @@
 
 
 <div class="viewcode-block" id="findClassName"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.findClassName">[docs]</a><span class="k">def</span> <span class="nf">findClassName</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; finds class name</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; finds class name</span>
 
 <span class="sd">    :param name: device name</span>
 <span class="sd">    :type name: :obj:`str`</span>
@@ -638,7 +645,7 @@
 
 
 <div class="viewcode-block" id="checkServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsdevicetools.checkServer">[docs]</a><span class="k">def</span> <span class="nf">checkServer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;NXSConfigServer&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; provides server device name if only one or error in the other case</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; provides server device name if only one or error in the other case</span>
 
 <span class="sd">    :param name: server name</span>
 <span class="sd">    :type name: :obj:`str`</span>
@@ -692,7 +699,7 @@
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

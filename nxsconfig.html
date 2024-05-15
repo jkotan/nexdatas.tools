@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxsconfig &#8212; NXSTools 3.67.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>nxsconfig &#8212; NXSTools 4.0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="nxscreate" href="nxscreate.html" />
@@ -19,9 +22,9 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
   </head><body>
@@ -37,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.67</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -118,20 +121,25 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxstools.html">nxstools package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.filewriter">nxstools.filewriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.h5cppwriter">nxstools.h5cppwriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.h5pywriter">nxstools.h5pywriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.h5rediswriter">nxstools.h5rediswriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.release">nxstools.release module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.redisutils">nxstools.redisutils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -195,19 +203,19 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="nxsconfig">
-<h1>nxsconfig<a class="headerlink" href="#nxsconfig" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+  <section id="nxsconfig">
+<h1>nxsconfig<a class="headerlink" href="#nxsconfig" title="Permalink to this heading">¶</a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">¶</a></h2>
 <p>The nxsconfig program
 is a command-line interface to NXS Configuration Tango Server.
 It allows one to read XML configuration datasources
 and components. It also gives possibility to
 perform the process of component merging.</p>
-</div>
-<div class="section" id="synopsis">
-<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsconfig &lt;command&gt; <span class="o">[</span>-s &lt;config_server&gt;<span class="o">]</span>  <span class="o">[</span>-d<span class="o">]</span> <span class="o">[</span>-r<span class="o">]</span> <span class="o">[</span>-m<span class="o">]</span> <span class="o">[</span>-n<span class="o">]</span> <span class="o">[</span>-p<span class="o">]</span> <span class="o">[</span>&lt;name1&gt;<span class="o">]</span> <span class="o">[</span>&lt;name2&gt;<span class="o">]</span> <span class="o">[</span>&lt;name3&gt;<span class="o">]</span> ...
+</section>
+<section id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsconfig<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>-s<span class="w"> </span>&lt;config_server&gt;<span class="o">]</span><span class="w">  </span><span class="o">[</span>-d<span class="o">]</span><span class="w"> </span><span class="o">[</span>-r<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="o">]</span><span class="w"> </span><span class="o">[</span>-n<span class="o">]</span><span class="w"> </span><span class="o">[</span>-p<span class="o">]</span><span class="w"> </span><span class="o">[</span>&lt;name1&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>&lt;name2&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>&lt;name3&gt;<span class="o">]</span><span class="w"> </span>...
 </pre></div>
 </div>
 <dl>
@@ -218,31 +226,31 @@ perform the process of component merging.</p>
 </dd>
 <dt>list -r [-s &lt;config_server&gt;] [-n]</dt><dd><p>list names of available profiles</p>
 </dd>
-<dt>show [-s &lt;config_server&gt;] [-m] [-o &lt;dir&gt;] component_name1 component_name2 ...</dt><dd><p>show components with given names</p>
+<dt>show [-s &lt;config_server&gt;] [-m] [-o &lt;dir&gt;] component_name1 component_name2 …</dt><dd><p>show components with given names</p>
 </dd>
-<dt>show -d [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] dsource_name1 dsource_name2 ...</dt><dd><p>show datasources with given names</p>
+<dt>show -d [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] dsource_name1 dsource_name2 …</dt><dd><p>show datasources with given names</p>
 </dd>
-<dt>show -r [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] profile_name1 profile_name2 ...</dt><dd><p>show profiles with given names</p>
+<dt>show -r [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] profile_name1 profile_name2 …</dt><dd><p>show profiles with given names</p>
 </dd>
-<dt>upload [-s &lt;config_server&gt;] [-m] [-i &lt;dir&gt;] [-f] component_name1 component_name2 ...</dt><dd><p>load components from given files</p>
+<dt>upload [-s &lt;config_server&gt;] [-m] [-i &lt;dir&gt;] [-f] component_name1 component_name2 …</dt><dd><p>load components from given files</p>
 </dd>
-<dt>upload -d [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] dsource_name1 dsource_name2 ...</dt><dd><p>load datasources from given files</p>
+<dt>upload -d [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] dsource_name1 dsource_name2 …</dt><dd><p>load datasources from given files</p>
 </dd>
-<dt>upload -r [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] profile_name1 profile_name2 ...</dt><dd><p>load profiles from given files</p>
+<dt>upload -r [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] profile_name1 profile_name2 …</dt><dd><p>load profiles from given files</p>
 </dd>
-<dt>get [-s &lt;config_server&gt;]  [-n] component_name1 component_name2 ...</dt><dd><p>get merged configuration of components</p>
+<dt>get [-s &lt;config_server&gt;]  [-n] component_name1 component_name2 …</dt><dd><p>get merged configuration of components</p>
 </dd>
-<dt>delete [-s &lt;config_server&gt;] [-f] component_name1 component_name2 ...</dt><dd><p>delete components with given names</p>
+<dt>delete [-s &lt;config_server&gt;] [-f] component_name1 component_name2 …</dt><dd><p>delete components with given names</p>
 </dd>
-<dt>delete -d [-s &lt;config_server&gt;] [-f] dsource_name1 dsource_name2 ...</dt><dd><p>delete datasources with given names</p>
+<dt>delete -d [-s &lt;config_server&gt;] [-f] dsource_name1 dsource_name2 …</dt><dd><p>delete datasources with given names</p>
 </dd>
-<dt>delete -r [-s &lt;config_server&gt;] [-f] profile_name1 profile_name2 ...</dt><dd><p>delete profiles with given names</p>
+<dt>delete -r [-s &lt;config_server&gt;] [-f] profile_name1 profile_name2 …</dt><dd><p>delete profiles with given names</p>
 </dd>
-<dt>sources [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 ...</dt><dd><p>get a list of component datasources</p>
+<dt>sources [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 …</dt><dd><p>get a list of component datasources</p>
 </dd>
-<dt>components [-s &lt;config_server&gt;] [-n] component_name1 component_name2 ...</dt><dd><p>get a list of dependent components</p>
+<dt>components [-s &lt;config_server&gt;] [-n] component_name1 component_name2 …</dt><dd><p>get a list of dependent components</p>
 </dd>
-<dt>variables [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 ...</dt><dd><p>get a list of component variables</p>
+<dt>variables [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 …</dt><dd><p>get a list of component variables</p>
 </dd>
 <dt>data [-s &lt;config_server&gt;] json_data</dt><dd><p>set values of component variables</p>
 </dd>
@@ -252,15 +260,15 @@ perform the process of component merging.</p>
 </dd>
 <dt>servers [-s &lt;config_server/host&gt;] [-n]</dt><dd><p>get lists of configuration servers from the current tango host</p>
 </dd>
-<dt>describe [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt><dd><p>show all parameters of given components</p>
+<dt>describe [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt><dd><p>show all parameters of given components</p>
 </dd>
-<dt>describe|info -d [-s &lt;config_server&gt;] [-n] dsource_name1 dsource_name2 ...</dt><dd><p>show all parameters of given datasources</p>
+<dt>describe|info -d [-s &lt;config_server&gt;] [-n] dsource_name1 dsource_name2 …</dt><dd><p>show all parameters of given datasources</p>
 </dd>
-<dt>info [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt><dd><p>show source parameters of given components</p>
+<dt>info [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt><dd><p>show source parameters of given components</p>
 </dd>
-<dt>info -r [-s &lt;config_server&gt;]  [-n] profile_name1 profile_name2 ...</dt><dd><p>show general parameters of given profiles</p>
+<dt>info -r [-s &lt;config_server&gt;]  [-n] profile_name1 profile_name2 …</dt><dd><p>show general parameters of given profiles</p>
 </dd>
-<dt>geometry [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt><dd><p>show transformation parameters of given components</p>
+<dt>geometry [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt><dd><p>show transformation parameters of given components</p>
 </dd>
 </dl>
 </dd>
@@ -278,7 +286,7 @@ perform the process of component merging.</p>
 <dd><p>make use mandatory components as well</p>
 </dd>
 <dt><kbd><span class="option">-p</span>, <span class="option">--private</span></kbd></dt>
-<dd><p>make use private components, i.e. starting with '__'</p>
+<dd><p>make use private components, i.e. starting with ‘__’</p>
 </dd>
 <dt><kbd><span class="option">-n</span>, <span class="option">--no-newlines</span></kbd></dt>
 <dd><p>split result with space characters</p>
@@ -289,16 +297,16 @@ perform the process of component merging.</p>
 </dl>
 </dd>
 </dl>
-</div>
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsconfig list -s p02/xmlconfigserver/exp.01 -d
-nxsconfig info
-nxsconfig geometry
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsconfig<span class="w"> </span>list<span class="w"> </span>-s<span class="w"> </span>p02/xmlconfigserver/exp.01<span class="w"> </span>-d
+nxsconfig<span class="w"> </span>info
+nxsconfig<span class="w"> </span>geometry
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -315,7 +323,7 @@ nxsconfig geometry
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsetup &#8212; NXSTools 3.67.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <title>nxstools.nxsetup &#8212; NXSTools 4.0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
   </head><body>
@@ -35,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.67</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,20 +118,25 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxstools.html">nxstools package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filewriter">nxstools.filewriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5cppwriter">nxstools.h5cppwriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5pywriter">nxstools.h5pywriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5rediswriter">nxstools.h5rediswriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.release">nxstools.release module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.redisutils">nxstools.redisutils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -410,11 +417,11 @@
 
 <div class="viewcode-block" id="SetUp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp">[docs]</a><span class="k">class</span> <span class="nc">SetUp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; setup NXSDataWriter, NXSConfigServer and NXSRecSelector Tango servers</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; setup NXSDataWriter, NXSConfigServer and NXSRecSelector Tango servers</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1">#: (:class:`tango.Database`) tango database server</span>
@@ -430,7 +437,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SetUp.changeRecorderPath"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.changeRecorderPath">[docs]</a>    <span class="k">def</span> <span class="nf">changeRecorderPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; adds a new recorder path</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; adds a new recorder path</span>
 
 <span class="sd">        :param path: new recorder path</span>
 <span class="sd">        :type path: :obj:`str`</span>
@@ -468,7 +475,7 @@
         <span class="k">return</span> <span class="n">res</span></div>
 
 <div class="viewcode-block" id="SetUp.changePropertyName"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.changePropertyName">[docs]</a>    <span class="k">def</span> <span class="nf">changePropertyName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">oldname</span><span class="p">,</span> <span class="n">newname</span><span class="p">,</span> <span class="n">sclass</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; changes property name</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; changes property name</span>
 
 <span class="sd">        :param server: server name</span>
 <span class="sd">        :type server: :obj:`str`</span>
@@ -511,7 +518,7 @@
         <span class="k">return</span> <span class="n">res</span></div>
 
 <div class="viewcode-block" id="SetUp.changePropertyValue"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.changePropertyValue">[docs]</a>    <span class="k">def</span> <span class="nf">changePropertyValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">newname</span><span class="p">,</span> <span class="n">newvalue</span><span class="p">,</span> <span class="n">sclass</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; changes/sets property value</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; changes/sets property value</span>
 
 <span class="sd">        :param server: server name</span>
 <span class="sd">        :type server: :obj:`str`</span>
@@ -551,7 +558,7 @@
         <span class="k">return</span> <span class="n">res</span></div>
 
 <div class="viewcode-block" id="SetUp.getStarterName"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.getStarterName">[docs]</a>    <span class="k">def</span> <span class="nf">getStarterName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; restarts server</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; restarts server</span>
 
 <span class="sd">        :param host: server host name</span>
 <span class="sd">        :type host: :obj:`str`</span>
@@ -578,7 +585,7 @@
                              <span class="n">adminproxy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">maxcnt</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                              <span class="n">waitforproc</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;  wait until device is exported and server is running</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  wait until device is exported and server is running</span>
 
 <span class="sd">        :param server: server name, check if running when not None</span>
 <span class="sd">        :type server: :obj:`str`</span>
@@ -639,7 +646,7 @@
                           <span class="n">adminproxy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">maxcnt</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                           <span class="n">waitforproc</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;  wait until device is exported and server is running</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  wait until device is exported and server is running</span>
 
 <span class="sd">        :param server: server name, check if running when not None</span>
 <span class="sd">        :type server: :obj:`str`</span>
@@ -734,7 +741,7 @@
 <div class="viewcode-block" id="SetUp.restartServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.restartServer">[docs]</a>    <span class="k">def</span> <span class="nf">restartServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">restart</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stopstart</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                       <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; restarts server</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; restarts server</span>
 
 <span class="sd">        :param name: server name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -828,7 +835,7 @@
                                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__exported_servers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; returns Servers for exported devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; returns Servers for exported devices</span>
 
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        :returns: server list</span>
@@ -839,7 +846,7 @@
                     <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">dvexported</span><span class="p">))]</span>
 
     <span class="k">def</span> <span class="nf">__registered_servers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; returns registered Servers</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; returns registered Servers</span>
 
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        :returns: server list</span>
@@ -851,7 +858,7 @@
         <span class="k">return</span> <span class="n">svlist</span>
 
 <div class="viewcode-block" id="SetUp.stopServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.stopServer">[docs]</a>    <span class="k">def</span> <span class="nf">stopServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; restarts server</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; restarts server</span>
 
 <span class="sd">        :param name: server name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -898,7 +905,7 @@
                                           <span class="s2">&quot;instance could be suspended&quot;</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_changeLevel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">tohigher</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; change startup level</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; change startup level</span>
 
 <span class="sd">        :param name: server name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -914,7 +921,7 @@
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_startupServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">postpone</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; starts the server up</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; starts the server up</span>
 
 <span class="sd">        :param new: new server name</span>
 <span class="sd">        :type new: :obj:`str`</span>
@@ -976,7 +983,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">waitServerRunning</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">adminproxy</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SetUp.createDataWriter"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createDataWriter">[docs]</a>    <span class="k">def</span> <span class="nf">createDataWriter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterhost</span><span class="p">,</span> <span class="n">postpone</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates data writer</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates data writer</span>
 
 <span class="sd">        :param beamline: beamline name</span>
 <span class="sd">        :type beamline: :obj:`str`</span>
@@ -1031,7 +1038,7 @@
 <div class="viewcode-block" id="SetUp.createServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createServer">[docs]</a>    <span class="k">def</span> <span class="nf">createServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_name</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterhost</span><span class="p">,</span> <span class="n">hostname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">class_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">jsondeviceproperties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">postpone</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates tango server in DB</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates tango server in DB</span>
 
 <span class="sd">        :param server_name: server name</span>
 <span class="sd">        :type server_name: :obj:`str`</span>
@@ -1106,7 +1113,7 @@
 
 <div class="viewcode-block" id="SetUp.createConfigServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createConfigServer">[docs]</a>    <span class="k">def</span> <span class="nf">createConfigServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterhost</span><span class="p">,</span> <span class="n">jsonsettings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                            <span class="n">hostname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">postpone</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates configuration server</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates configuration server</span>
 
 <span class="sd">        :param beamline: beamline name</span>
 <span class="sd">        :type beamline: :obj:`str`</span>
@@ -1195,7 +1202,7 @@
 
 <div class="viewcode-block" id="SetUp.createSelector"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createSelector">[docs]</a>    <span class="k">def</span> <span class="nf">createSelector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterhost</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cserver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">postpone</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates selector server</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates selector server</span>
 
 <span class="sd">        :param beamline: beamline name</span>
 <span class="sd">        :type beamline: :obj:`str`</span>
@@ -1264,7 +1271,7 @@
 
 <div class="viewcode-block" id="Set"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Set">[docs]</a><span class="k">class</span> <span class="nc">Set</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; set runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; set runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;set up NXSConfigServer NXSDataWriter &quot;</span> \
@@ -1275,14 +1282,14 @@
         <span class="o">+</span> <span class="s2">&quot;       nxsetup set</span><span class="se">\n</span><span class="s2">&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;       nxsetup set -b p09 -m haso228 -u p09user &quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;-d nxsconfig NXSConfigServer</span><span class="se">\n</span><span class="s2">&quot;</span> \
-        <span class="o">+</span> <span class="s2">&quot;       nxsetup set nexuswriter/haso228  -k NexusWriter  &quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;       nxsetup set NexusWriter/haso228  -k NexusWriter  &quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;-y &#39;{</span><span class="se">\&quot;</span><span class="s2">p00/bliss_nexuswriter/test_session</span><span class="se">\&quot;</span><span class="s2">:&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;{</span><span class="se">\&quot;</span><span class="s2">session</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">test_session</span><span class="se">\&quot;</span><span class="s2">,&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">beacon_host</span><span class="se">\&quot;</span><span class="s2">:</span><span class="se">\&quot;</span><span class="s2">haso228:25000</span><span class="se">\&quot;</span><span class="s2">}}&#39;  -t</span><span class="se">\n</span><span class="s2">&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Set.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Set.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1337,7 +1344,7 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;server names, e.g.: NXSRecSelector NXSConfigServer&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Set.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Set.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1430,13 +1437,13 @@
                         <span class="n">class_name</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">classname</span><span class="p">,</span>
                         <span class="n">jsondeviceproperties</span><span class="o">=</span><span class="n">jsondeviceproperties</span><span class="p">,</span>
                         <span class="n">postpone</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">postpone</span><span class="p">):</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;startup failed to create the nexus selector server&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;startup failed to create the </span><span class="si">%s</span><span class="s2"> server&quot;</span> <span class="o">%</span> <span class="n">arg</span><span class="p">)</span>
                     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Start"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Start">[docs]</a><span class="k">class</span> <span class="nc">Start</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; start runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; start runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;start tango server&quot;</span>
@@ -1447,7 +1454,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Start.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Start.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1466,7 +1473,7 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Start.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Start.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1485,7 +1492,7 @@
 
 <div class="viewcode-block" id="Wait"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Wait">[docs]</a><span class="k">class</span> <span class="nc">Wait</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; start runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; start runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;wait for tango server&quot;</span>
@@ -1496,7 +1503,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Wait.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Wait.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1508,7 +1515,7 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Wait.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Wait.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1525,7 +1532,7 @@
 
 <div class="viewcode-block" id="MoveProp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.MoveProp">[docs]</a><span class="k">class</span> <span class="nc">MoveProp</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; move-prop runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; move-prop runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;change property name&quot;</span>
@@ -1539,7 +1546,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="MoveProp.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.MoveProp.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1565,7 +1572,7 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MoveProp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.MoveProp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1588,7 +1595,7 @@
 
 <div class="viewcode-block" id="ChangeProp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.ChangeProp">[docs]</a><span class="k">class</span> <span class="nc">ChangeProp</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; change-prop runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; change-prop runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;change property value&quot;</span>
@@ -1605,7 +1612,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="ChangeProp.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.ChangeProp.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1631,7 +1638,7 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ChangeProp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.ChangeProp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1654,7 +1661,7 @@
 
 <div class="viewcode-block" id="AddRecorderPath"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.AddRecorderPath">[docs]</a><span class="k">class</span> <span class="nc">AddRecorderPath</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; add-recorder-path runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; add-recorder-path runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;add-recorder-path into MacroServer(s) property&quot;</span>
@@ -1670,7 +1677,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="AddRecorderPath.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.AddRecorderPath.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1691,7 +1698,7 @@
             <span class="s2">&quot; ( default: &#39;*&#39;)&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AddRecorderPath.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.AddRecorderPath.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1700,7 +1707,7 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;sardana recorder path&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AddRecorderPath.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.AddRecorderPath.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1722,7 +1729,7 @@
 
 <div class="viewcode-block" id="Restart"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Restart">[docs]</a><span class="k">class</span> <span class="nc">Restart</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; restart runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; restart runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;restart tango server&quot;</span>
@@ -1733,7 +1740,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Restart.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Restart.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1752,7 +1759,7 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Restart.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Restart.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1769,7 +1776,7 @@
 
 <div class="viewcode-block" id="Stop"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Stop">[docs]</a><span class="k">class</span> <span class="nc">Stop</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; Stop runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Stop runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;stop tango server&quot;</span>
@@ -1780,7 +1787,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Stop.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Stop.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1789,7 +1796,7 @@
             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stop.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Stop.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1803,7 +1810,7 @@
 
 
 <span class="k">def</span> <span class="nf">_supportoldcommands</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; replace the old command names to the new ones</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; replace the old command names to the new ones</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">oldnew</span> <span class="o">=</span> <span class="p">{</span>
@@ -1827,7 +1834,7 @@
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Command-line tool for setting up  NeXus Tango Servers&quot;</span>
 
@@ -1902,7 +1909,7 @@
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>
