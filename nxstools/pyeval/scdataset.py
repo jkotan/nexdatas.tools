@@ -91,7 +91,7 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
         if not nexus or appendentry is False:
             sname = "%s_%05i" % (scanname, sid)
         else:
-            sname = "%s::/%s%i;%s_%05i" % (
+            sname = "%s::/%s_%05i;%s_%05i" % (
                 scanname, entryname, sid, scanname, sid)
         if reingest:
             sname = "%s:%s" % (sname, time.time())
