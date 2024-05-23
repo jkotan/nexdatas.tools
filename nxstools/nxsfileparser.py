@@ -112,7 +112,10 @@ def isoDate(text):
                 except Exception:
                     import tzlocal
                     tz = tzlocal.get_localzone()
-                date = tz.localize(date)
+                if sys.version_info > (3, 6):
+                    date = date.replace(tzinfo=tz)
+                else:
+                    date = tz.localize(date)
             fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
             result = str(date.strftime(fmt))
     except Exception:

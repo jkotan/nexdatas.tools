@@ -24,6 +24,7 @@ import pytz
 import datetime
 import threading
 import numpy
+import sys
 
 
 #: (:mod:`PNIWriter` or :mod:`H5PYWriter`or :mod:`H5CppWriter`)
@@ -533,7 +534,10 @@ class FTFile(FTObject):
             import tzlocal
             tz = tzlocal.get_localzone()
         fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
-        starttime = tz.localize(datetime.datetime.now())
+        if sys.version_info > (3, 6):
+            starttime = datetime.datetime.now().replace(tzinfo=tz)
+        else:
+            starttime = tz.localize(datetime.datetime.now())
         return str(starttime.strftime(fmt))
 
     def default_field(self):
