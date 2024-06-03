@@ -88,14 +88,28 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
                     entryname = variables["entryname"]
         except Exception:
             macro.warning("NeXusSelectorDevice is not available")
+        scanname2 = scanname
         if nexus and '{ScanID' in scanname:
             try:
                 sname = scanname.format(ScanID=sid)
+                scanname2 = os.path.commonprefix(
+                    [scanname.format(ScanID=11111111),
+                     scanname.format(ScanID=99999999)])
+                if scanname2.endswith("_"):
+                    scanname2 = scanname2[:-1]
             except Exception:
                 sname = "%s_%05i" % (scanname, sid)
         elif nexus and '%' in scanname:
             try:
                 sname = scanname % sid
+                try:
+                    scanname2 = os.path.commonprefix(
+                        [scanname % 11111111,
+                         scanname % 99999999])
+                    if scanname2.endswith("_"):
+                        scanname2 = scanname2[:-1]
+                except Exception:
+                    pass
             except Exception:
                 sname = "%s_%05i" % (scanname, sid)
         elif not nexus or appendentry is False:
@@ -118,19 +132,19 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
 
             if fdir in sm.keys():
                 cgrp = sm[fdir]
-                if cgrp != scanname:
+                if cgrp != scanname2:
                     commands.append("__command__ stop")
                     commands.append("%s:%s" % (cgrp, time.time()))
-                    commands.append("__command__ start %s" % scanname)
+                    commands.append("__command__ start %s" % scanname2)
             else:
-                commands.append("__command__ start %s" % scanname)
+                commands.append("__command__ start %s" % scanname2)
             commands.append(sname)
             commands.append("__command__ stop")
-            commands.append("%s:%s" % (scanname, time.time()))
-            commands.append("__command__ start %s" % scanname)
+            commands.append("%s:%s" % (scanname2, time.time()))
+            commands.append("__command__ start %s" % scanname2)
             sname = "\n".join(commands)
 
-            sm[fdir] = scanname
+            sm[fdir] = scanname2
             macro.setEnv('SciCatMeasurements', sm)
 
         append_scicat_record(macro, sname, status_info=True)
