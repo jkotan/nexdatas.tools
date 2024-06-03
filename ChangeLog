@@ -1,5 +1,5 @@
 2024-06-03 Jan Kotanski <jankotan@gmail.com>
-	* adopt append_scicat_dataset to _%05d and _{ScanID:05d} formatting (#643)
+	* adapt append_scicat_dataset to _%05d and _{ScanID:05d} formatting (#643)
 	* tagged as v4.2.0
 
 2024-05-23 Jan Kotanski <jankotan@gmail.com>
