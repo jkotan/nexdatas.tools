@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSTOOLS" "1" "May 12, 2024" "4.0" "NXSTools"
+.TH "NXSTOOLS" "1" "Jun 03, 2024" "4.2" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .sp
@@ -6352,6 +6352,21 @@ append scan info parameters
 .UNINDENT
 .INDENT 7.0
 .TP
+.B append_stream(name, stream)
+scan object
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP (\fI\%str\fP) \-\- stream name
+.IP \(bu 2
+\fBscan\fP (\fBStream\fP) \-\- stream object
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
 .B property  attributes
 return the attribute manager
 .INDENT 7.0
@@ -6582,6 +6597,26 @@ append scan info parameters
 .UNINDENT
 .INDENT 7.0
 .TP
+.B append_stream(name, stream)
+scan object
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP (\fI\%str\fP) \-\- stream name
+.IP \(bu 2
+\fBscan\fP (\fBStream\fP) \-\- stream object
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B finish()
+start scan
+.UNINDENT
+.INDENT 7.0
+.TP
 .B get_channels(keys=None)
 get channel info parameters
 .INDENT 7.0
@@ -6637,6 +6672,16 @@ scan parameter value
 .TP
 .B prepare()
 start scan
+.UNINDENT
+.INDENT 7.0
+.TP
+.B reset_scaninfo(entryname)
+reset scan info
+.INDENT 7.0
+.TP
+.B Parameters
+\fBentryname\fP (\fI\%str\fP) \-\- NXentry group name
+.UNINDENT
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -6871,6 +6916,21 @@ append scan info parameters
 .UNINDENT
 .INDENT 7.0
 .TP
+.B append_stream(name, stream)
+scan object
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP (\fI\%str\fP) \-\- stream name
+.IP \(bu 2
+\fBscan\fP (\fBStream\fP) \-\- stream object
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
 .B property  attributes
 return the attribute manager
 .INDENT 7.0
@@ -6881,11 +6941,6 @@ attribute manager
 .B Return type
 \fBH5CppAttributeManager\fP
 .UNINDENT
-.UNINDENT
-.INDENT 7.0
-.TP
-.B close()
-close the group
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -7041,6 +7096,16 @@ file tree object
 .TP
 .B Return type
 \fI\%H5RedisLink\fP
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B reset_scaninfo(entryname)
+reset scan info
+.INDENT 7.0
+.TP
+.B Parameters
+\fBentryname\fP (\fI\%str\fP) \-\- NXentry group name
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -7476,6 +7541,21 @@ file object
 .TP
 .B Return type
 \fI\%H5RedisFile\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.h5rediswriter.splitstr(text)
+split string separated by space
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBtext\fP (\fI\%list\fP <\fI\%str\fP>) \-\- text to split
+.IP \(bu 2
+\fBtext\fP \-\- split text
+.UNINDENT
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
