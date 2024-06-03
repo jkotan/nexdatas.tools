@@ -88,7 +88,17 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
                     entryname = variables["entryname"]
         except Exception:
             macro.warning("NeXusSelectorDevice is not available")
-        if not nexus or appendentry is False:
+        if nexus and '{ScanID' in scanname:
+            try:
+                sname = scanname.format(ScanID=sid)
+            except Exception:
+                sname = "%s_%05i" % (scanname, sid)
+        elif nexus and '%' in scanname:
+            try:
+                sname = scanname % sid
+            except Exception:
+                sname = "%s_%05i" % (scanname, sid)
+        elif not nexus or appendentry is False:
             sname = "%s_%05i" % (scanname, sid)
         else:
             sname = "%s::/%s_%05i;%s_%05i" % (
