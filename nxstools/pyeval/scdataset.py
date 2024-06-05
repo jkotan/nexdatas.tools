@@ -24,6 +24,7 @@ import socket
 import tango
 import json
 import time
+import re
 
 # from sardana.macroserver.macro import Macro
 
@@ -119,6 +120,12 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
                 scanname, entryname, sid, scanname, sid)
         if reingest:
             sname = "%s:%s" % (sname, time.time())
+        else:
+            skip_acq = get_env_var(macro, 'NeXusSkipAcquisitionModes', [])
+            if isinstance(skip_acq, str):
+                skip_acq = re.split(r"[-;,.\s]\s*", skip_acq)
+            if "INIT" in skip_acq:
+                sname = "%s:%s" % (sname, time.time())
 
         # auto grouping
         grouping = bool(get_env_var(macro, 'SciCatAutoGrouping', False))
