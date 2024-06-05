@@ -1,3 +1,7 @@
+2024-06-05 Jan Kotanski <jankotan@gmail.com>
+	* reingest scan metadata if it is repeated with the same ScanID (#647)
+	* tagged as v4.2.1
+
 2024-06-03 Jan Kotanski <jankotan@gmail.com>
 	* adapt append_scicat_dataset to _%05d and _{ScanID:05d} formatting (#643)
 	* tagged as v4.2.0
