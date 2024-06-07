@@ -111,9 +111,9 @@ def triggermode_cb(commonblock, name, triggermode,
     col = det.open("collection")
     for nbf in range(1, nbfiles+1):
         if addfilepattern:
-           fnbf = "%s_data_%06i" % (filepattern, nbf)
+            fnbf = "%s_data_%06i" % (filepattern, nbf)
         else:
-           fnbf = "data_%06i" % (nbf)
+            fnbf = "data_%06i" % (nbf)
         if spf > 0 and cfid > 0:
             if cfid == nbf:
                 nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
