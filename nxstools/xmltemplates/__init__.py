@@ -1854,6 +1854,12 @@ moduleTemplateFiles = {
         'eigerdectris_description_cb.ds.xml',
         'eigerdectris_triggermode_cb.ds.xml'
     ],
+    'eigerdectrismesh': [
+        'eigerdectrismesh.xml',
+        'eigerdectrismesh_stepindex.ds.xml',
+        'eigerdectrismesh_description_cb.ds.xml',
+        'eigerdectrismesh_triggermode_cb.ds.xml'
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -2058,6 +2064,12 @@ moduleMultiAttributes = {
     'marccd': [
         'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
     'eigerdectris': [
+        'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
+        'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
+        'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
+        'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
+    'eigerdectrismesh': [
         'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
         'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
         'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
