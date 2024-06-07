@@ -112,8 +112,10 @@ def triggermode_cb(commonblock, name, triggermode,
     for nbf in range(1, nbfiles+1):
         if addfilepattern:
             fnbf = "%s_data_%06i" % (filepattern, nbf)
+            nnbf = fnbf
         else:
             fnbf = "data_%06i" % (nbf)
+            nnbf = "%06i" % (nbf)
         if spf > 0 and cfid > 0:
             if cfid == nbf:
                 nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
@@ -125,7 +127,7 @@ def triggermode_cb(commonblock, name, triggermode,
         else:
             nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
                      col, "%s" % (fnbf))
-            nxw.link("/%s/%s/%s/collection/%s_data_%06i" %
-                     (entryname, insname, name, filepattern, nbf), dt,
-                     "%s_%s" % (name, fnbf))
+            nxw.link("/%s/%s/%s/collection/%s" %
+                     (entryname, insname, name, fnbf), dt,
+                     "%s_%s" % (name, nnbf))
     return result
