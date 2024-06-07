@@ -29,7 +29,8 @@ def triggermode_cb(commonblock, name, triggermode,
                    nbimages, hostname, device,
                    filename, stepindex_str, entryname, insname,
                    eigerdectris_str="EigerDectris",
-                   eigerfilewriter_str="EigerFileWriter"):
+                   eigerfilewriter_str="EigerFileWriter",
+                   addfilepattern=False):
     """ code for triggermode_cb  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -56,6 +57,8 @@ def triggermode_cb(commonblock, name, triggermode,
     :type eigerdectris_str: :obj:`str`
     :param eigerfilewriter_str: eigerwriter string
     :type eigerfilewriter_str: :obj:`str`
+    :param addfilepattern: add eiger filepattern to the link names
+    :type addfilepattern: :obj:`bool`
     :returns: triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
@@ -78,7 +81,9 @@ def triggermode_cb(commonblock, name, triggermode,
     wp = tango.DeviceProxy('%s/%s' % (hostname, writer))
     filepattern = wp.FilenamePattern.split("/")[-1]
     imagesperfile = wp.ImagesPerFile
-    if filename:
+    if addfilepattern:
+        path = filepattern + "/"
+    elif filename:
         path = (filename).split("/")[-1].split(".")[0] + "/"
     else:
         path = ""
@@ -105,6 +110,10 @@ def triggermode_cb(commonblock, name, triggermode,
     det = ins.open(name)
     col = det.open("collection")
     for nbf in range(1, nbfiles+1):
+        if addfilepattern:
+           fnbf = "%s_data_%06i" % (filepattern, nbf)
+        else:
+           fnbf = "data_%06i" % (nbf)
         if spf > 0 and cfid > 0:
             if cfid == nbf:
                 nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
@@ -112,11 +121,11 @@ def triggermode_cb(commonblock, name, triggermode,
                 nxw.link("/%s/%s/%s/data" % (entryname, insname, name),
                          dt, name)
             nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
-                     col, "data_%06i" % nbf)
+                     col, "%s" % (fnbf))
         else:
             nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
-                     col, "data_%06i" % nbf)
-            nxw.link("/%s/%s/%s/collection/data_%06i" %
-                     (entryname, insname, name, nbf), dt,
-                     "%s_%06i" % (name, nbf))
+                     col, "%s" % (fnbf))
+            nxw.link("/%s/%s/%s/collection/%s_data_%06i" %
+                     (entryname, insname, name, filepattern, nbf), dt,
+                     "%s_%s" % (name, fnbf))
     return result

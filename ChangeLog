@@ -1,4 +1,8 @@
 2024-06-05 Jan Kotanski <jankotan@gmail.com>
+	* add eigerdectrismess template (#647)
+	* tagged as v4.3.0
+
+2024-06-05 Jan Kotanski <jankotan@gmail.com>
 	* reingest scan metadata if it is repeated with the same ScanID (#647)
 	* tagged as v4.2.1
 
