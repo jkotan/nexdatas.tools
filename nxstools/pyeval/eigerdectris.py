@@ -19,6 +19,7 @@
 
 """  pyeval helper functions for lambdavds """
 
+import json
 try:
     import tango
 except Exception:
@@ -30,7 +31,8 @@ def triggermode_cb(commonblock, name, triggermode,
                    filename, stepindex_str, entryname, insname,
                    eigerdectris_str="EigerDectris",
                    eigerfilewriter_str="EigerFileWriter",
-                   addfilepattern=False):
+                   addfilepattern=False, shape=None,
+                   dtype="uint32", acq_modes=""):
     """ code for triggermode_cb  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -59,10 +61,13 @@ def triggermode_cb(commonblock, name, triggermode,
     :type eigerfilewriter_str: :obj:`str`
     :param addfilepattern: add eiger filepattern to the link names
     :type addfilepattern: :obj:`bool`
+    :param acq_modes: acquisition modes
+    :type acq_modes: :obj:`str`
     :returns: triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
 
+    amodes = acq_modes.split(",")
     host, port = hostname.split(":")
     port = int(port or 10000)
     edb = tango.Database(host, port)
@@ -130,4 +135,73 @@ def triggermode_cb(commonblock, name, triggermode,
             nxw.link("/%s/%s/%s/collection/%s" %
                      (entryname, insname, name, fnbf), dt,
                      "%s_%s" % (name, nnbf))
+
+    # create VDS field
+    if shape and not isinstance(shape, list):
+        try:
+            shape = json.loads(shape)
+        except Exception:
+            shape = []
+    if not shape or len(shape) < 2:
+        return result
+
+    if "nb_images_in_file" not in col.names():
+        tni = col.create_field("nb_images_in_file", "uint64")
+    else:
+        tni = col.open("nb_images_in_file")
+        tni.grow()
+    tni[int(tni.shape[0] - 1)] = totnbimages
+    ttni = tni.read()
+    totalframenumbers = int(sum(ttni))
+
+    if "image_filenames" not in col.names():
+        tfn = col.create_field("image_filenames", "string", [1])
+    else:
+        tfn = col.open("image_filenames")
+        tfn.grow()
+    tfn[int(tfn.shape[0] - 1)] = "%sdata_%06i.h5" % (path, nbf)
+    ttfn = tfn.read()
+
+    if "VDS" in amodes and "data" not in det.names():
+        npath = "/entry/data/data"
+
+        nbimg = []
+        nfi = []
+        fnms = []
+        for ii, tt in enumerate(ttni):
+            nbf = int((tt + imagesperfile - 1) // imagesperfile)
+            nfi.append(nbf)
+            nn = [int(imagesperfile)] * nbf
+            fn = [str(ttfn[ii])] * nbf
+            if nn:
+                nn[-1] = int(tt - (nbf - 1) * imagesperfile)
+            nbimg.extend(nn)
+            fnms.extend(fn)
+
+        nboff = [int(sum(nbimg[:(ii)])) for ii in range(len(nbimg))]
+
+        # eiger9m 3110 pixel x 3269 pixel
+        # /entry/data/data uint32 [1, 3269 , 3110]
+        # eiger4M 2070 pixel x 2167 pixel
+        # /entry/data/data uint32 [1, 2167 , 2070]
+        # eiger1M  1030 pixel x 1065 pixel
+        # /entry/data/data uint32 [1, 1065 , 1030]
+
+        vfl = nxw.virtual_field_layout(
+            [totalframenumbers, shape[0], shape[1]], dtype)
+        for ii, nb in enumerate(nbimg):
+            fnm = fnms[ii]
+            ef = nxw.target_field_view(
+                fnm, npath, [nb, shape[0], shape[1]], dtype)
+            off = nboff[ii]
+            vfl.add(
+                (slice(off, off + nb), slice(0, shape[0]), slice(0, shape[1])),
+                ef, (slice(None), slice(None), slice(None)))
+
+        if "data" not in det.names():
+            det.create_virtual_field("data", vfl)
+        if name not in dt.names():
+            nxw.link("/%s/%s/%s/data" % (entryname, insname, name),
+                     dt, name)
+
     return result

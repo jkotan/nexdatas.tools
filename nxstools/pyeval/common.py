@@ -53,7 +53,7 @@ def filestartnum_cb(commonblock, filestartnum, nbframes,
     return filestartnum - nbframes
 
 
-def blockitems_rm(commonblock, names):
+def blockitem_rm(commonblock, names):
     """ remove blockitems from commonblock
 
     :param commonblock: commonblock of nxswriter
@@ -64,6 +64,9 @@ def blockitems_rm(commonblock, names):
     for name in names:
         if name in commonblock:
             commonblock.pop(name)
+
+
+blockitems_rm = blockitem_rm
 
 
 def blockitem_add(commonblock, name, value):

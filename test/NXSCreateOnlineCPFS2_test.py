@@ -238,7 +238,7 @@ class NXSCreateOnlineCPFS2Test(
                      '    <result name="result">\n'
                      'from nxstools.pyeval import common\n'
                      'common.blockitem_rm(commonblock, '
-                     '["myeigerdectris_stepindex""])\n'
+                     '["myeigerdectris_stepindex"])\n'
                      'ds.result = ds.myeigerdectris_description\n'
                      '</result>\n'
                      '  $datasources.myeigerdectris_description\n'
