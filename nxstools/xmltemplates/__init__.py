@@ -1860,6 +1860,12 @@ moduleTemplateFiles = {
         'eigerdectrismesh_description_cb.ds.xml',
         'eigerdectrismesh_triggermode_cb.ds.xml'
     ],
+    'eiger9m32vds': [
+        'eiger9m32vds.xml',
+        'eiger9m32vds_stepindex.ds.xml',
+        'eiger9m32vds_description_cb.ds.xml',
+        'eiger9m32vds_triggermode_cb.ds.xml'
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -2070,6 +2076,12 @@ moduleMultiAttributes = {
         'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
     ],
     'eigerdectrismesh': [
+        'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
+        'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
+        'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
+        'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
+    'eiger9m32vds': [
         'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
         'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
         'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
