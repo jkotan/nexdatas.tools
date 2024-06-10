@@ -145,16 +145,16 @@ def triggermode_cb(commonblock, name, triggermode,
     else:
         tni = col.open("nb_images_in_file")
         tni.grow()
-    tni[-1] = totnbimages
+    tni[int(tni.shape[0] - 1)] = totnbimages
     ttni = tni.read()
-    totalframenumbers = int(sum(ttni.read()))
+    totalframenumbers = int(sum(ttni))
 
     if "image_filenames" not in col.names():
         tfn = col.create_field("images_filenames", "string", [1])
     else:
         tfn = col.open("images_filenames")
         tfn.grow()
-    tfn[-1] = "%sdata_%06i.h5" % (path, nbf)
+    tfn[int(tfn.shape[0] - 1)] = "%sdata_%06i.h5" % (path, nbf)
     ttfn = tfn.read()
     npath = "/entry/data/data"
 
@@ -162,16 +162,16 @@ def triggermode_cb(commonblock, name, triggermode,
     nfi = []
     fnms = []
     for ii, tt in enumerate(ttni):
-        nbf = (tt + imagesperfile - 1) // imagesperfile
+        nbf = int((tt + imagesperfile - 1) // imagesperfile)
         nfi.append(nbf)
-        nn = [imagesperfile] * nbf
+        nn = [int(imagesperfile)] * nbf
         fn = [str(ttfn[ii])] * nbf
         if nn:
-            nn[-1] = tt - (nbf - 1) * imagesperfile
+            nn[-1] = int(tt - (nbf - 1) * imagesperfile)
         nbimg.extend(nn)
         fnms.extend(fn)
 
-    nboff = [sum(nbimg[:(ii)]) for ii in range(len(nbimg))]
+    nboff = [int(sum(nbimg[:(ii)])) for ii in range(len(nbimg))]
 
     # eiger9m 3110 pixel x 3269 pixel
     # /entry/data/data uint32 [1, 3269 , 3110]
@@ -181,7 +181,7 @@ def triggermode_cb(commonblock, name, triggermode,
     # /entry/data/data uint32 [1, 1065 , 1030]
 
     vfl = nxw.virtual_field_layout(
-        [totalframenumbers, shape[0], shape[1]], dtype, parent=col)
+        [totalframenumbers, shape[0], shape[1]], dtype)
     for ii, nb in enumerate(nbimg):
         fnm = fnms[ii]
         ef = nxw.target_field_view(
