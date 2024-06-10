@@ -654,7 +654,7 @@ class VirtualDataset(object):
                 efield = filewriter.target_field_view(
                     flm.target.filename, flm.target.path,
                     flm.target.shape or flm.shape,
-                    flm.target.maxshape)
+                    flm.target.maxshape, parent=parent)
                 layout.add(flm.hyperslab, efield, flm.target.hyperslab,
                            flm.shape)
                 if parent:
