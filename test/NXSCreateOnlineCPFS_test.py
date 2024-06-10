@@ -430,7 +430,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                         self.assertEqual(
                             lines[-2].split(),
                             ["cobold", "dalsa", "dalsavds",
-                             "eiger9m32vds", "eigerdectris", "eigerdectrismesh",
+                             "eiger9m32vds", "eigerdectris",
+                             "eigerdectrismesh",
                              "lambda", "lambda2m",
                              "lambdavds", "lambdavdsnm",
                              "limaccd", "limaccds", "marccd", "mca_xia",
