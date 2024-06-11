@@ -323,6 +323,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                 self.assertEqual(
                     lines[-2].split(),
                     ["cobold", "dalsa", "dalsavds",
+                     "eiger1m16vds", "eiger1m16vds",
+                     "eiger4m16vds", "eiger4m16vds", "eiger9m16vds",
                      "eiger9m32vds", "eigerdectris", "eigerdectrismesh",
                      "lambda", "lambda2m",
                      "lambdavds",
@@ -430,6 +432,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                         self.assertEqual(
                             lines[-2].split(),
                             ["cobold", "dalsa", "dalsavds",
+                             "eiger1m16vds", "eiger1m16vds",
+                             "eiger4m16vds", "eiger4m16vds", "eiger9m16vds",
                              "eiger9m32vds", "eigerdectris",
                              "eigerdectrismesh",
                              "lambda", "lambda2m",
@@ -504,6 +508,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             self.assertEqual(
                 lines[-2].split(),
                 ["cobold", "dalsa", "dalsavds",
+                 "eiger1m16vds", "eiger1m16vds",
+                 "eiger4m16vds", "eiger4m16vds", "eiger9m16vds",
                  "eiger9m32vds", "eigerdectris", "eigerdectrismesh",
                  "lambda", "lambda2m",
                  "lambdavds", "lambdavdsnm",
