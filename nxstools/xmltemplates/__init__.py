@@ -1860,6 +1860,36 @@ moduleTemplateFiles = {
         'eigerdectrismesh_description_cb.ds.xml',
         'eigerdectrismesh_triggermode_cb.ds.xml'
     ],
+    'eiger1m16vds': [
+        'eiger1m16vds.xml',
+        'eiger1m16vds_stepindex.ds.xml',
+        'eiger1m16vds_description_cb.ds.xml',
+        'eiger1m16vds_triggermode_cb.ds.xml'
+    ],
+    'eiger4m16vds': [
+        'eiger4m16vds.xml',
+        'eiger4m16vds_stepindex.ds.xml',
+        'eiger4m16vds_description_cb.ds.xml',
+        'eiger4m16vds_triggermode_cb.ds.xml'
+    ],
+    'eiger9m16vds': [
+        'eiger9m16vds.xml',
+        'eiger9m16vds_stepindex.ds.xml',
+        'eiger9m16vds_description_cb.ds.xml',
+        'eiger9m16vds_triggermode_cb.ds.xml'
+    ],
+    'eiger1m32vds': [
+        'eiger1m32vds.xml',
+        'eiger1m32vds_stepindex.ds.xml',
+        'eiger1m32vds_description_cb.ds.xml',
+        'eiger1m32vds_triggermode_cb.ds.xml'
+    ],
+    'eiger4m32vds': [
+        'eiger4m32vds.xml',
+        'eiger4m32vds_stepindex.ds.xml',
+        'eiger4m32vds_description_cb.ds.xml',
+        'eiger4m32vds_triggermode_cb.ds.xml'
+    ],
     'eiger9m32vds': [
         'eiger9m32vds.xml',
         'eiger9m32vds_stepindex.ds.xml',
@@ -2076,6 +2106,36 @@ moduleMultiAttributes = {
         'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
     ],
     'eigerdectrismesh': [
+        'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
+        'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
+        'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
+        'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
+    'eiger1m16vds': [
+        'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
+        'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
+        'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
+        'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
+    'eiger4m16vds': [
+        'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
+        'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
+        'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
+        'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
+    'eiger9m16vds': [
+        'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
+        'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
+        'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
+        'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
+    'eiger1m32vds': [
+        'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
+        'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
+        'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
+        'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
+    'eiger4m32vds': [
         'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
         'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
         'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',

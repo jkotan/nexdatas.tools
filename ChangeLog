@@ -1,4 +1,12 @@
-2024-06-05 Jan Kotanski <jankotan@gmail.com>
+2024-06-11 Jan Kotanski <jankotan@gmail.com>
+	* add eiger9m16vds template (#654)
+	* add eiger4m16vds template (#654)
+	* add eiger1m16vds template (#654)
+	* add eiger4m32vds template (#654)
+	* add eiger1m32vds template (#654)
+	* tagged as v4.4.0
+
+2024-06-10 Jan Kotanski <jankotan@gmail.com>
 	* add eigerdectrismesh template (#649)
 	* add eiger9m32vds template (#652)
 	* fix typos in stepindex datasources
