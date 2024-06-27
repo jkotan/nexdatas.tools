@@ -396,7 +396,7 @@ class SetUp(object):
 
     def waitServerNotRunning(self, server=None, device=None,
                              adminproxy=None,
-                             maxcnt=1000, verbose=True,
+                             maxcnt=10000, verbose=True,
                              waitforproc=True):
         """  wait until device is exported and server is running
 
@@ -428,7 +428,7 @@ class SetUp(object):
                     # running = adminproxy.RunningServers
                     running = adminproxy.DevGetRunningServers(True)
                     if server in running:
-                        time.sleep(0.2)
+                        time.sleep(0.02)
                         cnt += 1
                         continue
                     else:
@@ -439,7 +439,7 @@ class SetUp(object):
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device in exl.value_string:
-                        time.sleep(0.2)
+                        time.sleep(0.02)
                         cnt += 1
                         continue
                 found = False
@@ -448,7 +448,7 @@ class SetUp(object):
                         print(" %s is not working" % (device or server))
             except Exception as e:
                 print(str(e))
-                time.sleep(0.2)
+                time.sleep(0.02)
                 found = True
             cnt += 1
         if waitforproc:
@@ -457,7 +457,7 @@ class SetUp(object):
 
     def waitServerRunning(self, server=None, device=None,
                           adminproxy=None,
-                          maxcnt=1000, verbose=True,
+                          maxcnt=10000, verbose=True,
                           waitforproc=True):
         """  wait until device is exported and server is running
 
@@ -487,7 +487,7 @@ class SetUp(object):
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device not in exl.value_string:
-                        time.sleep(0.2)
+                        time.sleep(0.02)
                         cnt += 1
                         continue
                     else:
@@ -500,7 +500,7 @@ class SetUp(object):
                     # running = adminproxy.RunningServers
                     running = adminproxy.DevGetRunningServers(True)
                     if server not in running:
-                        time.sleep(0.2)
+                        time.sleep(0.02)
                         cnt += 1
                         continue
                 found = True
@@ -509,7 +509,7 @@ class SetUp(object):
                         print(" %s is working" % (device or server))
             except Exception as e:
                 print(str(e))
-                time.sleep(0.2)
+                time.sleep(0.02)
                 found = False
             cnt += 1
         if waitforproc:
@@ -622,7 +622,7 @@ class SetUp(object):
                                     sys.stdout.flush()
                                     problems = True
                                     counter = 0
-                                    while problems and counter < 100:
+                                    while problems and counter < 1000:
                                         try:
                                             sys.stdout.write('.')
                                             sys.stdout.flush()
@@ -630,12 +630,12 @@ class SetUp(object):
                                             problems = False
                                         except Exception:
                                             counter += 1
-                                            time.sleep(0.4)
+                                            time.sleep(0.2)
                                 if wait:
                                     try:
-                                        maxcnt = int(float(timeout)/0.2)
+                                        maxcnt = int(float(timeout)/0.02)
                                     except Exception:
-                                        maxcnt = 1000
+                                        maxcnt = 10000
                                     problems = not self.waitServerRunning(
                                         svl, None, adminproxy, maxcnt) \
                                         or problems
