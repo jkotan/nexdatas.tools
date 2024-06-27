@@ -1,3 +1,7 @@
+2024-06-27 Jan Kotanski <jankotan@gmail.com>
+	* enlarge waiting time for the server in nxsetup (#657)
+	* tagged as v4.5.0
+
 2024-06-11 Jan Kotanski <jankotan@gmail.com>
 	* add eiger9m16vds template (#654)
 	* add eiger4m16vds template (#654)
