@@ -6,6 +6,10 @@
 	* add eiger1m32vds template (#654)
 	* tagged as v4.4.0
 
+2024-06-27 Jan Kotanski <jankotan@gmail.com>
+	* enlarge waiting time for the server in nxsetup (#652)
+	* tagged as v4.5.0
+
 2024-06-10 Jan Kotanski <jankotan@gmail.com>
 	* add eigerdectrismesh template (#649)
 	* add eiger9m32vds template (#652)

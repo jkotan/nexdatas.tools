@@ -428,7 +428,7 @@ class SetUp(object):
                     # running = adminproxy.RunningServers
                     running = adminproxy.DevGetRunningServers(True)
                     if server in running:
-                        time.sleep(0.02)
+                        time.sleep(0.2)
                         cnt += 1
                         continue
                     else:
@@ -439,7 +439,7 @@ class SetUp(object):
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device in exl.value_string:
-                        time.sleep(0.02)
+                        time.sleep(0.2)
                         cnt += 1
                         continue
                 found = False
@@ -448,7 +448,7 @@ class SetUp(object):
                         print(" %s is not working" % (device or server))
             except Exception as e:
                 print(str(e))
-                time.sleep(0.02)
+                time.sleep(0.2)
                 found = True
             cnt += 1
         if waitforproc:
@@ -487,7 +487,7 @@ class SetUp(object):
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device not in exl.value_string:
-                        time.sleep(0.02)
+                        time.sleep(0.2)
                         cnt += 1
                         continue
                     else:
@@ -500,7 +500,7 @@ class SetUp(object):
                     # running = adminproxy.RunningServers
                     running = adminproxy.DevGetRunningServers(True)
                     if server not in running:
-                        time.sleep(0.02)
+                        time.sleep(0.2)
                         cnt += 1
                         continue
                 found = True
@@ -509,7 +509,7 @@ class SetUp(object):
                         print(" %s is working" % (device or server))
             except Exception as e:
                 print(str(e))
-                time.sleep(0.02)
+                time.sleep(0.2)
                 found = False
             cnt += 1
         if waitforproc:
