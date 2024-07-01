@@ -3,12 +3,12 @@
   <datasource type="PYEVAL" name="$(name)_triggermode_cb">
     <result name="result">
 from nxstools.pyeval import pilc
-ds.result = pilc.triggermode_cb(commonblock, "$(name)", ds.$(name)_triggermode, ds.$(name)_nbtriggers, ds.$(name)_triggerperfile, "$(hostname)", "$(device)", "$var.filename", "$var.entryname#'$(__entryname__)'$var.serialno", "$(__insname__)", ds.$(name)_fileprefix, ds.$(name)_filedir)
+ds.result = pilc.triggermode_cb(commonblock, "$(name)", ds.$(name)_triggermode, ds.$(name)_nbtriggers, ds.$(name)_triggersperfile, "$(hostname)", "$(device)", "$var.filename", "$var.entryname#'$(__entryname__)'$var.serialno", "$(__insname__)", ds.$(name)_fileprefix, ds.$(name)_filedir)
     </result>
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbtriggers
-    $datasources.$(name)_triggerperfile
-    $datasources.$(name)_filprefix
-    $datasources.$(name)_fildir
+    $datasources.$(name)_triggersperfile
+    $datasources.$(name)_fileprefix
+    $datasources.$(name)_filedir
   </datasource>
 </definition>

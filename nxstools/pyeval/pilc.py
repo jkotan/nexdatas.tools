@@ -19,7 +19,7 @@
 
 """  pyeval helper functions for pilc """
 
-import json
+# import json
 try:
     import tango
 except Exception:
@@ -27,7 +27,7 @@ except Exception:
 
 
 def triggermode_cb(commonblock, name, triggermode,
-                   nrtriggers, triggerperfile,
+                   nbtriggers, triggersperfile,
                    hostname, device,
                    filename, entryname,
                    insname, pilcfileprefix, pilcfiledir):
@@ -41,8 +41,8 @@ def triggermode_cb(commonblock, name, triggermode,
     :type triggermode: :obj:`int` or :obj:`str`
     :param nbtriggers: a number of triggers
     :type nbtriggers: :obj:`int`
-    :param triggerperfile: a number of triggers per file
-    :type triggerperfile: :obj:`int`
+    :param triggersperfile: a number of triggers per file
+    :type triggersperfile: :obj:`int`
     :param hostname: tango host name
     :type hostname: :obj:`str`
     :param device: tango device name
@@ -62,22 +62,23 @@ def triggermode_cb(commonblock, name, triggermode,
     """
 
     dp = tango.DeviceProxy('%s/%s' % (hostname, device))
-    fpattern = fileprefix.split("/")[-1]
+    fpattern = pilcfileprefix.split("/")[-1]
     nbfiles = (nbtriggers + triggersperfile - 1) // triggersperfile
 
     nbstart = 0
     filepostfix = ".nxs"
     try:
         pilcfilename = str(dp.FileName)
-        if pilcfilename.startswith(fileprefix + "_") and \
+        if pilcfilename.startswith(fpattern + "_") and \
                 pilcfilename.endswith(filepostfix):
-            nblast = int(fn[len(fileprefix) + 1: - len(filepostfix)])
-            nbstart =  min(0, nblast - nbfiles + 1)
+            nblast = int(pilcfilename[
+                    len(fpattern) + 1: - len(filepostfix)])
+            nbstart = min(0, nblast - nbfiles + 1)
     except Exception:
         pilcfilename = None
 
     result = triggermode.lower()
-    
+
     if filename:
         path = (filename).split("/")[-1].split(".")[0] + "/"
     else:
@@ -98,15 +99,15 @@ def triggermode_cb(commonblock, name, triggermode,
             import nxstools.h5cppwriter as nxw
     else:
         raise Exception("Writer cannot be found")
-    
+
     en = root.open(entryname)
     dt = en.open("data")
     ins = en.open(insname)
     pilc = ins.open(name)
     pilcdata = pilc.open("data")
-    col = pilc.open("collection")
+    # col = pilc.open("collection")
     for nbf in range(nbstart, nbstart + nbfiles):
-        nnbf = "%05i" % (nbf)
+        # nnbf = "%05i" % (nbf)
         for field in ["counter", "time", "trigger",
                       "encoder_1", "encoder_2",
                       "encoder_3", "encoder_4", "encoder_5"]:
@@ -114,14 +115,18 @@ def triggermode_cb(commonblock, name, triggermode,
             if spf > 0 and cfid > 0:
                 if cfid == nbf:
                     nxw.link(
-                        "%s_%05i%s://entry/data/%s" % (path, nbf, filepostfix, field),
+                        "%s_%05i%s://entry/data/%s"
+                        % (path, nbf, filepostfix, field),
                         pilcdata, field)
-                    nxw.link("/%s/%s/%s/data/%s" % (entryname, insname, name, filed),
+                    nxw.link("/%s/%s/%s/data/%s"
+                             % (entryname, insname, name, field),
                              dt, "%s_%s" % (name, field))
-                nxw.link("%s_%05i%s://entry/data/%s" % (path, nbf, filepostfix, field),
+                nxw.link("%s_%05i%s://entry/data/%s"
+                         % (path, nbf, filepostfix, field),
                          pilcdata, "%s" % (fnbf))
             else:
-                nxw.link("%s_%05i%s://entry/data/%s" % (path, nbf, filepostfix, field),
+                nxw.link("%s_%05i%s://entry/data/%s"
+                         % (path, nbf, filepostfix, field),
                          pilcdata, "%s" % (fnbf))
                 nxw.link("/%s/%s/%s/data/%s" %
                          (entryname, insname, name, fnbf), dt,

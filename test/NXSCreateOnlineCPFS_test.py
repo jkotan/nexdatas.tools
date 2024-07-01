@@ -332,9 +332,10 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      "limaccd", "limaccds", "marccd", "mca_xia",
                      "mythen", "mythen2", "pco", "pco4000", "pcoedge",
                      "pedetector", "perkinelmer",
-                     "perkinelmerdetector", "pilatus", "pilatus100k",
+                     "perkinelmerdetector",
+                     "pilatus", "pilatus100k",
                      "pilatus1m", "pilatus2m", "pilatus300k",
-                     "pilatus6m", "tangovimba"])
+                     "pilatus6m", "pilc", "tangovimba"])
         finally:
             os.remove(fname)
 
@@ -370,8 +371,9 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             'mythen2',              #
             'perkinelmer',          #
             'mca_xia',              # +
-            'pco',                  #
+            'pco',
             'pilatus6m',            #
+            "pilc",
             'marccd',               # +
             'pcoedge',              #
             'pilatus100k',          #
@@ -441,9 +443,10 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                              "limaccd", "limaccds", "marccd", "mca_xia",
                              "mythen", "mythen2", "pco", "pco4000", "pcoedge",
                              "pedetector", "perkinelmer",
-                             "perkinelmerdetector", "pilatus", "pilatus100k",
+                             "perkinelmerdetector",
+                             "pilatus", "pilatus100k",
                              "pilatus1m", "pilatus2m", "pilatus300k",
-                             "pilatus6m", "tangovimba"])
+                             "pilatus6m", "pilc", "tangovimba"])
                 finally:
                     os.remove(fname)
         finally:
@@ -516,9 +519,10 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                  "limaccd", "limaccds", "marccd", "mca_xia",
                  "mythen", "mythen2", "pco", "pco4000", "pcoedge",
                  "pedetector", "perkinelmer",
-                 "perkinelmerdetector", "pilatus", "pilatus100k",
+                 "perkinelmerdetector",
+                 "pilatus", "pilatus100k",
                  "pilatus1m", "pilatus2m", "pilatus300k",
-                 "pilatus6m", "tangovimba"])
+                 "pilatus6m", "pilc", "tangovimba"])
         finally:
             os.remove(fname)
 

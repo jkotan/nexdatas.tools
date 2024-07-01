@@ -2003,7 +2003,7 @@ moduleMultiAttributes = {
         'FilePrefix', 'FileDir', 'FileName',
         'TriggerCounter', 'EncoderTrigger', 'RemainingTriggers',
         'EncoderTriggering', 'BufferLoad',
-        'Position1Conversion','Position2Conversion', 'Position3Conversion',
+        'Position1Conversion', 'Position2Conversion', 'Position3Conversion',
         'Position4Conversion', 'Position5Conversion',
         'CurrentPosition1', 'CurrentPosition2', 'CurrentPosition3',
         'CurrentPosition4', 'CurrentPosition5', 'MaskDataToWrite',
