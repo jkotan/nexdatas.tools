@@ -1,3 +1,7 @@
+2024-07-02 Jan Kotanski <jankotan@gmail.com>
+	* add pilc component template (#671)
+	* tagged as v4.6.0
+
 2024-06-27 Jan Kotanski <jankotan@gmail.com>
 	* improve fix for enlarge waiting time for the server in nxsetup (#659)
 	* tagged as v4.5.1
