@@ -30,7 +30,8 @@ def triggermode_cb(commonblock, name, triggermode,
                    nbtriggers, triggersperfile,
                    hostname, device,
                    filename, entryname,
-                   insname, pilcfileprefix, pilcfiledir):
+                   insname, pilcfileprefix, pilcfiledir,
+                   timeid=False):
     """ code for triggermode_cb  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -57,6 +58,8 @@ def triggermode_cb(commonblock, name, triggermode,
     :type pilcfileprefix :obj:`str`
     :param pilcfiledir: pilc file name directory
     :type pilcfiledir :obj:`str`
+    :param timeid: file id with timestamp
+    :type timeid: :obj:`bool`
     :returns: triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
@@ -64,7 +67,9 @@ def triggermode_cb(commonblock, name, triggermode,
     dp = tango.DeviceProxy('%s/%s' % (hostname, device))
     fpattern = pilcfileprefix.split("/")[-1]
     nbfiles = (nbtriggers + triggersperfile - 1) // triggersperfile
-
+    fields = ["counter", "time", "trigger",
+              "encoder_1", "encoder_2",
+              "encoder_3", "encoder_4", "encoder_5"]
     nbstart = 0
     filepostfix = ".nxs"
     try:
@@ -76,8 +81,7 @@ def triggermode_cb(commonblock, name, triggermode,
             nbstart = min(0, nblast - nbfiles + 1)
     except Exception:
         pilcfilename = None
-
-    result = triggermode.lower()
+    nblist = [nb for nb in range(nbstart, nbstart + nbfiles)]
 
     if filename:
         path = (filename).split("/")[-1].split(".")[0] + "/"
@@ -105,12 +109,27 @@ def triggermode_cb(commonblock, name, triggermode,
     ins = en.open(insname)
     pilc = ins.open(name)
     pilcdata = pilc.open("data")
-    # col = pilc.open("collection")
-    for nbf in range(nbstart, nbstart + nbfiles):
+    col = pilc.open("collection")
+
+    if timeid and pilcfilename and "filenames" in col.names():
+        try:
+
+            filenames = list(col.open("filenames").read())
+            if filenames:
+                filenames.append(str(pilcfilename))
+                nlist = []
+                for fname in filenames:
+                    fname = str(fname)
+                    if fname.startswith(fpattern + "_") and \
+                            fname.endswith(filepostfix):
+                        nlist.append(int(fname[
+                            len(fpattern) + 1: - len(filepostfix)]))
+                nblist = nlist
+        except Exception:
+            pass
+    for nbf in nblist:
         # nnbf = "%05i" % (nbf)
-        for field in ["counter", "time", "trigger",
-                      "encoder_1", "encoder_2",
-                      "encoder_3", "encoder_4", "encoder_5"]:
+        for field in fields:
             fnbf = "%s_%05i" % (field, nbf)
             if spf > 0 and cfid > 0:
                 if cfid == nbf:
