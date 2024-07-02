@@ -136,17 +136,17 @@ def triggermode_cb(commonblock, name, triggermode,
             if spf > 0 and cfid > 0:
                 if cfid == nbf:
                     nxw.link(
-                        "%s_%05i%s://entry/data/%s"
+                        "%s%05i%s://entry/data/%s"
                         % (path, nbf, filepostfix, field),
                         pilcdata, field)
                     nxw.link("/%s/%s/%s/data/%s"
                              % (entryname, insname, name, field),
                              dt, "%s_%s" % (name, field))
-                nxw.link("%s_%05i%s://entry/data/%s"
+                nxw.link("%s%05i%s://entry/data/%s"
                          % (path, nbf, filepostfix, field),
                          pilcdata, "%s" % (fnbf))
             else:
-                nxw.link("%s_%05i%s://entry/data/%s"
+                nxw.link("%s%05i%s://entry/data/%s"
                          % (path, nbf, filepostfix, field),
                          pilcdata, "%s" % (fnbf))
                 nxw.link("/%s/%s/%s/data/%s" %
