@@ -9257,10 +9257,12 @@ For more help:
                 gid = pwd.getpwnam(getpass.getuser()).pw_gid
                 self.assertEqual(df["gid"], grp.getgrgid(gid).gr_name)
 
+                # tm = df["time"].replace("+","CEST+")
                 tm = df["time"]
                 if sys.version_info > (3,):
                     tst = duparser.parse(tm).timestamp()
                     ct = time.time()
+                    print(tm, tst, ct)
                     self.assertTrue(tst <= ct)
                     self.assertTrue(ct - tst < 1)
 
