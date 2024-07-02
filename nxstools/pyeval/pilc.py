@@ -66,7 +66,10 @@ def triggermode_cb(commonblock, name, triggermode,
 
     dp = tango.DeviceProxy('%s/%s' % (hostname, device))
     fpattern = pilcfileprefix.split("/")[-1]
-    nbfiles = (nbtriggers + triggersperfile - 1) // triggersperfile
+    if triggersperfile >= 1:
+        nbfiles = (nbtriggers + triggersperfile - 1) // triggersperfile
+    else:
+        nbfiles = 1
     fields = ["counter", "time", "trigger",
               "encoder_1", "encoder_2",
               "encoder_3", "encoder_4", "encoder_5"]
@@ -78,7 +81,7 @@ def triggermode_cb(commonblock, name, triggermode,
                 pilcfilename.endswith(filepostfix):
             nblast = int(pilcfilename[
                     len(fpattern) + 1: - len(filepostfix)])
-            nbstart = min(0, nblast - nbfiles + 1)
+            nbstart = max(0, nblast - nbfiles + 1)
     except Exception:
         pilcfilename = None
     nblist = [nb for nb in range(nbstart, nbstart + nbfiles)]
@@ -113,7 +116,6 @@ def triggermode_cb(commonblock, name, triggermode,
 
     if timeid and pilcfilename and "filenames" in col.names():
         try:
-
             filenames = list(col.open("filenames").read())
             if filenames:
                 filenames.append(str(pilcfilename))

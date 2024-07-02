@@ -14,8 +14,6 @@
             <strategy mode="FINAL"/>$datasources.$(name)_nbtriggers</field>
           <field units="s" type="NX_FLOAT64" name="trigger_pulse_length">
             <strategy mode="FINAL"/>$datasources.$(name)_triggerpulselength</field>
-          <field type="NX_INT32" name="arm">
-            <strategy mode="FINAL"/>$datasources.$(name)_arm</field>
           <field type="NX_INT32" name="trigger_mode">
             <strategy mode="FINAL"/>$datasources.$(name)_triggermode</field>
           <field units="s" type="NX_FLOAT64" name="time_trigger_start">
