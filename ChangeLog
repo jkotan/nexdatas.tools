@@ -1,4 +1,8 @@
 2024-07-02 Jan Kotanski <jankotan@gmail.com>
+	* fix pilc file name (#663)
+	* tagged as v4.6.1
+
+2024-07-02 Jan Kotanski <jankotan@gmail.com>
 	* add pilc component template (#661)
 	* tagged as v4.6.0
 
