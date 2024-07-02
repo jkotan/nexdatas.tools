@@ -91,7 +91,7 @@ def triggermode_cb(commonblock, name, triggermode,
     else:
         path = ""
     path += '%s/%s_' % (name, fpattern)
-    result = triggermode.lower()
+    result = triggermode
 
     spf = 0
     cfid = 0

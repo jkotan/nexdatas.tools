@@ -15,7 +15,7 @@
           <field units="s" type="NX_FLOAT64" name="trigger_pulse_length">
             <strategy mode="FINAL"/>$datasources.$(name)_triggerpulselength</field>
           <field type="NX_INT32" name="trigger_mode">
-            <strategy mode="FINAL"/>$datasources.$(name)_triggermode</field>
+            <strategy mode="FINAL"/>$datasources.$(name)_triggermode_cb</field>
           <field units="s" type="NX_FLOAT64" name="time_trigger_start">
             <strategy mode="FINAL"/>$datasources.$(name)_timetriggerstart</field>
           <field units="s" type="NX_FLOAT64" name="time_trigger_step_size">
@@ -38,34 +38,24 @@
             <strategy mode="FINAL"/>$datasources.$(name)_bufferload</field>
           <field type="NX_INT32" name="software_inhibit">
             <strategy mode="FINAL"/>$datasources.$(name)_softwareinhibit</field>
-          <field type="NX_FlOAT64" name="hardware_inhibit">
+          <field type="NX_FLOAT64" name="hardware_inhibit">
             <strategy mode="FINAL"/>$datasources.$(name)_hardwareinhibit</field>
           <field type="NX_FLOAT64" name="mask_data_to_write">
             <strategy mode="FINAL"/>$datasources.$(name)_maskdatatowrite</field>
-          <field type="NX_INT32" name="trigger_per_file">
-            <strategy mode="FINAL"/>$datasources.$(name)_trigger_per_file</field>
+          <field type="NX_INT32" name="triggers_per_file">
+            <strategy mode="FINAL"/>$datasources.$(name)_triggersperfile</field>
           <field type="NX_INT32" name="counter_config">
-            <strategy mode="FINAL"/>$datasources.$(name)_counter_config</field>
-          <field type="NX_CHAR" name="metadata1">
-            <strategy mode="FINAL"/>$datasources.$(name)_metadata1</field>
-          <field type="NX_CHAR" name="metadata2">
-            <strategy mode="FINAL"/>$datasources.$(name)_metadata2</field>
-          <field type="NX_CHAR" name="metadata2">
-            <strategy mode="FINAL"/>$datasources.$(name)_metadata3</field>
-          <field type="NX_CHAR" name="metadata2">
-            <strategy mode="FINAL"/>$datasources.$(name)_metadata4</field>
-          <field type="NX_CHAR" name="metadata2">
-            <strategy mode="FINAL"/>$datasources.$(name)_metadata5</field>
-          <field units="steps/unit" type="NX_FlOAT64" name="position_1_conversion">
-            <strategy mode="FINAL"/>$datasources.$(name)_position_1_conversion</field>
-          <field units="steps/unit" type="NX_FlOAT64" name="position_2_conversion">
-            <strategy mode="FINAL"/>$datasources.$(name)_position_2_conversion</field>
-          <field units="steps/unit" type="NX_FlOAT64" name="position_3_conversion">
-            <strategy mode="FINAL"/>$datasources.$(name)_position_3_conversion</field>
-          <field units="steps/unit" type="NX_FlOAT64" name="position_4_conversion">
-            <strategy mode="FINAL"/>$datasources.$(name)_position_4_conversion</field>
-          <field units="steps/unit" type="NX_FlOAT64" name="position_5_conversion">
-            <strategy mode="FINAL"/>$datasources.$(name)_position_5_conversion</field>
+            <strategy mode="FINAL"/>$datasources.$(name)_counterconfig</field>
+          <field units="steps/unit" type="NX_FLOAT64" name="position1_conversion">
+            <strategy mode="FINAL"/>$datasources.$(name)_position1conversion</field>
+          <field units="steps/unit" type="NX_FLOAT64" name="position2_conversion">
+            <strategy mode="FINAL"/>$datasources.$(name)_position2conversion</field>
+          <field units="steps/unit" type="NX_FLOAT64" name="position3_conversion">
+            <strategy mode="FINAL"/>$datasources.$(name)_position3conversion</field>
+          <field units="steps/unit" type="NX_FLOAT64" name="position4_conversion">
+            <strategy mode="FINAL"/>$datasources.$(name)_position4conversion</field>
+          <field units="steps/unit" type="NX_FLOAT64" name="position5_conversion">
+            <strategy mode="FINAL"/>$datasources.$(name)_position5conversion</field>
 	</group>
         <group type="NXdata" name="data">	  
         </group>
