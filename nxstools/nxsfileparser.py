@@ -105,18 +105,16 @@ def isoDate(text):
             pass
         if not result:
             date = dateutil.parser.parse(text)
+            fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
             if date.tzinfo is None:
                 tzone = time.tzname[0]
                 try:
                     tz = pytz.timezone(tzone)
+                    date = tz.localize(date)
                 except Exception:
                     import tzlocal
                     tz = tzlocal.get_localzone()
-                if sys.version_info > (3, 6):
                     date = date.replace(tzinfo=tz)
-                else:
-                    date = tz.localize(date)
-            fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
             result = str(date.strftime(fmt))
     except Exception:
         result = text
