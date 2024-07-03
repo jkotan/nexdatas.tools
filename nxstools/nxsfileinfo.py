@@ -26,7 +26,6 @@ import os
 import stat
 import re
 import time
-import pytz
 import datetime
 import pwd
 import grp
@@ -3327,17 +3326,22 @@ class OrigDatablock(Runner):
         :rtype: :obj:`str`
         """
         tzone = time.tzname[0]
+        fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
         try:
-            tz = pytz.timezone(tzone)
+            if sys.version_info >= (3, 9):
+                import zoneinfo
+                tz = zoneinfo.ZoneInfo(tzone)
+                starttime = \
+                    datetime.datetime.fromtimestamp(tme).replace(tzinfo=tz)
+            else:
+                import pytz
+                tz = pytz.timezone(tzone)
+                starttime = tz.localize(datetime.datetime.fromtimestamp(tme))
         except Exception:
             import tzlocal
             tz = tzlocal.get_localzone()
-        fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
-        if sys.version_info > (3, 6):
             starttime = \
                 datetime.datetime.fromtimestamp(tme).replace(tzinfo=tz)
-        else:
-            starttime = tz.localize(datetime.datetime.fromtimestamp(tme))
         return str(starttime.strftime(fmt))
 
     def filterout(self, fpath, filters):

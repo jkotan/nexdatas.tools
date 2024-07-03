@@ -1,3 +1,7 @@
+2024-07-03 Jan Kotanski <jankotan@gmail.com>
+	* fix wrong parsing of summer time  (#666)
+	* tagged as v4.6.2
+
 2024-07-02 Jan Kotanski <jankotan@gmail.com>
 	* fix pilc file name (#663)
 	* tagged as v4.6.1

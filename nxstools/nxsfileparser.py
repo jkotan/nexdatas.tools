@@ -25,7 +25,6 @@ import sys
 import xml.etree.ElementTree as et
 import numpy as np
 import math
-import pytz
 import time
 import dateutil.parser
 import re
@@ -105,18 +104,22 @@ def isoDate(text):
             pass
         if not result:
             date = dateutil.parser.parse(text)
+            fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
             if date.tzinfo is None:
                 tzone = time.tzname[0]
                 try:
-                    tz = pytz.timezone(tzone)
+                    if sys.version_info >= (3, 9):
+                        import zoneinfo
+                        tz = zoneinfo.ZoneInfo(tzone)
+                        date = date.replace(tzinfo=tz)
+                    else:
+                        import pytz
+                        tz = pytz.timezone(tzone)
+                        date = tz.localize(date)
                 except Exception:
                     import tzlocal
                     tz = tzlocal.get_localzone()
-                if sys.version_info > (3, 6):
                     date = date.replace(tzinfo=tz)
-                else:
-                    date = tz.localize(date)
-            fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
             result = str(date.strftime(fmt))
     except Exception:
         result = text
