@@ -8776,16 +8776,20 @@ For more help:
 
         commands = [
             ('nxsfileinfo metadata -k4  %s -b %s  -s %s -o %s -u'
+             ' --id-format {proposalId}.{beamtimeId} '
              % (self.flags, btfname, smfname, ofname)).split(),
             ('nxsfileinfo metadata -k4  %s '
              ' --beamtime-meta %s '
+             ' --id-format {proposalId}.{beamtimeId} '
              ' --scientific-meta %s '
              ' --output %s '
              % (self.flags, btfname, smfname, ofname)).split(),
             ('nxsfileinfo metadata -k4  %s -b %s  -s %s -o %s'
+             ' --id-format {proposalId}.{beamtimeId} '
              ' --pid-with-uuid'
              % (self.flags, btfname, smfname, ofname)).split(),
             ('nxsfileinfo metadata -k4  %s '
+             ' --id-format {proposalId}.{beamtimeId} '
              ' --beamtime-meta %s '
              ' --scientific-meta %s '
              ' --output %s '
@@ -8839,7 +8843,7 @@ For more help:
                         'p01dmgt', 'p01staff'],
                     "ownerEmail": "cute.cute@cute.com",
                     "principalInvestigator": "cute.cute@cute.com",
-                    "proposalId": "16171271",
+                    "proposalId": "65300407.16171271",
                     "scientificMetadata": {
                         "beamtimeId": "16171271",
                         "DOOR_proposalId": "65300407",

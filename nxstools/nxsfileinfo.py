@@ -391,7 +391,7 @@ class BeamtimeLoader(object):
         # "createdAt": ["generated"],  # ?? should be automatic
         # "updatedAt": ["generated"],  # ?? should be automatic
         # "proposalId": "proposalId",
-        "proposalId": ["beamtimeId"],
+        # "proposalId": ["beamtimeId"],
     }
 
     oldbtmdmap = {
@@ -405,6 +405,7 @@ class BeamtimeLoader(object):
         "type": "raw",
         "keywords": ["scan"],
         "isPublished": False,
+        "proposalId": "{proposalId}.{beamtimeId}",
         "ownerGroup": "{beamtimeId}-dmgt",
         "accessGroups": ["{beamtimeId}-dmgt",
                          "{beamtimeId}-clbt",
@@ -481,6 +482,9 @@ class BeamtimeLoader(object):
             self.btmdmap.update(self.oldbtmdmap)
         self.__pid = options.pid
         self.__pap = options.pap
+        self.__idformat = ""
+        if hasattr(options, "idformat") and options.idformat:
+            self.__idformat = options.idformat
         self.__relpath = options.relpath
         self.__ownergroup = options.ownergroup
         self.__accessgroups = None
@@ -546,7 +550,10 @@ class BeamtimeLoader(object):
                         break
                     if not found:
                         print("%s cannot be found" % ds)
-            for sc, vl in self.strcre.items():
+            strcre2 = dict(self.strcre)
+            if self.__idformat:
+                strcre2["proposalId"] = self.__idformat
+            for sc, vl in strcre2.items():
                 if isinstance(vl, list):
                     self.__metadata[sc] = [
                         (vv.format(**self.__btmeta)
@@ -1190,6 +1197,12 @@ class Metadata(Runner):
         self._parser.add_argument(
             "-i", "--beamtimeid", dest="beamtimeid",
             help=("beamtime id"))
+        self._parser.add_argument(
+            "--id-format", dest="idformat",
+            default="{beamtimeId}",
+            # default="{proposalId}.{beamtimeId}",
+            help=("format of scicat proposal id. "
+                  "Default is {beamtimeId}"))
         self._parser.add_argument(
             "-u", "--pid-with-uuid", action="store_true",
             default=False, dest="puuid",
