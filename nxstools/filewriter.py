@@ -24,7 +24,7 @@ import pytz
 import datetime
 import threading
 import numpy
-import sys
+# import sys
 
 
 #: (:mod:`PNIWriter` or :mod:`H5PYWriter`or :mod:`H5CppWriter`)
