@@ -484,7 +484,7 @@ class BeamtimeLoader(object):
         self.__pap = options.pap
         self.__idformat = ""
         if hasattr(options, "idformat") and options.idformat:
-           self.__idformat = options.idformat
+            self.__idformat = options.idformat
         self.__relpath = options.relpath
         self.__ownergroup = options.ownergroup
         self.__accessgroups = None
