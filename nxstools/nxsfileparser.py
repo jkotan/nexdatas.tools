@@ -25,7 +25,6 @@ import sys
 import xml.etree.ElementTree as et
 import numpy as np
 import math
-import pytz
 import time
 import dateutil.parser
 import re
@@ -109,8 +108,14 @@ def isoDate(text):
             if date.tzinfo is None:
                 tzone = time.tzname[0]
                 try:
-                    tz = pytz.timezone(tzone)
-                    date = tz.localize(date)
+                    if sys.version_info >= (3, 9):
+                        import zoneinfo
+                        tz = zoneinfo.ZoneInfo(tzone)
+                        date = date.replace(tzinfo=tz)
+                    else:
+                        import pytz
+                        tz = pytz.timezone(tzone)
+                        date = tz.localize(date)
                 except Exception:
                     import tzlocal
                     tz = tzlocal.get_localzone()
