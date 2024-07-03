@@ -1,4 +1,8 @@
 2024-07-03 Jan Kotanski <jankotan@gmail.com>
+	* add --id-format to nxsfileinfo metadata (#669)
+	* tagged as v4.7.0
+
+2024-07-03 Jan Kotanski <jankotan@gmail.com>
 	* fix wrong parsing of summer time  (#666)
 	* tagged as v4.6.2
 
