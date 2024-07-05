@@ -1855,42 +1855,49 @@ moduleTemplateFiles = {
     'eigerdectris': [
         'eigerdectris.xml',
         'eigerdectris_stepindex.ds.xml',
+        'eigerdectris_nbimages_cb.ds.xml',
         'eigerdectris_description_cb.ds.xml',
         'eigerdectris_triggermode_cb.ds.xml'
     ],
     'eigerdectrismesh': [
         'eigerdectrismesh.xml',
         'eigerdectrismesh_stepindex.ds.xml',
+        'eigerdectrismesh_nbimages_cb.ds.xml',
         'eigerdectrismesh_description_cb.ds.xml',
         'eigerdectrismesh_triggermode_cb.ds.xml'
     ],
     'eiger1m16vds': [
         'eiger1m16vds.xml',
         'eiger1m16vds_stepindex.ds.xml',
+        'eiger1m16vds_nbimages_cb.ds.xml',
         'eiger1m16vds_description_cb.ds.xml',
         'eiger1m16vds_triggermode_cb.ds.xml'
     ],
     'eiger4m16vds': [
         'eiger4m16vds.xml',
         'eiger4m16vds_stepindex.ds.xml',
+        'eiger4m16vds_nbimages_cb.ds.xml',
         'eiger4m16vds_description_cb.ds.xml',
         'eiger4m16vds_triggermode_cb.ds.xml'
     ],
     'eiger9m16vds': [
         'eiger9m16vds.xml',
         'eiger9m16vds_stepindex.ds.xml',
+        'eiger9m16vds_nbimages_cb.ds.xml',
         'eiger9m16vds_description_cb.ds.xml',
         'eiger9m16vds_triggermode_cb.ds.xml'
     ],
     'eiger1m32vds': [
         'eiger1m32vds.xml',
         'eiger1m32vds_stepindex.ds.xml',
+        'eiger1m32vds_nbimages_cb.ds.xml',
         'eiger1m32vds_description_cb.ds.xml',
         'eiger1m32vds_triggermode_cb.ds.xml'
     ],
     'eiger4m32vds': [
         'eiger4m32vds.xml',
         'eiger4m32vds_stepindex.ds.xml',
+        'eiger4m32vds_nbimages_cb.ds.xml',
         'eiger4m32vds_description_cb.ds.xml',
         'eiger4m32vds_triggermode_cb.ds.xml'
     ],
