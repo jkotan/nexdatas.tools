@@ -1897,6 +1897,7 @@ moduleTemplateFiles = {
     'eiger9m32vds': [
         'eiger9m32vds.xml',
         'eiger9m32vds_stepindex.ds.xml',
+        'eiger9m32vds_nbimages_cb.ds.xml',
         'eiger9m32vds_description_cb.ds.xml',
         'eiger9m32vds_triggermode_cb.ds.xml'
     ],

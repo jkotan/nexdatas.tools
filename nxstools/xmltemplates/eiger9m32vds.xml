@@ -23,7 +23,7 @@
         <field type="NX_BOOLEAN" name="countrate_correction_applied">$datasources.$(name)_ratecorrectionenabled<strategy mode="FINAL"/>
         </field>
         <group type="NXcollection" name="collection">
-          <field type="NX_UINT64" name="nb_images">
+          <field type="NX_UINT64" name="nb_images_cb">
             <strategy mode="STEP"/>$datasources.$(name)_nbimages</field>
           <field type="NX_UINT64" name="nb_triggers">
             <strategy mode="FINAL"/>$datasources.$(name)_nbtriggers</field>
