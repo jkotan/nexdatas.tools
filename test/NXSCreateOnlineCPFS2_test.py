@@ -111,7 +111,7 @@ class NXSCreateOnlineCPFS2Test(
                      'ts_myeigerdectris_flatfieldenabled',
                      'ts_myeigerdectris_frametime',
                      'ts_myeigerdectris_humidity',
-                     'ts_myeigerdectris_nbimages',
+                     'ts_myeigerdectris_nbimages_cb',
                      'ts_myeigerdectris_nbtriggers',
                      'ts_myeigerdectris_photonenergy',
                      'ts_myeigerdectris_ratecorrectionenabled',
@@ -152,11 +152,11 @@ class NXSCreateOnlineCPFS2Test(
                      '        <field units="s" type="NX_FLOAT64" '
                      'name="count_time">'
                      '$datasources.myeigerdectris_counttime'
-                     '<strategy mode="STEP"/>\n'
+                     '<strategy mode="FINAL"/>\n'
                      '        </field>\n'
                      '        <field units="s" type="NX_FLOAT64" '
                      'name="frame_time">$datasources.myeigerdectris_frametime'
-                     '<strategy mode="STEP"/>\n'
+                     '<strategy mode="FINAL"/>\n'
                      '        </field>\n'
                      '        <field units="eV" type="NX_FLOAT64" '
                      'name="threshold_energy">'
@@ -176,7 +176,7 @@ class NXSCreateOnlineCPFS2Test(
                      '        <group type="NXcollection" name="collection">\n'
                      '          <field type="NX_UINT64" name="nb_images">\n'
                      '            <strategy mode="STEP"/>'
-                     '$datasources.myeigerdectris_nbimages</field>\n'
+                     '$datasources.myeigerdectris_nbimages_cb</field>\n'
                      '          <field type="NX_UINT64" name="nb_triggers">\n'
                      '            <strategy mode="FINAL"/>'
                      '$datasources.myeigerdectris_nbtriggers</field>\n'
@@ -299,15 +299,19 @@ class NXSCreateOnlineCPFS2Test(
                      '    <record name="Humidity"/>\n'
                      '  </datasource>\n'
                      '</definition>\n',
-                     '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                     '<?xml version=\'1.0\'?>\n'
                      '<definition>\n'
-                     '  <datasource type="TANGO"'
-                     ' name="myeigerdectris_nbimages"'
+                     '  <datasource type="PYEVAL"'
+                     ' name="myeigerdectris_nbimages_cb"'
                      '>\n'
-                     '    <device name="p09/eigerdectris/exp.01" '
-                     'member="attribute" hostname="haso000" '
-                     'port="10000" group="myeigerdectris_"/>\n'
-                     '    <record name="NbImages"/>\n'
+                     '    <result name="result">\n'
+                     'try:\n'
+                     '    import tango\n'
+                     'except Exception:\n'
+                     '    import PyTango as tango\n'
+                     'ds.result = tango.DeviceProxy('
+                     '"haso000:10000/p09/eigerdectris/exp.01").NbImages\n'
+                     '    </result>\n'
                      '  </datasource>\n'
                      '</definition>\n',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
@@ -362,11 +366,11 @@ class NXSCreateOnlineCPFS2Test(
                      'from nxstools.pyeval import common\n'
                      'ds.result = common.blockitem_addint('
                      'commonblock, "myeigerdectris_stepindex", '
-                     'ds.myeigerdectris_nbimages)\n'
+                     'ds.myeigerdectris_nbimages_cb)\n'
                      'ds.result = len(commonblock['
                      '"myeigerdectris_stepindex"])\n'
                      '    </result>\n'
-                     '    $datasources.myeigerdectris_nbimages\n'
+                     '    $datasources.myeigerdectris_nbimages_cb\n'
                      '  </datasource>\n'
                      '</definition>\n',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
@@ -390,7 +394,7 @@ class NXSCreateOnlineCPFS2Test(
                      'commonblock,'
                      ' "myeigerdectris",'
                      ' ds.myeigerdectris_triggermode,'
-                     ' ds.myeigerdectris_nbimages,'
+                     ' ds.myeigerdectris_nbimages_cb,'
                      ' "haso000:10000",'
                      ' "p09/eigerdectris/exp.01",'
                      ' "$var.filename",'
@@ -402,7 +406,7 @@ class NXSCreateOnlineCPFS2Test(
                      ')\n'
                      '    </result>\n'
                      '    $datasources.myeigerdectris_triggermode\n'
-                     '    $datasources.myeigerdectris_nbimages\n'
+                     '    $datasources.myeigerdectris_nbimages_cb\n'
                      '  </datasource>\n'
                      '</definition>\n',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
