@@ -1,5 +1,6 @@
 2024-07-07 Jan Kotanski <jankotan@gmail.com>
-	* hide counttime and frametime in  eiger templates (#674)
+	* hide STEP datasources in  eiger templates (#673)
+	* hide STEP datasources in  lambdavds templates (#675)
 	* tagged as v4.8.0
 
 2024-07-03 Jan Kotanski <jankotan@gmail.com>

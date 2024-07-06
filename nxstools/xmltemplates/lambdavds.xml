@@ -25,9 +25,9 @@
           <field type="NX_BOOLEAN" name="save_all_images">
             <strategy mode="FINAL"/>$datasources.$(name)_saveallimages</field>
           <field type="NX_INT64" name="lastest_image_number">
-            <strategy mode="STEP"/>$datasources.$(name)_latestimagenumber</field>
+            <strategy mode="FINAL"/>$datasources.$(name)_latestimagenumber</field>
           <field type="NX_INT64" name="total_loss_frames">
-            <strategy mode="STEP"/>$datasources.$(name)_totallossframes</field>
+            <strategy mode="FINAL"/>$datasources.$(name)_totallossframes</field>
           <field type="NX_UINT64" name="width">
             <strategy mode="FINAL"/>$datasources.$(name)_width</field>
           <field type="NX_UINT64" name="height">
@@ -43,7 +43,7 @@
           <field type="NX_CHAR" name="config_file_path">
             <strategy mode="FINAL"/>$datasources.$(name)_configfilepath</field>
           <field type="NX_CHAR" name="file_prefix">
-            <strategy mode="STEP"/>$datasources.$(name)_fileprefix</field>
+            <strategy mode="FINAL"/>$datasources.$(name)_fileprefix</field>
           <field type="NX_CHAR" name="file_start_num">
             <strategy mode="INIT"/>$datasources.$(name)_filestartnum</field>
           <field type="NX_CHAR" name="file_pre_ext">
