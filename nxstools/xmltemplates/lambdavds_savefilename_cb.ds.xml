@@ -3,11 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_savefilename_cb">
     <result name="result">
 from nxstools.pyeval import common
-try:
-    import tango
-except Exception:
-    import PyTango as tango
-ds.result = common.blockitem_add(commonblock, "$(name)_savefilename", tango.DeviceProxy("$(hostname)/$(device)").SaveFileName)
+ds.result = common.blockitem_add(commonblock, "$(name)_savefilename", ds.$(name)_savefilename)
     </result>
     $datasources.$(name)_savefilename
   </datasource>

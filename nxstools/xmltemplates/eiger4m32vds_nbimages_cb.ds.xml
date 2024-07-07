@@ -2,11 +2,8 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_nbimages_cb">
     <result name="result">
-try:
-    import tango
-except Exception:
-    import PyTango as tango
-ds.result = tango.DeviceProxy("$(hostname)/$(device)").NbImages
+ds.result = ds.$(name)_nbimages
     </result>
+    $datasources.$(name)_nbimages
   </datasource>
 </definition>
