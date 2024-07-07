@@ -3,9 +3,9 @@
   <datasource type="PYEVAL" name="$(name)_triggermode_cb">
     <result name="result">
 from nxstools.pyeval import eigerdectris
-ds.result = eigerdectris.triggermode_cb(commonblock, "$(name)", ds.$(name)_triggermode, ds.$(name)_nbimages_cb, "$(hostname)", "$(device)", "$var.filename", "$(name)_stepindex", "$var.entryname#'$(__entryname__)'$var.serialno", "$(__insname__)", "EigerDectris", "EigerFilewriter")
+ds.result = eigerdectris.triggermode_cb(commonblock, "$(name)", ds.$(name)_triggermode, ds.$(name)_nbimages, "$(hostname)", "$(device)", "$var.filename", "$(name)_stepindex", "$var.entryname#'$(__entryname__)'$var.serialno", "$(__insname__)", "EigerDectris", "EigerFilewriter")
     </result>
     $datasources.$(name)_triggermode
-    $datasources.$(name)_nbimages_cb
+    $datasources.$(name)_nbimages
   </datasource>
 </definition>
