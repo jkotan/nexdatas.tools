@@ -163,6 +163,19 @@ def triggermode_cb(commonblock, name, triggermode,
     ttfn = tfn.read()
 
     if "VDS" in amodes and "data" not in det.names():
+        edp = tango.DeviceProxy('%s/%s' % (hostname, device))
+        if hasattr(edp, "RoiMode") and edp.RoiMode:
+            if hasattr(edp, "RoiModeString") and \
+                    hasattr(edp, "RoiYSize") and \
+                    edp.RoiModeString == "lines":
+                if edp.RoiYSize:
+                    try:
+                        shape = [int(edp.RoiYSize), shape[1]]
+                    except Exception:
+                        pass
+        else:
+            shape = [2167, 2070]
+
         npath = "/entry/data/data"
 
         nbimg = []
