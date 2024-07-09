@@ -1,3 +1,7 @@
+2024-07-09 Jan Kotanski <jankotan@gmail.com>
+	* add support for eiger RoiMode attribute
+	* tagged as v4.9.0
+
 2024-07-07 Jan Kotanski <jankotan@gmail.com>
 	* hide STEP datasources in  eiger templates (#673)
 	* hide STEP datasources in  lambdavds templates (#675)
