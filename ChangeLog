@@ -1,4 +1,8 @@
 2024-07-10 Jan Kotanski <jankotan@gmail.com>
+	* add support ScanFileInScanNameDir env variable
+	* tagged as v4.10.0
+
+2024-07-10 Jan Kotanski <jankotan@gmail.com>
 	* improve support for eiger RoiMode attribute
 	* tagged as v4.9.1
 
