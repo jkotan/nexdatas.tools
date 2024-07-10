@@ -173,8 +173,8 @@ def triggermode_cb(commonblock, name, triggermode,
                         shape = [int(edp.RoiYSize), shape[1]]
                     except Exception:
                         pass
-        else:
-            shape = [2167, 2070]
+            else:
+                shape = [2167, 2070]
 
         npath = "/entry/data/data"
 
