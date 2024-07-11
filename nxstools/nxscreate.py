@@ -930,6 +930,13 @@ class StdComp(Runner):
                             type=str, nargs='*',
                             help='pairs of (key value) for template variables')
 
+    def postauto(self):
+        """ creates parser
+        """
+        self._parser.add_argument('--online-xml',
+                                  help="online.xml file",
+                                  dest="onlinexmlfile", default="")
+
     def run(self, options):
         """ the main program function
 

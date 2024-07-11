@@ -1,4 +1,8 @@
 2024-07-10 Jan Kotanski <jankotan@gmail.com>
+	* add --online-xml option for nxscreate stdcomp
+	* tagged as v4.11.0
+
+2024-07-10 Jan Kotanski <jankotan@gmail.com>
 	* add support ScanFileInScanNameDir env variable
 	* tagged as v4.10.0
 
