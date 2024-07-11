@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSTOOLS" "1" "Jul 10, 2024" "4.10" "NXSTools"
+.TH "NXSTOOLS" "1" "Jul 11, 2024" "4.11" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .sp
@@ -9623,6 +9623,11 @@ creates parser
 .TP
 .B epilog  =  \(dq * without \(aq\-t <type>\(aq: show a list of possible component types\en * with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type\en * with \-b: datasources are created in Configuration Server database\en * without \-b: datasources are created on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en * [name1 value1 [name2 value2] ...] sequence  defines component variable values \en\en examples:\en\en       nxscreate stdcomp  \en\en           \- list possible component types\en               from the \(aqnxstools.xmltemplates\(aq package\en\en       nxscreate stdcomp  \-p nxsextrasp00  \en\en           \- list possible component types from the \(aqnxsextrasp00\(aq package\en\en       nxscreate stdcomp  \-t source \en\en           \- list a description of \(aqsource\(aq component variables\en\en       nxscreate stdcomp  \-t default  \-c default  \-m  \-b\en\en           \- create \(aqdefault\(aq component  of the \(aqdefault\(aq type\en               in the NXSConfigServer database and set it as mandatory\en\en       nxscreate stdcomp  \-t slit  \-c front_slit1   xgap slt1x  ygap slt1y\en\en           \- create \(aqfront_slit1\(aq component  of the \(aqslit\(aq type\en               where variables xgap=\(aqslt1x\(aq and ygap=\(aqslt1and\(aq in the local directory \en\en       nxscreate stdcomp  \-p nxsextrasp08  \-t analyzer  \-c analyzer1  v anav  roll anaroll  \-b\en\en           \- create \(aqanalyzer1\(aq component of the \(aqanalyzer type\(aq\en               where variables v=\(aqanav\(aq and roll=\(aqamaroll\(aq in the NXSConfigServer database\en\(dq
 (\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+creates parser
 .UNINDENT
 .INDENT 7.0
 .TP

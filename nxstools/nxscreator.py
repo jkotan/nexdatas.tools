@@ -2662,6 +2662,21 @@ class StandardCPCreator(CPCreator):
         else:
             self.__specialparams['__configdevice__'] = None
 
+    @classmethod
+    def _getChildText(cls, parent, childname):
+        """ provides text of child named by childname
+
+        :param parent: parent node
+        :type parent: :class:`lxml.etree.Element`
+        :param childname: child name
+        :type childname: :opj:`str`
+        :returns: text string
+        :rtype: :obj:`str`
+        """
+
+        children = parent.findall(childname)
+        return cls._getText(children[0]) if len(children) else None
+
     def createXMLs(self):
         """ creates component xmls of all online.xml complex devices
         """
@@ -2690,6 +2705,26 @@ class StandardCPCreator(CPCreator):
         else:
             if os.path.isfile("%s/%s.xml" % (self.xmltemplatepath, module)):
                 xmlfiles = ["%s.xml" % module]
+
+        hw = []
+        if self.options.onlinexmlfile:
+            hw = etree.parse(
+                self.options.onlinexmlfile,
+                parser=XMLParser(collect_ids=False)).getroot()
+            if hw.tag != 'hw':
+                hw = hw.find('hw')
+        dv = None
+        for device in hw:
+            if device is None or device.tag == 'device':
+                dvname = self._getChildText(device, "name")
+                sardananame = self._getChildText(
+                    device, "sardananame")
+                name = sardananame or dvname
+                if self.options.lower:
+                    name = name.lower()
+                if name == cpname:
+                    tdevice = self._getChildText(device, "device")
+                    hostname = self._getChildText(device, "hostname")
         for xmlfile in xmlfiles:
             # print(xmlfile)
             newname = self._replaceName(xmlfile, cpname, module)
@@ -2704,6 +2739,11 @@ class StandardCPCreator(CPCreator):
                         "$(__insname__)",
                         (self.options.insname
                          or "instrument"))
+                if dv:
+                    if dv is not None:
+                        xmlcontent = xmlcontent.replace(
+                            "$(device)", tdevice).replace(
+                                "$(hostname)", hostname)
                 missing = []
                 for var, desc in self.xmlpackage.standardComponentVariables[
                         module].items():
