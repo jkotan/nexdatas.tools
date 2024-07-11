@@ -1,6 +1,7 @@
 2024-07-11 Jan Kotanski <jankotan@gmail.com>
 	* add --online-xml-file option for nxscreate stdcomp (#687)
 	* add support for ScanFileinScanNameDir mode for detector template (#689)
+	* fix for eigerdectris VDS (#691)
 	* tagged as v4.11.0
 
 2024-07-10 Jan Kotanski <jankotan@gmail.com>

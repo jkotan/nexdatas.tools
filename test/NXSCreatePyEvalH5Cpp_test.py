@@ -1606,6 +1606,37 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             filepostfix, "", modulename)
         self.assertEqual(fn2, sfn2)
 
+    def test_lmbd_m2_external_data_in(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        commonblock = {}
+        name = "lmbd"
+        savefilename = "mtest_2342"
+        saveallimages = 1
+        filepostfix = "nxs"
+        filename = "/tmp/mytest_324234/mytest_324234.nxs"
+        modulename = "m2"
+        sfn1 = "lmbd/mtest_2342_m2.nxs:" \
+            "//entry/instrument/detector"
+        sfn2 = "lmbd/mtest_2342_m2.nxs://entry/instrument/detector"
+
+        from nxstools.pyeval import lmbd
+        fn1 = lmbd.m2_external_data(
+            commonblock, name, savefilename, saveallimages,
+            filepostfix, filename, modulename)
+        self.assertEqual(fn1, sfn1)
+        fn1 = lmbd.m2_external_data(
+            commonblock, name, savefilename, False,
+            filepostfix, filename, modulename)
+        self.assertEqual(fn1, "")
+        fn2 = lmbd.m2_external_data(
+            commonblock, name, savefilename, saveallimages,
+            filepostfix, "", modulename)
+        self.assertEqual(fn2, sfn2)
+
     def test_lmbd_external_data(self):
         """ test
         """
@@ -1626,6 +1657,8 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         sfn2 = "lmbd/mtest_2342.nxs://entry/instrument/detector"
         sfn3 = "lmbd/mtest_2342_part00000.nxs://entry/instrument/detector"
         sfn4 = "mytest_324234/lmbd/mtest_2342_part00002.nxs:" \
+            "//entry/instrument/detector"
+        sfn5 = "lmbd/mtest_2342_part00002.nxs:" \
             "//entry/instrument/detector"
 
         from nxstools.pyeval import lmbd
@@ -1671,6 +1704,92 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             framesperfile, framenumbers,
             filepostfix, filename)
         self.assertEqual(fn4, sfn4)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 3
+        filename = "/tmp/scans/mytest_324234.nxs"
+        fn5 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, filename, shortdetpath=True)
+        self.assertEqual(fn5, sfn5)
+
+    def test_lmbd_external_data_in(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+        name = "lmbd"
+        savefilename = "mtest_2342"
+        saveallimages = 1
+        filepostfix = "nxs"
+        framesperfile = 40
+        framenumbers = 20
+        filename = "/tmp/mytest_324234/mytest_324234.nxs"
+        sfn1 = "lmbd/mtest_2342.nxs:" \
+            "//entry/instrument/detector"
+        sfn2 = "lmbd/mtest_2342.nxs://entry/instrument/detector"
+        sfn3 = "lmbd/mtest_2342_part00000.nxs://entry/instrument/detector"
+        sfn4 = "lmbd/mtest_2342_part00002.nxs:" \
+            "//entry/instrument/detector"
+        sfn5 = "mytest_324234/lmbd/mtest_2342_part00002.nxs:" \
+            "//entry/instrument/detector"
+
+        from nxstools.pyeval import lmbd
+        fn1 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, filename)
+        self.assertEqual(fn1, sfn1)
+        fn1 = lmbd.external_data(
+            commonblock, name, savefilename, False,
+            framesperfile, framenumbers,
+            filepostfix, filename)
+        self.assertEqual(fn1, "")
+        fn2 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, "")
+        self.assertEqual(fn2, sfn2)
+
+        framesperfile = 20
+        framenumbers = 50
+        fn2 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, "")
+        self.assertEqual(fn2, sfn2)
+
+        framesperfile = 20
+        framenumbers = 50
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 1
+        fn2 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, "")
+        self.assertEqual(fn2, sfn3)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 3
+        filename = "/tmp/mytest_324234/mytest_324234.nxs"
+        fn4 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, filename)
+        self.assertEqual(fn4, sfn4)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 3
+        filename = "/tmp/mytest_324234/mytest_324234.nxs"
+        fn5 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, filename, shortdetpath=False)
+        self.assertEqual(fn5, sfn5)
 
     def test_pco_postrun(self):
         """ test
@@ -2233,6 +2352,234 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             shutil.rmtree(mainpath,
                           ignore_errors=False, onerror=None)
             os.remove(self._fname)
+
+    def test_eigetdectris_triggermode_splitmode_vds(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if not self.fwriter.is_vds_supported():
+            print("Skip the test: VDS not supported")
+            return
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+
+        name = "eiger2"
+        filename = "%s_%s.nxs" % (mfileprefix, scanid)
+        # mainpath = "%s_%s" % (mfileprefix, scanid)
+        path = "%s_%s/%s" % (mfileprefix, scanid, name)
+        self._fname = filename
+        fname1 = ['testscan_data_%06i.h5' % i for i in range(1, 4)]
+        ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
+        framenumbers = [14, 14, 2]
+        devicename = "ttestp09/testts/t1r228"
+
+        vl = [[[self._rnd.randint(1, 1600) for _ in range(2)]
+               for _ in range(1)]
+              for _ in range(30)]
+        try:
+            tsv1 = TestServerSetUp.TestServerSetUp(
+                devicename, "MYTESTS1")
+            tsv1.setUp()
+            try:
+                os.makedirs(path)
+            except FileExistsError:
+                pass
+
+            for i, fn in enumerate(ffname1):
+                fl1 = self.fwriter.create_file(fn, overwrite=True)
+                rt = fl1.root()
+                entry = rt.create_group("entry", "NXentry")
+                dt = entry.create_group("data", "NXdata")
+                intimage = dt.create_field(
+                    "data", "uint32",
+                    [framenumbers[i], 1, 2], [1, 1, 2])
+                vv = [[[vl[i * framenumbers[0] + nn][jj][ii]
+                        for ii in range(2)]
+                       for jj in range(1)]
+                      for nn in range(framenumbers[i])]
+                intimage[:, :, :] = vv
+                intimage.close()
+                dt.close()
+                entry.close()
+                fl1.close()
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group(name, "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            col = det.create_group("collection", "NXcollection")
+
+            commonblock = {
+                "eiger2_stepindex": [30],
+                "__root__": rt,
+            }
+            triggermode = "splitmode"
+            name = "eiger2"
+            nbimages = 30
+            hostname = os.environ.get("TANGO_HOST", "localhost:10000")
+
+            device = devicename
+            stepindex_str = "eiger2_stepindex"
+            insname = "instrument"
+            eigerdectris_str = "TestServer"
+            eigerfilewriter_str = "TestServer"
+
+            from nxstools.pyeval import eigerdectris
+            result = eigerdectris.triggermode_cb(
+                commonblock,
+                name,
+                triggermode,
+                nbimages,
+                hostname,
+                device,
+                filename,
+                stepindex_str,
+                entryname,
+                insname,
+                eigerdectris_str,
+                eigerfilewriter_str, addfilepattern=False,
+                shape=[1, 2], dtype="uint32", acq_modes="VDS")
+            fl.flush()
+            self.assertEqual(result, "splitmode")
+            detdt = det.open("data").read()
+            dteiger2 = dt.open("eiger2").read()
+            for j in range(sum(framenumbers)):
+                self.myAssertImage(detdt[j], vl[j])
+                self.myAssertImage(dteiger2[j], vl[j])
+            for i in range(3):
+                images = col.open("data_%06i" % (i + 1))
+                rw = images.read()
+                for j in range(framenumbers[i]):
+                    self.myAssertImage(rw[j], vl[j + framenumbers[0] * i])
+                images = dt.open("eiger2_%06i" % (i + 1))
+                rw = images.read()
+                for j in range(framenumbers[i]):
+                    self.myAssertImage(rw[j], vl[j + framenumbers[0] * i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if tsv1:
+                tsv1.tearDown()
+            # shutil.rmtree(mainpath,
+            #               ignore_errors=False, onerror=None)
+            # os.remove(self._fname)
+
+    def test_eigetdectris_triggermode_splitmode_in(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+
+        name = "eiger2"
+        filename = "%s_%s/%s_%s.nxs" % (
+            mfileprefix, scanid, mfileprefix, scanid)
+        mainpath = "%s_%s" % (mfileprefix, scanid)
+        path = "%s_%s/%s" % (mfileprefix, scanid, name)
+        self._fname = filename
+        fname1 = ['testscan_data_%06i.h5' % i for i in range(1, 4)]
+        ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
+        framenumbers = [14, 14, 2]
+        devicename = "ttestp09/testts/t1r228"
+
+        vl = [[[self._rnd.randint(1, 1600) for _ in range(2)]
+               for _ in range(1)]
+              for _ in range(30)]
+        try:
+            tsv1 = TestServerSetUp.TestServerSetUp(
+                devicename, "MYTESTS1")
+            tsv1.setUp()
+            try:
+                os.makedirs(path)
+            except FileExistsError:
+                pass
+
+            for i, fn in enumerate(ffname1):
+                fl1 = self.fwriter.create_file(fn, overwrite=True)
+                rt = fl1.root()
+                entry = rt.create_group("entry", "NXentry")
+                dt = entry.create_group("data", "NXdata")
+                intimage = dt.create_field(
+                    "data", "uint32",
+                    [framenumbers[i], 1, 2], [1, 1, 2])
+                vv = [[[vl[i * framenumbers[0] + nn][jj][ii]
+                        for ii in range(2)]
+                       for jj in range(1)]
+                      for nn in range(framenumbers[i])]
+                intimage[:, :, :] = vv
+                intimage.close()
+                dt.close()
+                entry.close()
+                fl1.close()
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group(name, "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            col = det.create_group("collection", "NXcollection")
+
+            commonblock = {
+                "eiger2_stepindex": [30],
+                "__root__": rt,
+            }
+            triggermode = "splitmode"
+            name = "eiger2"
+            nbimages = 30
+            hostname = os.environ.get("TANGO_HOST", "localhost:10000")
+
+            device = devicename
+            stepindex_str = "eiger2_stepindex"
+            insname = "instrument"
+            eigerdectris_str = "TestServer"
+            eigerfilewriter_str = "TestServer"
+
+            from nxstools.pyeval import eigerdectris
+            result = eigerdectris.triggermode_cb(
+                commonblock,
+                name,
+                triggermode,
+                nbimages,
+                hostname,
+                device,
+                filename,
+                stepindex_str,
+                entryname,
+                insname,
+                eigerdectris_str,
+                eigerfilewriter_str)
+            fl.flush()
+            self.assertEqual(result, "splitmode")
+            for i in range(3):
+                images = col.open("data_%06i" % (i + 1))
+                rw = images.read()
+                for j in range(framenumbers[i]):
+                    self.myAssertImage(rw[j], vl[j + framenumbers[0] * i])
+                images = dt.open("eiger2_%06i" % (i + 1))
+                rw = images.read()
+                for j in range(framenumbers[i]):
+                    self.myAssertImage(rw[j], vl[j + framenumbers[0] * i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if tsv1:
+                tsv1.tearDown()
+            shutil.rmtree(mainpath,
+                          ignore_errors=False, onerror=None)
 
     def test_lambdavdsnm_triggermode_cb(self):
         """

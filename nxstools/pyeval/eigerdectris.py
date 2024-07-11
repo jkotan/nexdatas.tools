@@ -147,6 +147,12 @@ def triggermode_cb(commonblock, name, triggermode,
             nxw.link("/%s/%s/%s/collection/%s" %
                      (entryname, insname, name, fnbf), dt,
                      "%s_%s" % (name, nnbf))
+        if "image_filenames" not in col.names():
+            tfn = col.create_field("image_filenames", "string", [1])
+        else:
+            tfn = col.open("image_filenames")
+            tfn.grow()
+        tfn[int(tfn.shape[0] - 1)] = "%sdata_%06i.h5" % (path, nbf)
 
     # create VDS field
     if shape and not isinstance(shape, list):
@@ -165,13 +171,6 @@ def triggermode_cb(commonblock, name, triggermode,
     tni[int(tni.shape[0] - 1)] = totnbimages
     ttni = tni.read()
     totalframenumbers = int(sum(ttni))
-
-    if "image_filenames" not in col.names():
-        tfn = col.create_field("image_filenames", "string", [1])
-    else:
-        tfn = col.open("image_filenames")
-        tfn.grow()
-    tfn[int(tfn.shape[0] - 1)] = "%sdata_%06i.h5" % (path, nbf)
     ttfn = tfn.read()
 
     if "VDS" in amodes and "data" not in det.names():
@@ -197,14 +196,15 @@ def triggermode_cb(commonblock, name, triggermode,
             nbf = int((tt + imagesperfile - 1) // imagesperfile)
             nfi.append(nbf)
             nn = [int(imagesperfile)] * nbf
-            fn = [str(ttfn[ii])] * nbf
+
+            fn = [str(ttfn[j + ii * (int(imagesperfile) - 1)])
+                  for j in range(nbf)]
             if nn:
                 nn[-1] = int(tt - (nbf - 1) * imagesperfile)
             nbimg.extend(nn)
             fnms.extend(fn)
 
         nboff = [int(sum(nbimg[:(ii)])) for ii in range(len(nbimg))]
-
         # eiger9m 3110 pixel x 3269 pixel
         # /entry/data/data uint32 [1, 3269 , 3110]
         # eiger4M 2070 pixel x 2167 pixel
