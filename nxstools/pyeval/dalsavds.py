@@ -25,7 +25,8 @@ def triggermode(commonblock, name,
                 triggermode, framespernxfile, pixelformat, height, width,
                 acquisitionmode, acquisitionframecount,
                 filestartnum_str, nrexposedframes_str,
-                filename, entryname, insname):
+                filename, entryname, insname="instrument",
+                shortdetpath=None):
     """ code for external_data datasource
 
     :param commonblock: commonblock of nxswriter
@@ -66,6 +67,8 @@ def triggermode(commonblock, name,
     :type entryname: :obj:`str`
     :param insname: instrument name
     :type insname: :obj:`str`
+    :param shortdetpath: shortdetpath
+    :type shortdetpath: :obj:`bool`
     :returns: trigger mode
     :rtype: :obj:`str`
     """
@@ -158,10 +161,15 @@ def triggermode(commonblock, name,
         except Exception:
             dtype = "uint8"
 
+        path = ""
         if filename:
-            path = filename.split("/")[-1].split(".")[0] + "/"
-        else:
-            path = ""
+            sfname = (filename).split("/")
+            path = sfname[-1].split(".")[0] + "/"
+            if shortdetpath is None and \
+                    len(sfname) > 1 and sfname[-2] == result[:-1]:
+                path = ""
+            elif shortdetpath:
+                path = ""
 
         if "__root__" in commonblock.keys():
             root = commonblock["__root__"]

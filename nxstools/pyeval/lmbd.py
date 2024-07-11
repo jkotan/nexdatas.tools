@@ -26,7 +26,8 @@ def m2_external_data(commonblock,
                      saveallimages,
                      filepostfix,
                      filename,
-                     modulename):
+                     modulename,
+                     shortdetpath=None):
     """ code for external_data datasource
 
     :param commonblock: commonblock of nxswriter
@@ -43,13 +44,21 @@ def m2_external_data(commonblock,
     :type filename: :obj:`str`
     :param filename: module name
     :type filename: :obj:`str`
+    :param shortdetpath: shortdetpath
+    :type shortdetpath: :obj:`bool`
     :returns: name of saved file
     :rtype: :obj:`str`
     """
     result = ""
     if saveallimages:
         if filename:
-            result = (filename).split("/")[-1].split(".")[0] + "/"
+            sfname = (filename).split("/")
+            result = sfname[-1].split(".")[0] + "/"
+            if shortdetpath is None and \
+                    len(sfname) > 1 and sfname[-2] == result[:-1]:
+                result = ""
+            elif shortdetpath:
+                result = ""
         result += name + "/" + str(savefilename) + "_" + modulename \
             + "." + str(filepostfix) + "://entry/instrument/detector"
     return result
@@ -62,7 +71,8 @@ def external_data(commonblock,
                   framesperfile,
                   framenumbers,
                   filepostfix,
-                  filename):
+                  filename,
+                  shortdetpath=None):
     """ code for external_data datasource
 
     :param commonblock: commonblock of nxswriter
@@ -81,13 +91,21 @@ def external_data(commonblock,
     :type filepostfix: :obj:`str`
     :param filename: file name
     :type filename: :obj:`str`
+    :param shortdetpath: shortdetpath
+    :type shortdetpath: :obj:`bool`
     :returns: name of saved file
     :rtype: :obj:`str`
     """
     result = ""
     if saveallimages:
         if filename:
-            result = (filename).split("/")[-1].split(".")[0] + "/"
+            sfname = (filename).split("/")
+            result = sfname[-1].split(".")[0] + "/"
+            if shortdetpath is None and \
+                    len(sfname) > 1 and sfname[-2] == result[:-1]:
+                result = ""
+            elif shortdetpath:
+                result = ""
         fpf = framesperfile
         fn = framenumbers
         spf = 0

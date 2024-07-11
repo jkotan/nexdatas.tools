@@ -32,7 +32,8 @@ def nm_triggermode_cb(commonblock, name, triggermode,
                       filepostfix, framenumbers,
                       height, width, opmode,
                       savefilename, filename, entryname,
-                      insname="instrument"):
+                      insname="instrument",
+                      shortdetpath=None):
     """ code for triggermode_cb  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -62,6 +63,8 @@ def nm_triggermode_cb(commonblock, name, triggermode,
     :type filename: :obj:`str`
     :param entryname: entry name
     :type entryname: :obj:`str`
+    :param shortdetpath: shortdetpath
+    :type shortdetpath: :obj:`bool`
     :returns:  triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
@@ -88,10 +91,15 @@ def nm_triggermode_cb(commonblock, name, triggermode,
         if totalframenumbers == framenumbers:
             unlimited = True
 
+        path = ""
         if filename:
-            path = (filename).split("/")[-1].split(".")[0] + "/"
-        else:
-            path = ""
+            sfname = (filename).split("/")
+            path = sfname[-1].split(".")[0] + "/"
+            if shortdetpath is None and \
+                    len(sfname) > 1 and sfname[-2] == path[:-1]:
+                path = ""
+            elif shortdetpath:
+                path = ""
 
         if "__root__" in commonblock.keys():
             root = commonblock["__root__"]
@@ -169,7 +177,8 @@ def framenumbers_cb(commonblock, framenumbers, framenumbers_str):
 def triggermode_cb(commonblock, name, triggermode, saveallimages,
                    framesperfile, height, width, opmode,
                    filepostfix, savefilename_str, framenumbers_str,
-                   filename_str, entry_str):
+                   filename_str, entry_str,
+                   shortdetpath=None):
     """ code for triggermode_cb  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -201,6 +210,8 @@ def triggermode_cb(commonblock, name, triggermode, saveallimages,
     :type filename_str: :obj:`str`
     :param entry_str: entry name
     :type entry_str: :obj:`str`
+    :param shortdetpath: shortdetpath
+    :type shortdetpath: :obj:`bool`
     :returns:  triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
@@ -231,10 +242,15 @@ def triggermode_cb(commonblock, name, triggermode, saveallimages,
         except Exception:
             dtype = "int32"
 
+        path = ""
         if filename_str:
-            path = (filename_str).split("/")[-1].split(".")[0] + "/"
-        else:
-            path = ""
+            sfname = (filename_str).split("/")
+            path = sfname[-1].split(".")[0] + "/"
+            if shortdetpath is None and \
+                    len(sfname) > 1 and sfname[-2] == path[:-1]:
+                path = ""
+            elif shortdetpath:
+                path = ""
 
         if "__root__" in commonblock.keys():
             root = commonblock["__root__"]
