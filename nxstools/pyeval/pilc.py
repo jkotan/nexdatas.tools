@@ -31,7 +31,8 @@ def triggermode_cb(commonblock, name, triggermode,
                    hostname, device,
                    filename, entryname,
                    insname, pilcfileprefix, pilcfiledir,
-                   timeid=False):
+                   timeid=False,
+                   shortdetpath=None):
     """ code for triggermode_cb  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -60,6 +61,8 @@ def triggermode_cb(commonblock, name, triggermode,
     :type pilcfiledir :obj:`str`
     :param timeid: file id with timestamp
     :type timeid: :obj:`bool`
+    :param shortdetpath: shortdetpath
+    :type shortdetpath: :obj:`bool`
     :returns: triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
@@ -85,11 +88,15 @@ def triggermode_cb(commonblock, name, triggermode,
     except Exception:
         pilcfilename = None
     nblist = [nb for nb in range(nbstart, nbstart + nbfiles)]
-
+    path = ""
     if filename:
-        path = (filename).split("/")[-1].split(".")[0] + "/"
-    else:
-        path = ""
+        sfname = (filename).split("/")
+        path = sfname[-1].split(".")[0] + "/"
+        if shortdetpath is None and \
+                len(sfname) > 1 and sfname[-2] == path[:-1]:
+            path = ""
+        elif shortdetpath:
+            path = ""
     path += '%s/%s_' % (name, fpattern)
     result = triggermode
 

@@ -32,7 +32,8 @@ def triggermode_cb(commonblock, name, triggermode,
                    eigerdectris_str="EigerDectris",
                    eigerfilewriter_str="EigerFileWriter",
                    addfilepattern=False, shape=None,
-                   dtype="uint32", acq_modes=""):
+                   dtype="uint32", acq_modes="",
+                   shortdetpath=None):
     """ code for triggermode_cb  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -63,6 +64,8 @@ def triggermode_cb(commonblock, name, triggermode,
     :type addfilepattern: :obj:`bool`
     :param acq_modes: acquisition modes
     :type acq_modes: :obj:`str`
+    :param shortdetpath: shortdetpath
+    :type shortdetpath: :obj:`bool`
     :returns: triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
@@ -86,12 +89,21 @@ def triggermode_cb(commonblock, name, triggermode,
     wp = tango.DeviceProxy('%s/%s' % (hostname, writer))
     filepattern = wp.FilenamePattern.split("/")[-1]
     imagesperfile = wp.ImagesPerFile
-    if addfilepattern:
+
+    path = ""
+    sfname = []
+    if filename:
+        sfname = (filename).split("/")
+        path = sfname[-1].split(".")[0] + "/"
+    elif shortdetpath is False and addfilepattern:
         path = filepattern + "/"
-    elif filename:
-        path = (filename).split("/")[-1].split(".")[0] + "/"
-    else:
-        path = ""
+    if filename and path:
+        if shortdetpath is None and \
+                len(sfname) > 1 and sfname[-2] == path[:-1]:
+            path = ""
+        elif shortdetpath:
+            path = ""
+
     path += '%s/%s_' % (name, filepattern)
     totnbimages = sum(commonblock[stepindex_str])
     nbfiles = (totnbimages + imagesperfile - 1) // imagesperfile

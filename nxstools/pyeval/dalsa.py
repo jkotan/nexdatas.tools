@@ -25,7 +25,8 @@ def external_data(commonblock,
                   fileprefix,
                   filepostfix,
                   filestartnum,
-                  filename):
+                  filename,
+                  shortdetpath=None):
     """ code for external_data datasource
 
     :param commonblock: commonblock of nxswriter
@@ -40,6 +41,8 @@ def external_data(commonblock,
     :type filestartnum: :obj:`int`
     :param filename: file name
     :type filename: :obj:`str`
+    :param shortdetpath: shortdetpath
+    :type shortdetpath: :obj:`bool`
     :returns: name of saved file
     :rtype: :obj:`str`
     """
@@ -60,7 +63,13 @@ def external_data(commonblock,
             if not prefix.endswith("_"):
                 prefix = prefix + "_"
             if filename:
-                result = (filename).split("/")[-1].split(".")[0] + "/"
+                sfname = (filename).split("/")
+                result = sfname[-1].split(".")[0] + "/"
+                if shortdetpath is None and \
+                        len(sfname) > 1 and sfname[-2] == result[:-1]:
+                    result = ""
+                elif shortdetpath:
+                    result = ""
 
             result += name + "/" + prefix + "%06i" % filestartnum \
                 + postfix + "://entry/instrument/detector"
