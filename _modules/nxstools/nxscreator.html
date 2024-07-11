@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 3.67.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <title>nxstools.nxscreator &#8212; NXSTools 4.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
   </head><body>
@@ -35,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.67</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.11</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,20 +118,25 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxstools.html">nxstools package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filewriter">nxstools.filewriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5cppwriter">nxstools.h5cppwriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5pywriter">nxstools.h5pywriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5rediswriter">nxstools.h5rediswriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.release">nxstools.release module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.redisutils">nxstools.redisutils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -267,18 +274,18 @@
 
 <div class="viewcode-block" id="CPExistsException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPExistsException">[docs]</a><span class="k">class</span> <span class="nc">CPExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; Component already exists exception</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Component already exists exception</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="DSExistsException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.DSExistsException">[docs]</a><span class="k">class</span> <span class="nc">DSExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; DataSource already exists exception</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; DataSource already exists exception</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
 <span class="k">def</span> <span class="nf">_tostr</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; converts text  to str type</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; converts text  to str type</span>
 
 <span class="sd">    :param text: text</span>
 <span class="sd">    :type text: :obj:`bytes` or :obj:`unicode`</span>
@@ -296,7 +303,7 @@
 
 
 <span class="k">def</span> <span class="nf">_toxml</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; provides xml content of the whole node</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; provides xml content of the whole node</span>
 
 <span class="sd">    :param node: DOM node</span>
 <span class="sd">    :type node: :class:`xml.dom.Node`</span>
@@ -313,7 +320,7 @@
 
 
 <span class="k">def</span> <span class="nf">_simpletoxml</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; provides xml content of the whole node</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; provides xml content of the whole node</span>
 
 <span class="sd">    :param node: DOM node</span>
 <span class="sd">    :type node: :class:`xml.dom.Node`</span>
@@ -328,7 +335,7 @@
 
 <div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device">[docs]</a><span class="k">class</span> <span class="nc">Device</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; device from online.xml</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; device from online.xml</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">,</span> <span class="s1">&#39;tdevice&#39;</span><span class="p">,</span> <span class="s1">&#39;sdevice&#39;</span><span class="p">,</span>
@@ -383,7 +390,7 @@
         <span class="k">return</span> <span class="n">dct</span></div>
 
 <div class="viewcode-block" id="Device.tolower"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.tolower">[docs]</a>    <span class="k">def</span> <span class="nf">tolower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; converts `name`, `module`, `tdevice`, `hostname` into lower case</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; converts `name`, `module`, `tdevice`, `hostname` into lower case</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
@@ -395,7 +402,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Device.splitHostPort"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.splitHostPort">[docs]</a>    <span class="k">def</span> <span class="nf">splitHostPort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; spilts host name from port</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; spilts host name from port</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -409,7 +416,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;hostname not defined&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Device.findDevice"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.findDevice">[docs]</a>    <span class="k">def</span> <span class="nf">findDevice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tangohost</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; sets sardana device name and sardana host/port of online.xml device</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; sets sardana device name and sardana host/port of online.xml device</span>
 
 <span class="sd">        :param tangohost: tango host</span>
 <span class="sd">        :type tangohost: :obj:`str`</span>
@@ -433,7 +440,7 @@
                 <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Device.findAttribute"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.findAttribute">[docs]</a>    <span class="k">def</span> <span class="nf">findAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tangohost</span><span class="p">,</span> <span class="n">clientlike</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; sets attribute and datasource group of online.xml device</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; sets attribute and datasource group of online.xml device</span>
 
 <span class="sd">        :param tangohost: tango host</span>
 <span class="sd">        :type tangohost: :obj:`str`</span>
@@ -483,7 +490,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s1">&#39;__CLIENT__&#39;</span></div>
 
 <div class="viewcode-block" id="Device.setSardanaName"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.setSardanaName">[docs]</a>    <span class="k">def</span> <span class="nf">setSardanaName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolower</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; sets sardana name</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; sets sardana name</span>
 
 <span class="sd">        :param tolower: If True name in lowercase</span>
 <span class="sd">        :type tolower: :obj:`bool`</span>
@@ -495,11 +502,11 @@
 
 <div class="viewcode-block" id="Creator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Creator">[docs]</a><span class="k">class</span> <span class="nc">Creator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; configuration server adapter</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; configuration server adapter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param options:  command options</span>
 <span class="sd">        :type options: :class:`optparse.Values`</span>
@@ -517,7 +524,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_areComponentsAvailable</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; checks if the components are available</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; checks if the components are available</span>
 
 <span class="sd">        :param names: component names</span>
 <span class="sd">        :type names: :obj:`list` &lt; :obj:`str` &gt;</span>
@@ -542,7 +549,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_componentFilesExist</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; checks if the components files exist</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; checks if the components files exist</span>
 
 <span class="sd">        :param names: component names</span>
 <span class="sd">        :type names: :obj:`list` &lt; :obj:`str` &gt;</span>
@@ -564,7 +571,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_areDataSourcesAvailable</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; checks if the datasources are available</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; checks if the datasources are available</span>
 
 <span class="sd">        :param names: datasource names</span>
 <span class="sd">        :type names: :obj:`list` &lt; :obj:`str` &gt;</span>
@@ -589,7 +596,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_dataSourceFilesExist</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; checks if the datasources files exist</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; checks if the datasources files exist</span>
 
 <span class="sd">        :param names: datasource names</span>
 <span class="sd">        :type names: :obj:`list` &lt; :obj:`str` &gt;</span>
@@ -613,7 +620,7 @@
     <span class="k">def</span> <span class="nf">_createTangoDataSource</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
             <span class="n">elementname</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;10000&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">elementtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates TANGO datasource file</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates TANGO datasource file</span>
 
 <span class="sd">        :param name: device name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -652,7 +659,7 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_createClientDataSource</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">dsname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates CLIENT datasource file</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates CLIENT datasource file</span>
 
 <span class="sd">        :param name: device name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -681,7 +688,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">__patheval</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nexuspath</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; splits nexus path into list</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; splits nexus path into list</span>
 
 <span class="sd">        :param nexuspath: nexus path</span>
 <span class="sd">        :type nexuspath: :obj:`str`</span>
@@ -712,7 +719,7 @@
     <span class="k">def</span> <span class="nf">__createTree</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">nexuspath</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span>
                      <span class="n">strategy</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">depends</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; create nexus node tree</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; create nexus node tree</span>
 
 <span class="sd">        :param df: definition parent node</span>
 <span class="sd">        :type df: :class:&#39;nxstools.nxsxml.XMLFile&#39;</span>
@@ -773,7 +780,7 @@
     <span class="k">def</span> <span class="nf">_createComponent</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">nexuspath</span><span class="p">,</span>
                          <span class="n">strategy</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span>
                          <span class="n">dsname</span><span class="p">,</span> <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depends</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates component file</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates component file</span>
 
 <span class="sd">        :param name: component name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -817,7 +824,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_getText</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides xml content of the node</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides xml content of the node</span>
 
 <span class="sd">        :param node: DOM node</span>
 <span class="sd">        :type node: :class:`lxml.etree.Element`</span>
@@ -836,7 +843,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_getChildText</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">childname</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
 
 <span class="sd">        :param parent: parent node</span>
 <span class="sd">        :type parent: :class:`lxml.etree.Element`</span>
@@ -849,7 +856,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_getModuleName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides module name</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides module name</span>
 
 <span class="sd">        :param device: device name</span>
 <span class="sd">        :type device: :obj:`str`</span>
@@ -876,18 +883,18 @@
 
 <div class="viewcode-block" id="WrongParameterError"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.WrongParameterError">[docs]</a><span class="k">class</span> <span class="nc">WrongParameterError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; wrong parameter exception</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; wrong parameter exception</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="ComponentCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ComponentCreator">[docs]</a><span class="k">class</span> <span class="nc">ComponentCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; component creator</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; component creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ComponentCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ComponentCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates a component xml and stores it in DB or filesytem</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates a component xml and stores it in DB or filesytem</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">aargs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
@@ -962,11 +969,11 @@
 
 <div class="viewcode-block" id="TangoDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.TangoDSCreator">[docs]</a><span class="k">class</span> <span class="nc">TangoDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; tango datasource creator</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; tango datasource creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TangoDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.TangoDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates a tango datasource xml and stores it in DB or filesytem</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates a tango datasource xml and stores it in DB or filesytem</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dvargs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">dsargs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1022,11 +1029,11 @@
 
 <div class="viewcode-block" id="ClientDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ClientDSCreator">[docs]</a><span class="k">class</span> <span class="nc">ClientDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; client datasource creator</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; client datasource creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ClientDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ClientDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates a client datasource xml and stores it in DB or filesytem</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates a client datasource xml and stores it in DB or filesytem</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dsargs</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">aargs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1084,11 +1091,11 @@
 
 <div class="viewcode-block" id="DeviceDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.DeviceDSCreator">[docs]</a><span class="k">class</span> <span class="nc">DeviceDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; device datasource creator</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; device datasource creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="DeviceDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.DeviceDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates a tango datasources xml of given device</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates a tango datasources xml of given device</span>
 <span class="sd">            and stores it in DB or filesytem</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
@@ -1134,11 +1141,11 @@
 
 <div class="viewcode-block" id="PoolDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.PoolDSCreator">[docs]</a><span class="k">class</span> <span class="nc">PoolDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; datasource creator of all sardana pool acquisition channels</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; datasource creator of all sardana pool acquisition channels</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param options: command options</span>
 <span class="sd">        :type options: :class:`optparse.Values`</span>
@@ -1152,7 +1159,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">_printAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">dscps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
 
 <span class="sd">        :param dv: online device object</span>
 <span class="sd">        :type dv: :class:`Device`</span>
@@ -1189,7 +1196,7 @@
                     <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="PoolDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.PoolDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates datasources of all online.xml simple devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates datasources of all online.xml simple devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">createXMLs</span><span class="p">()</span>
         <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span>
@@ -1206,7 +1213,7 @@
                     <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__createDevice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">clientlike</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;  create Device from name source and chtype</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  create Device from name source and chtype</span>
 
 <span class="sd">        :param name: alias device name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -1237,7 +1244,7 @@
         <span class="k">return</span> <span class="n">dv</span>
 
 <div class="viewcode-block" id="PoolDSCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.PoolDSCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates datasource xmls of all online.xml simple devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates datasource xmls of all online.xml simple devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">plname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pool</span>
@@ -1285,11 +1292,11 @@
 
 <div class="viewcode-block" id="OnlineDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator">[docs]</a><span class="k">class</span> <span class="nc">OnlineDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; datasource creator of all online.xml simple devices</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; datasource creator of all online.xml simple devices</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param options: command options</span>
 <span class="sd">        :type options: :class:`optparse.Values`</span>
@@ -1311,7 +1318,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span> <span class="o">=</span> <span class="n">xmlPackageHandler</span><span class="o">.</span><span class="n">package</span>
 
     <span class="k">def</span> <span class="nf">_printAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">dscps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
 
 <span class="sd">        :param dv: online device object</span>
 <span class="sd">        :type dv: :class:`Device`</span>
@@ -1350,7 +1357,7 @@
                     <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="OnlineDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates datasources of all online.xml simple devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates datasources of all online.xml simple devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">createXMLs</span><span class="p">()</span>
         <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span>
@@ -1367,7 +1374,7 @@
                     <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OnlineDSCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates datasource xmls of all online.xml simple devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates datasource xmls of all online.xml simple devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span>
@@ -1477,11 +1484,11 @@
 
 <div class="viewcode-block" id="CPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPCreator">[docs]</a><span class="k">class</span> <span class="nc">CPCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; component creator of all online.xml complex devices</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; component creator of all online.xml complex devices</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param options: command options</span>
 <span class="sd">        :type options: :class:`optparse.Values`</span>
@@ -1506,7 +1513,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span> <span class="o">=</span> <span class="n">xmlPackageHandler</span><span class="o">.</span><span class="n">package</span>
 
 <div class="viewcode-block" id="CPCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates components of all online.xml complex devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates components of all online.xml complex devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cpname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">component</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;database&quot;</span><span class="p">)</span> <span class="ow">and</span> \
@@ -1553,7 +1560,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_replaceName</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; replaces name prefix of xml templates files</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; replaces name prefix of xml templates files</span>
 
 <span class="sd">        :param filename: template filename</span>
 <span class="sd">        :type filename: :obj:`str`</span>
@@ -1574,7 +1581,7 @@
         <span class="k">return</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sname</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CPCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
 <span class="sd">        abstract method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
@@ -1582,11 +1589,11 @@
 
 <div class="viewcode-block" id="CompareOnlineDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CompareOnlineDS">[docs]</a><span class="k">class</span> <span class="nc">CompareOnlineDS</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; comparing tool for online.xml files</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; comparing tool for online.xml files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param options:  command options</span>
 <span class="sd">        :type options: :class:`optparse.Values`</span>
@@ -1604,7 +1611,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_getText</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides xml content of the node</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides xml content of the node</span>
 
 <span class="sd">        :param node: DOM node</span>
 <span class="sd">        :type node: :class:`lxml.etree.Element`</span>
@@ -1623,7 +1630,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_getChildText</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">childname</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
 
 <span class="sd">        :param parent: parent node</span>
 <span class="sd">        :type parent: :class:`lxml.etree.Element`</span>
@@ -1637,7 +1644,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; loads device data from online.xml file</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; loads device data from online.xml file</span>
 
 <span class="sd">        :param fname: filename</span>
 <span class="sd">        :type fname: :obj:`str`</span>
@@ -1734,11 +1741,11 @@
 
 <div class="viewcode-block" id="OnlineCPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator">[docs]</a><span class="k">class</span> <span class="nc">OnlineCPCreator</span><span class="p">(</span><span class="n">CPCreator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; component creator of online components</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; component creator of online components</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param options: command options</span>
 <span class="sd">        :type options: :class:`optparse.Values`</span>
@@ -1750,7 +1757,7 @@
         <span class="n">CPCreator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_printAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">dscps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
 
 <span class="sd">        :param dv: online device object</span>
 <span class="sd">        :type dv: :class:`Device`</span>
@@ -1774,7 +1781,7 @@
                     <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
 
 <div class="viewcode-block" id="OnlineCPCreator.listcomponents"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.listcomponents">[docs]</a>    <span class="k">def</span> <span class="nf">listcomponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides a list of components with xml templates</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides a list of components with xml templates</span>
 
 <span class="sd">        :returns: list of components with xml templates</span>
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str` &gt;</span>
@@ -1809,7 +1816,7 @@
         <span class="k">return</span> <span class="n">cpnames</span></div>
 
 <div class="viewcode-block" id="OnlineCPCreator.listcomponenttypes"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.listcomponenttypes">[docs]</a>    <span class="k">def</span> <span class="nf">listcomponenttypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides a list of standard component types</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides a list of standard component types</span>
 
 <span class="sd">        :returns: list of standard component types</span>
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
@@ -1817,7 +1824,7 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">moduleTemplateFiles</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
 
 <div class="viewcode-block" id="OnlineCPCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1957,11 +1964,11 @@
 
 <div class="viewcode-block" id="SECoPCPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator">[docs]</a><span class="k">class</span> <span class="nc">SECoPCPCreator</span><span class="p">(</span><span class="n">CPCreator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; component creator of secop components</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; component creator of secop components</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param options: command options</span>
 <span class="sd">        :type options: :class:`optparse.Values`</span>
@@ -1973,7 +1980,7 @@
         <span class="n">CPCreator</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_printAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
 
 <span class="sd">        :param name: component name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -1993,7 +2000,7 @@
                     <span class="n">name</span><span class="p">,</span> <span class="n">ext</span><span class="p">))</span>
 
 <div class="viewcode-block" id="SECoPCPCreator.listmodules"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator.listmodules">[docs]</a>    <span class="k">def</span> <span class="nf">listmodules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides a list of modules for the secop node</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides a list of modules for the secop node</span>
 
 <span class="sd">        :returns: list of modules for the secop node</span>
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str` &gt;</span>
@@ -2018,7 +2025,7 @@
                           <span class="n">environments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">meanings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transattrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">dynamiclinks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">samplenxdata</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; create nexus node tree</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; create nexus node tree</span>
 
 <span class="sd">        :param df: definition parent node</span>
 <span class="sd">        :type df: :class:&#39;nxstools.nxsxml.XMLFile&#39;</span>
@@ -2198,7 +2205,7 @@
                             <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">samplename</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">,</span>
                             <span class="n">sampleenvname</span><span class="o">=</span><span class="s2">&quot;sample_environment&quot;</span><span class="p">,</span>
                             <span class="n">trattrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; create nexus node tree</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; create nexus node tree</span>
 
 <span class="sd">        :param senv: definition parent node</span>
 <span class="sd">        :type senv: :class:&#39;nxstools.nxsxml.XMLFile&#39;</span>
@@ -2364,7 +2371,7 @@
 
     <span class="k">def</span> <span class="nf">__createSECoPParam</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">par</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="n">nodename</span><span class="p">,</span> <span class="n">modname</span><span class="p">,</span>
                            <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">access</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">accesstype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; create nexus node tree</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; create nexus node tree</span>
 
 <span class="sd">        :param env: definition parent node</span>
 <span class="sd">        :type env: :class:&#39;nxstools.nxsxml.XMLFile&#39;</span>
@@ -2430,7 +2437,7 @@
                 <span class="n">field</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SECoPCPCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2478,7 +2485,7 @@
 
 <div class="viewcode-block" id="SECoPCPCreator.createSECoPDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator.createSECoPDS">[docs]</a>    <span class="k">def</span> <span class="nf">createSECoPDS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">access</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; create SECoP datasource</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; create SECoP datasource</span>
 
 <span class="sd">        :param dsname: datasource name</span>
 <span class="sd">        :type dsname: :obj:`str`</span>
@@ -2602,7 +2609,7 @@
 
 <div class="viewcode-block" id="SECoPCPCreator.createSECoPLinkDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator.createSECoPLinkDS">[docs]</a>    <span class="k">def</span> <span class="nf">createSECoPLinkDS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entryname</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span> <span class="n">sampleenvname</span><span class="p">,</span>
                           <span class="n">meanings</span><span class="p">,</span> <span class="n">environments</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; create SECoP datasource</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; create SECoP datasource</span>
 
 <span class="sd">        :param entryname: secop entry name</span>
 <span class="sd">        :type entryname: :obj:`str`</span>
@@ -2711,7 +2718,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span></div>
 
 <div class="viewcode-block" id="SECoPCPCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates components of all online.xml complex devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates components of all online.xml complex devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cpnames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
         <span class="k">for</span> <span class="n">cpname</span> <span class="ow">in</span> <span class="n">cpnames</span><span class="p">:</span>
@@ -2763,7 +2770,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_replaceName</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; replaces name prefix of xml templates files</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; replaces name prefix of xml templates files</span>
 
 <span class="sd">        :param filename: template filename</span>
 <span class="sd">        :type filename: :obj:`str`</span>
@@ -2786,11 +2793,11 @@
 
 <div class="viewcode-block" id="StandardCPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.StandardCPCreator">[docs]</a><span class="k">class</span> <span class="nc">StandardCPCreator</span><span class="p">(</span><span class="n">CPCreator</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; component creator of standard templates</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; component creator of standard templates</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param options: command options</span>
 <span class="sd">        :type options: :class:`optparse.Values`</span>
@@ -2804,7 +2811,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__specialparams</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="StandardCPCreator.listcomponenttypes"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.StandardCPCreator.listcomponenttypes">[docs]</a>    <span class="k">def</span> <span class="nf">listcomponenttypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides a list of standard component types</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides a list of standard component types</span>
 
 <span class="sd">        :returns: list of standard component types</span>
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
@@ -2812,7 +2819,7 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentVariables</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
 
 <div class="viewcode-block" id="StandardCPCreator.listcomponentvariables"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.StandardCPCreator.listcomponentvariables">[docs]</a>    <span class="k">def</span> <span class="nf">listcomponentvariables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; provides a list of standard component types</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides a list of standard component types</span>
 
 <span class="sd">        :returns: list of standard component types</span>
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
@@ -2828,7 +2835,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cptype</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">__setspecialparams</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; sets special parameters,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; sets special parameters,</span>
 <span class="sd">        i.e. __tangohost__, __tangoport__ and __configdevice__</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2842,8 +2849,23 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__specialparams</span><span class="p">[</span><span class="s1">&#39;__configdevice__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_getChildText</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">childname</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
+
+<span class="sd">        :param parent: parent node</span>
+<span class="sd">        :type parent: :class:`lxml.etree.Element`</span>
+<span class="sd">        :param childname: child name</span>
+<span class="sd">        :type childname: :opj:`str`</span>
+<span class="sd">        :returns: text string</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">children</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">childname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+
 <div class="viewcode-block" id="StandardCPCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.StandardCPCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2870,6 +2892,26 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmltemplatepath</span><span class="p">,</span> <span class="n">module</span><span class="p">)):</span>
                 <span class="n">xmlfiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="n">module</span><span class="p">]</span>
+
+        <span class="n">hw</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">onlinexmlfile</span><span class="p">:</span>
+            <span class="n">hw</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">onlinexmlfile</span><span class="p">,</span>
+                <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">hw</span><span class="o">.</span><span class="n">tag</span> <span class="o">!=</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span>
+                <span class="n">hw</span> <span class="o">=</span> <span class="n">hw</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;hw&#39;</span><span class="p">)</span>
+        <span class="n">dv</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">hw</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">device</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
+                <span class="n">dvname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                <span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
+                    <span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardananame&quot;</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">sardananame</span> <span class="ow">or</span> <span class="n">dvname</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">cpname</span><span class="p">:</span>
+                    <span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">)</span>
+                    <span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;hostname&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">xmlfile</span> <span class="ow">in</span> <span class="n">xmlfiles</span><span class="p">:</span>
             <span class="c1"># print(xmlfile)</span>
             <span class="n">newname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replaceName</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">,</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
@@ -2884,6 +2926,11 @@
                         <span class="s2">&quot;$(__insname__)&quot;</span><span class="p">,</span>
                         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">insname</span>
                          <span class="ow">or</span> <span class="s2">&quot;instrument&quot;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">dv</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">dv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">xmlcontent</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                            <span class="s2">&quot;$(device)&quot;</span><span class="p">,</span> <span class="n">tdevice</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                                <span class="s2">&quot;$(hostname)&quot;</span><span class="p">,</span> <span class="n">hostname</span><span class="p">)</span>
                 <span class="n">missing</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentVariables</span><span class="p">[</span>
                         <span class="n">module</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2955,7 +3002,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span></div>
 
     <span class="k">def</span> <span class="nf">_printAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
 
 <span class="sd">        :param name: component name</span>
 <span class="sd">        :type name: :obj:`str`</span>
@@ -2979,7 +3026,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">__getText</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; collects text from text child nodes</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; collects text from text child nodes</span>
 
 <span class="sd">        :param node: parent node</span>
 <span class="sd">        :type node: :obj:`xml.etree.ElementTree.Element`</span>
@@ -3009,7 +3056,7 @@
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

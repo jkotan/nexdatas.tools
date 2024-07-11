@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreate &#8212; NXSTools 3.67.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <title>nxstools.nxscreate &#8212; NXSTools 4.11.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
   </head><body>
@@ -35,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.67</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.11</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -116,20 +118,25 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxstools.html">nxstools package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filewriter">nxstools.filewriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5cppwriter">nxstools.h5cppwriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5pywriter">nxstools.h5pywriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.h5rediswriter">nxstools.h5rediswriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.release">nxstools.release module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.redisutils">nxstools.redisutils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -228,7 +235,7 @@
 
 <div class="viewcode-block" id="TangoDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.TangoDS">[docs]</a><span class="k">class</span> <span class="nc">TangoDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; tangods runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; tangods runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create tango datasources&quot;</span>
@@ -296,7 +303,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="TangoDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.TangoDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
@@ -363,7 +370,7 @@
         <span class="k">return</span> <span class="n">parser</span></div>
 
 <div class="viewcode-block" id="TangoDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.TangoDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -407,7 +414,7 @@
 
 <div class="viewcode-block" id="DeviceDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.DeviceDS">[docs]</a><span class="k">class</span> <span class="nc">DeviceDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; deviceds runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; deviceds runner&quot;&quot;&quot;</span>
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create datasources for all device attributes&quot;</span>
     <span class="c1">#: (:obj:`str`) command epilog</span>
@@ -456,7 +463,7 @@
              <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="DeviceDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.DeviceDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--device&quot;</span><span class="p">,</span>
@@ -502,7 +509,7 @@
                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;attribute names of the tango device&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DeviceDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.DeviceDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -554,7 +561,7 @@
 
 <div class="viewcode-block" id="OnlineDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineDS">[docs]</a><span class="k">class</span> <span class="nc">OnlineDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; onlineds runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; onlineds runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create datasources from online.xml file&quot;</span>
@@ -592,7 +599,7 @@
         <span class="o">+</span> <span class="s2">&quot; without creating datasources </span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="OnlineDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
@@ -629,14 +636,14 @@
                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;printout verbose mode&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OnlineDS.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineDS.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;online_file&#39;</span><span class="p">,</span>
                                   <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span>
                                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;online.xml file&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OnlineDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -675,7 +682,7 @@
 
 <div class="viewcode-block" id="PoolDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.PoolDS">[docs]</a><span class="k">class</span> <span class="nc">PoolDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; poolds runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; poolds runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create datasources from sardana pool device&quot;</span>
@@ -727,7 +734,7 @@
         <span class="o">+</span> <span class="s2">&quot; without creating datasources </span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="PoolDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.PoolDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
@@ -755,7 +762,7 @@
                             <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;pool&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PoolDS.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.PoolDS.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;channel&#39;</span><span class="p">,</span>
                                   <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span>
@@ -766,7 +773,7 @@
                                   <span class="s1">&#39; PseudoMotor PseudoCounter ALL&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PoolDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.PoolDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -804,7 +811,7 @@
 
 <div class="viewcode-block" id="Compare"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Compare">[docs]</a><span class="k">class</span> <span class="nc">Compare</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; compare runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; compare runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;compare two online.xml files&quot;</span>
@@ -825,7 +832,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Compare.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Compare.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--nolower&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span>
@@ -833,14 +840,14 @@
                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;do not change aliases into lower case&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Compare.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Compare.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;online_file&#39;</span><span class="p">,</span>
                                   <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
                                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;online.xml files&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Compare.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Compare.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -861,7 +868,7 @@
 
 <div class="viewcode-block" id="OnlineCP"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP">[docs]</a><span class="k">class</span> <span class="nc">OnlineCP</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; onlinecp runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; onlinecp runner&quot;&quot;&quot;</span>
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create component from online.xml file&quot;</span>
     <span class="c1">#: (:obj:`str`) command epilog</span>
@@ -907,7 +914,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="OnlineCP.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--component&quot;</span><span class="p">,</span>
@@ -955,14 +962,14 @@
                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;instrument group name&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;instrument&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OnlineCP.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;online_file&#39;</span><span class="p">,</span>
                                   <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span>
                                   <span class="n">help</span><span class="o">=</span><span class="s1">&#39;online.xml file&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OnlineCP.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1011,7 +1018,7 @@
 
 <div class="viewcode-block" id="StdComp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.StdComp">[docs]</a><span class="k">class</span> <span class="nc">StdComp</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;  stdcomp runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;  stdcomp runner&quot;&quot;&quot;</span>
 
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create component from the standard templates&quot;</span>
@@ -1067,7 +1074,7 @@
         <span class="o">+</span> <span class="s2">&quot; in the NXSConfigServer database</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="StdComp.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.StdComp.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--component&quot;</span><span class="p">,</span>
@@ -1110,8 +1117,15 @@
                             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;pairs of (key value) for template variables&#39;</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="StdComp.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.StdComp.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;--online-xml-file&#39;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;online.xml file&quot;</span><span class="p">,</span>
+                                  <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;onlinexmlfile&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="StdComp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.StdComp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1161,7 +1175,7 @@
 
 <div class="viewcode-block" id="Comp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Comp">[docs]</a><span class="k">class</span> <span class="nc">Comp</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; comp runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; comp runner&quot;&quot;&quot;</span>
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create simple components&quot;</span>
     <span class="c1">#: (:obj:`str`) command epilog</span>
@@ -1247,7 +1261,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Comp.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Comp.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1342,7 +1356,7 @@
         <span class="k">return</span> <span class="n">parser</span></div>
 
 <div class="viewcode-block" id="Comp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Comp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1377,7 +1391,7 @@
 
 <div class="viewcode-block" id="SECoPCP"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.SECoPCP">[docs]</a><span class="k">class</span> <span class="nc">SECoPCP</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; secop component runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; secop component runner&quot;&quot;&quot;</span>
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create secop components&quot;</span>
     <span class="c1">#: (:obj:`str`) command epilog</span>
@@ -1414,7 +1428,7 @@
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="SECoPCP.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.SECoPCP.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--list&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
@@ -1524,7 +1538,7 @@
         <span class="k">return</span> <span class="n">parser</span></div>
 
 <div class="viewcode-block" id="SECoPCP.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.SECoPCP.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1567,7 +1581,7 @@
 
 <div class="viewcode-block" id="ClientDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.ClientDS">[docs]</a><span class="k">class</span> <span class="nc">ClientDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; clientds runner&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; clientds runner&quot;&quot;&quot;</span>
     <span class="c1">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create client datasources&quot;</span>
 
@@ -1622,7 +1636,7 @@
              <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="ClientDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.ClientDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; parser creator</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; parser creator</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--device-prefix&quot;</span><span class="p">,</span>
@@ -1668,7 +1682,7 @@
                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;device names to create&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ClientDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.ClientDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
@@ -1702,7 +1716,7 @@
 
 
 <span class="k">def</span> <span class="nf">_supportoldcommands</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; replace the old command names to the new ones</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; replace the old command names to the new ones</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">oldnew</span> <span class="o">=</span> <span class="p">{</span>
@@ -1715,7 +1729,7 @@
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; the main program function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot; Command-line tool for creating NXSConfigServer&quot;</span> \
                   <span class="o">+</span> <span class="s2">&quot; configuration of Nexus Files&quot;</span>
@@ -1776,7 +1790,7 @@
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>
