@@ -933,7 +933,7 @@ class StdComp(Runner):
     def postauto(self):
         """ creates parser
         """
-        self._parser.add_argument('--online-xml',
+        self._parser.add_argument('-f', '--online-xml-file',
                                   help="online.xml file",
                                   dest="onlinexmlfile", default="")
 
