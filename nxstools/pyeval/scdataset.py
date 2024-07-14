@@ -127,13 +127,21 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
             if "INIT" in skip_acq:
                 sname = "%s:%s" % (sname, time.time())
 
+        fdir = macro.getEnv('ScanDir')
+        snmode = get_env_var(macro, 'ScanNames', None)
+        pdir = None
+        if snmode is not None:
+            if bool(snmode):
+                fdir = os.path.dirname(os.path.abspath(fdir))
+            elif appendentry is False:
+                fdir, pdir = os.path.split(os.path.abspath(fdir))
+        if pdir:
+            sname = "%s/%s" % (pdir, sname)
+
         # auto grouping
         grouping = bool(get_env_var(macro, 'SciCatAutoGrouping', False))
-        if grouping:
+        if grouping or pdir:
             commands = []
-            fdir = macro.getEnv('ScanDir')
-            if bool(get_env_var(macro, 'ScanNames', False)):
-                fdir = os.path.dirname(os.path.abspath(fdir))
             try:
                 sm = dict(get_env_var(macro, 'SciCatMeasurements', {}))
             except Exception:
@@ -174,7 +182,7 @@ def append_scicat_record(macro, sname, status_info=True):
     """
     # get beamtime id
     fdir = macro.getEnv('ScanDir')
-    if bool(get_env_var(macro, 'ScanNames', False)):
+    if get_env_var(macro, 'ScanNames', None) is not None:
         fdir = os.path.dirname(os.path.abspath(fdir))
     bmtfpath = get_env_var(macro, "BeamtimeFilePath", "/gpfs/current")
     bmtfprefix = get_env_var(
