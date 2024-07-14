@@ -182,8 +182,7 @@ def append_scicat_record(macro, sname, status_info=True):
     """
     # get beamtime id
     fdir = macro.getEnv('ScanDir')
-    snmode = 
-    if get_env_var(macro, 'ScanNames', None):
+    if get_env_var(macro, 'ScanNames', None) is not None:
         fdir = os.path.dirname(os.path.abspath(fdir))
     bmtfpath = get_env_var(macro, "BeamtimeFilePath", "/gpfs/current")
     bmtfprefix = get_env_var(
