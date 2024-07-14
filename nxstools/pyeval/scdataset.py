@@ -137,7 +137,7 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
                 fdir, pdir = os.path.split(os.path.abspath(fdir))
         if pdir:
             sname = "%s/%s" % (pdir, sname)
-            
+
         # auto grouping
         grouping = bool(get_env_var(macro, 'SciCatAutoGrouping', False))
         if grouping or pdir:
