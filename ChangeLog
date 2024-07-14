@@ -1,5 +1,10 @@
 2024-07-15 Jan Kotanski <jankotan@gmail.com>
 	* fix ScanFileinScanNameDir name to ScanNames (#694)
+	* fix support for ScanNames=False (#695)
+	* tagged as v4.11.1
+
+2024-07-15 Jan Kotanski <jankotan@gmail.com>
+	* fix ScanFileinScanNameDir name to ScanNames (#694)
 	* tagged as v4.11.1
 
 2024-07-11 Jan Kotanski <jankotan@gmail.com>
