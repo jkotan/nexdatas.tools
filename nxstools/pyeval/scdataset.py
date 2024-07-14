@@ -128,7 +128,7 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
                 sname = "%s:%s" % (sname, time.time())
 
         fdir = macro.getEnv('ScanDir')
-        snmode = get_env_var(macro, 'ScanNames', False)
+        snmode = get_env_var(macro, 'ScanNames', None)
         pdir = None
         if snmode is not None:
             if bool(snmode):
@@ -182,7 +182,8 @@ def append_scicat_record(macro, sname, status_info=True):
     """
     # get beamtime id
     fdir = macro.getEnv('ScanDir')
-    if bool(get_env_var(macro, 'ScanNames', False)):
+    snmode = 
+    if get_env_var(macro, 'ScanNames', None):
         fdir = os.path.dirname(os.path.abspath(fdir))
     bmtfpath = get_env_var(macro, "BeamtimeFilePath", "/gpfs/current")
     bmtfprefix = get_env_var(
