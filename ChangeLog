@@ -1,11 +1,8 @@
 2024-07-15 Jan Kotanski <jankotan@gmail.com>
+	* create output dir is does not exists (#696)
 	* fix ScanFileinScanNameDir name to ScanNames (#694)
 	* fix support for ScanNames=False (#695)
-	* tagged as v4.11.1
-
-2024-07-15 Jan Kotanski <jankotan@gmail.com>
-	* fix ScanFileinScanNameDir name to ScanNames (#694)
-	* tagged as v4.11.1
+	* tagged as v4.12.0
 
 2024-07-11 Jan Kotanski <jankotan@gmail.com>
 	* add --online-xml-file option for nxscreate stdcomp (#687)
