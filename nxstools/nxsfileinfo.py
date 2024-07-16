@@ -1639,6 +1639,9 @@ class Metadata(Runner):
             metadata = self.metadata(root, options)
             if metadata:
                 if options.output:
+                    fdir, fn = os.path.split(os.path.abspath(options.output))
+                    if not os.path.isdir(fdir):
+                        os.makedirs(fdir, exist_ok=True)
                     chmod = None
                     try:
                         chmod = int(options.chmod, 8)
@@ -3013,6 +3016,8 @@ i
             elif options.group and options.group[0]:
                 if imfile:
                     metadir, _ = os.path.split(os.path.abspath(imfile))
+                    if not os.path.isdir(metadir):
+                        os.makedirs(metadir, exist_ok=True)
                 omfile = os.path.join(
                     metadir, "%s.scan.json" % options.group[0])
                 if options.writefiles:
@@ -3173,6 +3178,9 @@ i
             metadata, datablocks, attachments = self.groupmetadata(options)
             if metadata:
                 if options.output:
+                    fdir, fn = os.path.split(os.path.abspath(options.output))
+                    if not os.path.isdir(fdir):
+                        os.makedirs(fdir, exist_ok=True)
                     chmod = None
                     try:
                         chmod = int(options.chmod, 8)
@@ -3517,6 +3525,9 @@ class OrigDatablock(Runner):
             metadata = self.datablock(options)
             if metadata:
                 if options.output:
+                    fdir, fn = os.path.split(os.path.abspath(options.output))
+                    if not os.path.isdir(fdir):
+                        os.makedirs(fdir, exist_ok=True)
                     chmod = None
                     try:
                         chmod = int(options.chmod, 8)
@@ -3687,6 +3698,9 @@ class Sample(Runner):
             metadata = self.sample(options)
             if metadata:
                 if options.output:
+                    fdir, fn = os.path.split(os.path.abspath(options.output))
+                    if not os.path.isdir(fdir):
+                        os.makedirs(fdir, exist_ok=True)
                     chmod = None
                     try:
                         chmod = int(options.chmod, 8)
@@ -4573,6 +4587,9 @@ class Attachment(Runner):
             metadata = self.attachment(root, options)
             if metadata:
                 if options.output:
+                    fdir, fn = os.path.split(os.path.abspath(options.output))
+                    if not os.path.isdir(fdir):
+                        os.makedirs(fdir, exist_ok=True)
                     chmod = None
                     try:
                         chmod = int(options.chmod, 8)
@@ -4731,6 +4748,9 @@ class Instrument(Runner):
             metadata = self.instrument(options)
             if metadata:
                 if options.output:
+                    fdir, fn = os.path.split(os.path.abspath(options.output))
+                    if not os.path.isdir(fdir):
+                        os.makedirs(fdir, exist_ok=True)
                     chmod = None
                     try:
                         chmod = int(options.chmod, 8)
