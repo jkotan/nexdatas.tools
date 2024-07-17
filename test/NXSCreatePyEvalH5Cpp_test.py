@@ -2368,7 +2368,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
 
         name = "eiger2"
         filename = "%s_%s.nxs" % (mfileprefix, scanid)
-        # mainpath = "%s_%s" % (mfileprefix, scanid)
+        mainpath = "%s_%s" % (mfileprefix, scanid)
         path = "%s_%s/%s" % (mfileprefix, scanid, name)
         self._fname = filename
         fname1 = ['testscan_data_%06i.h5' % i for i in range(1, 4)]
@@ -2468,9 +2468,9 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         finally:
             if tsv1:
                 tsv1.tearDown()
-            # shutil.rmtree(mainpath,
-            #               ignore_errors=False, onerror=None)
-            # os.remove(self._fname)
+            shutil.rmtree(mainpath,
+                          ignore_errors=False, onerror=None)
+            os.remove(self._fname)
 
     def test_eigetdectris_triggermode_splitmode_in(self):
         """
