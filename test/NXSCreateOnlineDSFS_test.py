@@ -365,7 +365,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
  <control>tango</control>
  <hostname>haso000:10000</hostname>
 </device>
-        
+
 </hw>
 """
 
