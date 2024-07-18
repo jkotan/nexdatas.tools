@@ -322,6 +322,139 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
+    def test_onlineds_amptekroi(self):
+        """ test nxsccreate onlineds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>amptek_roi1</name>
+ <type>counter</type>
+ <module>amptekroi</module>
+ <device>p03/amptekpx5/exp.01/1</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+</device>
+<device>
+ <name>amptek_roi2</name>
+ <type>counter</type>
+ <module>amptekroi</module>
+ <device>p03/amptekpx5/exp.01/2</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+</device>
+<device>
+ <name>amptek_roi3</name>
+ <type>counter</type>
+ <module>amptekroi</module>
+ <device>p03/amptekpx5/exp.01/3</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+</device>
+<device>
+ <name>amptek_roi4</name>
+ <type>counter</type>
+ <module>amptekroi</module>
+ <device>p03/amptekpx5/exp.01/4</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+</device>
+        
+</hw>
+"""
+
+        args = [
+            [
+                ('nxscreate onlineds %s %s'
+                 % (fname, self.flags)).split(),
+                ['amptek_roi1',
+                 'amptek_roi2',
+                 'amptek_roi3',
+                 'amptek_roi4'],
+                [
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                    '<definition>\n'
+                    '  <datasource type="TANGO" name="amptek_roi1">\n'
+                    '    <device name="p03/amptekpx5/exp.01"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000"/>\n'
+                    '    <record name="CountsRoI1"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                    '<definition>\n'
+                    '  <datasource type="TANGO" name="amptek_roi2">\n'
+                    '    <device name="p03/amptekpx5/exp.01"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000"/>\n'
+                    '    <record name="CountsRoI2"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                    '<definition>\n'
+                    '  <datasource type="TANGO" name="amptek_roi3">\n'
+                    '    <device name="p03/amptekpx5/exp.01"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000"/>\n'
+                    '    <record name="CountsRoI3"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                    '<definition>\n'
+                    '  <datasource type="TANGO" name="amptek_roi4">\n'
+                    '    <device name="p03/amptekpx5/exp.01"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000"/>\n'
+                    '    <record name="CountsRoI4"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertTrue(er.startswith(
+                            "Info"))
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            os.remove(fname)
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
     def test_onlineds_stepping_motor_noclientlike(self):
         """ test nxsccreate onlineds file system
         """
