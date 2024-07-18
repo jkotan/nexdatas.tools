@@ -31,7 +31,7 @@ from lxml.etree import XMLParser
 
 from nxstools.nxsdevicetools import (
     storeDataSource, getDataSourceComponents, storeComponent,
-    moduleAttributes, motorModules,
+    moduleAttributes, moduleAttributeMap, motorModules,
     generateDeviceNames, getServerTangoHost,
     openServer, findClassName,
     xmlPackageHandler)
@@ -265,9 +265,13 @@ class Device(object):
         self.attribute = None
         spdevice = self.tdevice.split("/")
         if mhost and len(spdevice) > 3:
-            self.attribute = spdevice[3]
             self.tdevice = "/".join(spdevice[0:3])
             self.hostname = mhost
+            if self.module in moduleAttributeMap.keys() and \
+                    spdevice[3] in moduleAttributeMap[self.module].keys():
+                self.attribute = moduleAttributeMap[self.module][spdevice[3]]
+            else:
+                self.attribute = spdevice[3]
         if self.module in motorModules or self.dtype == 'stepping_motor':
             if self.attribute is None:
                 self.attribute = 'Position'
