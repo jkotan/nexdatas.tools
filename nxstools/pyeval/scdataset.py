@@ -129,6 +129,8 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
 
         fdir = macro.getEnv('ScanDir')
         snmode = get_env_var(macro, 'ScanNames', None)
+        nometa = get_env_var(macro, 'ScanNamesNoMetadata', False)
+        nogrouping = get_env_var(macro, 'ScanNamesNoGrouping', False)
         pdir = None
         if snmode is not None:
             if bool(snmode):
@@ -150,21 +152,28 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
             if fdir in sm.keys():
                 cgrp = sm[fdir]
                 if cgrp != scanname2:
-                    commands.append("__command__ stop")
-                    commands.append("%s:%s" % (cgrp, time.time()))
-                    commands.append("__command__ start %s" % scanname2)
+                    if not nogrouping and not nometa:
+                        commands.append("__command__ stop")
+                        commands.append("%s:%s" % (cgrp, time.time()))
+                        commands.append("__command__ start %s" % scanname2)
             else:
+                if not nogrouping and not nometa:
+                    commands.append("__command__ start %s" % scanname2)
+            if not nometa:
+                commands.append(sname)
+            if not nogrouping and not nometa:
+                commands.append("__command__ stop")
+            if not nogrouping:
+                commands.append("%s:%s" % (scanname2, time.time()))
+            if not nogrouping and not nometa:
                 commands.append("__command__ start %s" % scanname2)
-            commands.append(sname)
-            commands.append("__command__ stop")
-            commands.append("%s:%s" % (scanname2, time.time()))
-            commands.append("__command__ start %s" % scanname2)
             sname = "\n".join(commands)
 
-            sm[fdir] = scanname2
+            if not nogrouping and not nometa:
+                sm[fdir] = scanname2
             macro.setEnv('SciCatMeasurements', sm)
-
-        append_scicat_record(macro, sname, status_info=True)
+        if sname:
+            append_scicat_record(macro, sname, status_info=True)
     return sname
 
 
