@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsdevicetools &#8212; NXSTools 4.0.2 documentation</title>
+    <title>nxstools.nxsdevicetools &#8212; NXSTools 4.13.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>4.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.13</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -295,6 +295,20 @@
     <span class="s1">&#39;xmcd&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
 <span class="p">}</span>
 
+<span class="c1">#: attributes of device modules to acquire with elements:</span>
+<span class="c1">#  &#39;module&#39;: {&lt;device_parts[4]&gt;, &lt;tango_attr&gt;}</span>
+<span class="n">moduleAttributeMap</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;amptekroi&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="s1">&#39;CountsRoI1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="s1">&#39;CountsRoI2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="s1">&#39;CountsRoI3&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="s1">&#39;CountsRoI4&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="s1">&#39;CountsRoI5&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="s1">&#39;CountsRoI6&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;7&#39;</span><span class="p">:</span> <span class="s1">&#39;CountsRoI7&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;8&#39;</span><span class="p">:</span> <span class="s1">&#39;CountsRoI8&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
 
 <span class="c1">#: (:obj:`list` &lt;:obj:`str`&gt;) modules of 2d detectors</span>
 <span class="n">twoDModules</span> <span class="o">=</span> <span class="p">[</span>

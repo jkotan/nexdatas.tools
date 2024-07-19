@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 4.11.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 4.13.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>4.11</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.13</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -218,7 +218,7 @@
 
 <span class="kn">from</span> <span class="nn">nxstools.nxsdevicetools</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">storeDataSource</span><span class="p">,</span> <span class="n">getDataSourceComponents</span><span class="p">,</span> <span class="n">storeComponent</span><span class="p">,</span>
-    <span class="n">moduleAttributes</span><span class="p">,</span> <span class="n">motorModules</span><span class="p">,</span>
+    <span class="n">moduleAttributes</span><span class="p">,</span> <span class="n">moduleAttributeMap</span><span class="p">,</span> <span class="n">motorModules</span><span class="p">,</span>
     <span class="n">generateDeviceNames</span><span class="p">,</span> <span class="n">getServerTangoHost</span><span class="p">,</span>
     <span class="n">openServer</span><span class="p">,</span> <span class="n">findClassName</span><span class="p">,</span>
     <span class="n">xmlPackageHandler</span><span class="p">)</span>
@@ -452,9 +452,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">spdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mhost</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">spdevice</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">spdevice</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spdevice</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="n">mhost</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="ow">in</span> <span class="n">moduleAttributeMap</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> \
+                    <span class="n">spdevice</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">in</span> <span class="n">moduleAttributeMap</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">moduleAttributeMap</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">][</span><span class="n">spdevice</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">spdevice</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="ow">in</span> <span class="n">motorModules</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;stepping_motor&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="s1">&#39;Position&#39;</span>

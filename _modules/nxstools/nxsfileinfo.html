@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 4.8.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 4.13.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>4.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.13</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1826,6 +1826,9 @@
             <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                    <span class="n">fdir</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fdir</span><span class="p">):</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="n">chmod</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">chmod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">chmod</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -3200,6 +3203,8 @@
             <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">group</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">imfile</span><span class="p">:</span>
                     <span class="n">metadir</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">imfile</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">metadir</span><span class="p">):</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">metadir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">omfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                     <span class="n">metadir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.scan.json&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">writefiles</span><span class="p">:</span>
@@ -3360,6 +3365,9 @@
             <span class="n">metadata</span><span class="p">,</span> <span class="n">datablocks</span><span class="p">,</span> <span class="n">attachments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupmetadata</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                    <span class="n">fdir</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fdir</span><span class="p">):</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="n">chmod</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">chmod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">chmod</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -3704,6 +3712,9 @@
             <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datablock</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                    <span class="n">fdir</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fdir</span><span class="p">):</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="n">chmod</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">chmod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">chmod</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -3874,6 +3885,9 @@
             <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                    <span class="n">fdir</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fdir</span><span class="p">):</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="n">chmod</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">chmod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">chmod</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -4760,6 +4774,9 @@
             <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attachment</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                    <span class="n">fdir</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fdir</span><span class="p">):</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="n">chmod</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">chmod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">chmod</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -4918,6 +4935,9 @@
             <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instrument</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                    <span class="n">fdir</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">fdir</span><span class="p">):</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="n">chmod</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">chmod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">chmod</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
