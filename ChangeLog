@@ -1,3 +1,7 @@
+2024-07-19 Jan Kotanski <jankotan@gmail.com>
+	* improve findAttribute by adding moduleAttributeMap (#696)
+	* tagged as v4.13.0
+
 2024-07-15 Jan Kotanski <jankotan@gmail.com>
 	* create output dir is does not exists (#696)
 	* fix ScanFileinScanNameDir name to ScanNames (#694)

@@ -108,6 +108,20 @@ moduleAttributes = {
     'xmcd': ['Value', None],
 }
 
+#: attributes of device modules to acquire with elements:
+#  'module': {<device_parts[4]>, <tango_attr>}
+moduleAttributeMap = {
+    'amptekroi': {
+        '1': 'CountsRoI1',
+        '2': 'CountsRoI2',
+        '3': 'CountsRoI3',
+        '4': 'CountsRoI4',
+        '5': 'CountsRoI5',
+        '6': 'CountsRoI6',
+        '7': 'CountsRoI7',
+        '8': 'CountsRoI8',
+    },
+}
 
 #: (:obj:`list` <:obj:`str`>) modules of 2d detectors
 twoDModules = [
