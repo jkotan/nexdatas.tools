@@ -165,8 +165,6 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
                 commands.append("__command__ stop")
             if not nogrouping:
                 commands.append("%s:%s" % (scanname2, time.time()))
-            if not nogrouping and not nometa:
-                commands.append("__command__ start %s" % scanname2)
             sname = "\n".join(commands)
 
             if not nogrouping and not nometa:
