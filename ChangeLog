@@ -1,3 +1,7 @@
+2024-08-08 Jan Kotanski <jankotan@gmail.com>
+	* fix typo in for device_name in nxsetup (#706)
+	* tagged as v4.13.1
+
 2024-07-19 Jan Kotanski <jankotan@gmail.com>
 	* improve findAttribute by adding moduleAttributeMap (#696)
 	* add ScanNamesNoMetadata and ScanNamesNoGrouping variables (#702)
