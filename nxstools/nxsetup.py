@@ -896,7 +896,7 @@ class SetUp(object):
                 print("\ncreateServer: properties cannot be load")
                 properties = {}
             if not properties:
-                properties = {self.__device_name: {}}
+                properties = {self.device_name: {}}
 
             print("PROP", properties)
             for dv, props in properties.items():
