@@ -2047,8 +2047,24 @@ class SECoPCPCreator(CPCreator):
         """
         if 'meaning' in conf.keys():
             meaning = conf['meaning']
-            env = senv
-            basename = samplename
+            if isinstance(meaning, dict):
+                mdict = meaning
+                env = seenv
+                meaning = None
+                basename = sampleenvname
+
+                if "key" in mdict.keys():
+                    keys = mdict["key"].split(mdict, " ")
+                    if keys and keys[0] == "sample":
+                        if len(keys) > 1:
+                        meaning = " ".join(keys[1:])
+                        env = senv
+                        basename = samplename
+                    else:
+                        meaning = mdict["key"]
+            else:
+                env = senv
+                basename = samplename
         else:
             meaning = None
             env = seenv
