@@ -1,4 +1,8 @@
 2024-08-08 Jan Kotanski <jankotan@gmail.com>
+	* add support for secop meaning dictionary (#709)
+	* tagged as v4.14.0
+
+2024-08-08 Jan Kotanski <jankotan@gmail.com>
 	* fix typo in for device_name in nxsetup (#706)
 	* tagged as v4.13.1
 
