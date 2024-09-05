@@ -2053,15 +2053,12 @@ class SECoPCPCreator(CPCreator):
                 meaning = None
                 basename = sampleenvname
 
-                if "key" in mdict.keys():
-                    keys = mdict["key"].split(mdict, " ")
-                    if keys and keys[0] == "sample":
-                        if len(keys) > 1:
-                        meaning = " ".join(keys[1:])
-                        env = senv
-                        basename = samplename
-                    else:
-                        meaning = mdict["key"]
+                if "belongs_to" in mdict.keys() and \
+                        mdict["belongs_to"] == "sample":
+                    env = senv
+                    basename = samplename
+                if "function" in mdict.keys():
+                    meaning = mdict["function"]
             else:
                 env = senv
                 basename = samplename
