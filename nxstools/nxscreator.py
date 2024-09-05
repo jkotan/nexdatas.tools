@@ -1893,12 +1893,25 @@ class SECoPCPCreator(CPCreator):
         for mname, mconf in modules.items():
             if mname and (not senv or not seenv):
                 if not modulenames or mname in modulenames:
-                    if not senv and "meaning" in mconf.keys():
-                        senv = NGroup(sample, name or "environment",
-                                      "NXenvironment")
-                    if not seenv and "meaning" not in mconf.keys():
-                        seenv = NGroup(sampleenv, name or "environment",
-                                       "NXenvironment")
+                    if "meaning" in mconf.keys() and \
+                       isinstance(mconf["meaning"], dict):
+                        if "belongs_to" in mconf["meaning"].keys() and \
+                                mconf["meaning"]["belongs_to"] == "sample":
+                            if not senv:
+                                senv = NGroup(sample, name or "environment",
+                                              "NXenvironment")
+                        else:
+                            if not seenv:
+                                seenv = NGroup(sampleenv,
+                                               name or "environment",
+                                               "NXenvironment")
+                    else:
+                        if not senv and "meaning" in mconf.keys():
+                            senv = NGroup(sample, name or "environment",
+                                          "NXenvironment")
+                        if not seenv and "meaning" not in mconf.keys():
+                            seenv = NGroup(sampleenv, name or "environment",
+                                           "NXenvironment")
         envs = [senv, seenv]
         for env in envs:
             if env:
@@ -2087,6 +2100,15 @@ class SECoPCPCreator(CPCreator):
                         importance = None
                 if len(meaning) > 0:
                     meaning = meaning[0]
+            if isinstance(meaning, dict):
+                try:
+                    importance = int(meaning["importance"])
+                except Exception:
+                    importance = None
+                try:
+                    meaning = int(meaning["function"])
+                except Exception:
+                    meaning = None
             if meaning in mnTme.keys():
                 meaning = mnTme[meaning]
                 field = NField(mgr, 'measurement', 'NX_CHAR')
