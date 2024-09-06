@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 4.13.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 4.14.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>4.13</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.14</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -2080,12 +2080,25 @@
         <span class="k">for</span> <span class="n">mname</span><span class="p">,</span> <span class="n">mconf</span> <span class="ow">in</span> <span class="n">modules</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">mname</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">senv</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">seenv</span><span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">modulenames</span> <span class="ow">or</span> <span class="n">mname</span> <span class="ow">in</span> <span class="n">modulenames</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">senv</span> <span class="ow">and</span> <span class="s2">&quot;meaning&quot;</span> <span class="ow">in</span> <span class="n">mconf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                        <span class="n">senv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
-                                      <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">seenv</span> <span class="ow">and</span> <span class="s2">&quot;meaning&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mconf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                        <span class="n">seenv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sampleenv</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
-                                       <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s2">&quot;meaning&quot;</span> <span class="ow">in</span> <span class="n">mconf</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> \
+                       <span class="nb">isinstance</span><span class="p">(</span><span class="n">mconf</span><span class="p">[</span><span class="s2">&quot;meaning&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="s2">&quot;belongs_to&quot;</span> <span class="ow">in</span> <span class="n">mconf</span><span class="p">[</span><span class="s2">&quot;meaning&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> \
+                                <span class="n">mconf</span><span class="p">[</span><span class="s2">&quot;meaning&quot;</span><span class="p">][</span><span class="s2">&quot;belongs_to&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sample&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">senv</span><span class="p">:</span>
+                                <span class="n">senv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
+                                              <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">seenv</span><span class="p">:</span>
+                                <span class="n">seenv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sampleenv</span><span class="p">,</span>
+                                               <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
+                                               <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">senv</span> <span class="ow">and</span> <span class="s2">&quot;meaning&quot;</span> <span class="ow">in</span> <span class="n">mconf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="n">senv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
+                                          <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">seenv</span> <span class="ow">and</span> <span class="s2">&quot;meaning&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mconf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="n">seenv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sampleenv</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
+                                           <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
         <span class="n">envs</span> <span class="o">=</span> <span class="p">[</span><span class="n">senv</span><span class="p">,</span> <span class="n">seenv</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">envs</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">env</span><span class="p">:</span>
@@ -2234,8 +2247,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;meaning&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">meaning</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;meaning&#39;</span><span class="p">]</span>
-            <span class="n">env</span> <span class="o">=</span> <span class="n">senv</span>
-            <span class="n">basename</span> <span class="o">=</span> <span class="n">samplename</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">mdict</span> <span class="o">=</span> <span class="n">meaning</span>
+                <span class="n">env</span> <span class="o">=</span> <span class="n">seenv</span>
+                <span class="n">meaning</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">basename</span> <span class="o">=</span> <span class="n">sampleenvname</span>
+
+                <span class="k">if</span> <span class="s2">&quot;belongs_to&quot;</span> <span class="ow">in</span> <span class="n">mdict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> \
+                        <span class="n">mdict</span><span class="p">[</span><span class="s2">&quot;belongs_to&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sample&quot;</span><span class="p">:</span>
+                    <span class="n">env</span> <span class="o">=</span> <span class="n">senv</span>
+                    <span class="n">basename</span> <span class="o">=</span> <span class="n">samplename</span>
+                <span class="k">if</span> <span class="s2">&quot;function&quot;</span> <span class="ow">in</span> <span class="n">mdict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">meaning</span> <span class="o">=</span> <span class="n">mdict</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">env</span> <span class="o">=</span> <span class="n">senv</span>
+                <span class="n">basename</span> <span class="o">=</span> <span class="n">samplename</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">meaning</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">env</span> <span class="o">=</span> <span class="n">seenv</span>
@@ -2261,6 +2287,15 @@
                         <span class="n">importance</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">importance</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">meaning</span><span class="p">[</span><span class="s2">&quot;importance&quot;</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">importance</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">meaning</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">meaning</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">meaning</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">meaning</span> <span class="ow">in</span> <span class="n">mnTme</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">meaning</span> <span class="o">=</span> <span class="n">mnTme</span><span class="p">[</span><span class="n">meaning</span><span class="p">]</span>
                 <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;measurement&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
