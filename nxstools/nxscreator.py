@@ -2088,6 +2088,9 @@ class SECoPCPCreator(CPCreator):
             field.setText("%s" % str(name))
             field.setStrategy('INIT')
         semeaning = None
+        function = None
+        link = None
+        key = None
         if 'meaning' in conf.keys():
             meaning = conf['meaning']
             semeaning = meaning
@@ -2100,24 +2103,43 @@ class SECoPCPCreator(CPCreator):
                         importance = None
                 if len(meaning) > 0:
                     meaning = meaning[0]
-            if isinstance(meaning, dict):
+                    function = meaning
+            elif isinstance(meaning, dict):
+                try:
+                    link = meaning["link"]
+                except Exception:
+                    link = None
+                try:
+                    key = meaning["key"]
+                except Exception:
+                    key = None
                 try:
                     importance = int(meaning["importance"])
                 except Exception:
                     importance = None
                 try:
-                    meaning = int(meaning["function"])
+                    meaning = meaning["function"]
+                    function = meaning
                 except Exception:
                     meaning = None
-            if meaning in mnTme.keys():
-                meaning = mnTme[meaning]
-                field = NField(mgr, 'measurement', 'NX_CHAR')
-                field.setText(meaning)
-                field.setStrategy('INIT')
-                if importance is not None:
-                    mimp = NAttr(field, "secop_importance", "NX_INT32")
-                    mimp.setText(str(importance))
-
+            else:
+                function = meaning
+            field = NField(mgr, 'measurement', 'NX_CHAR')
+            field.setStrategy('INIT')
+            meaning = mnTme[meaning] if meaning in mnTme.keys() else ""
+            field.setText(meaning)
+            if importance is not None:
+                mimp = NAttr(field, "secop_importance", "NX_INT32")
+                mimp.setText(str(importance))
+            if key is not None:
+                mimp = NAttr(field, "secop_key", "NX_CHAR")
+                mimp.setText(str(key))
+            if link is not None:
+                mimp = NAttr(field, "secop_link", "NX_CHAR")
+                mimp.setText(str(link))
+            if function is not None:
+                mimp = NAttr(field, "secop_function", "NX_CHAR")
+                mimp.setText(str(function))
         if 'implementation' in conf.keys():
             field = NField(mgr, 'model', 'NX_CHAR')
             field.setText("%s" % str(conf['implementation']))
