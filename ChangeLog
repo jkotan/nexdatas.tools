@@ -1,3 +1,7 @@
+2024-09-11 Jan Kotanski <jankotan@gmail.com>
+	* add support for link, key and function for secop meaning dictionary (#712)
+	* tagged as v4.15.0
+
 2024-08-08 Jan Kotanski <jankotan@gmail.com>
 	* add support for secop meaning dictionary (#709)
 	* tagged as v4.14.0

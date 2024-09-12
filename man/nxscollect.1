@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSCOLLECT" "1" "Sep 05, 2024" "4.14" "NXSTools"
+.TH "NXSCOLLECT" "1" "Sep 11, 2024" "4.15" "NXSTools"
 .SH NAME
 nxscollect \- upload external images into NeXus/HDF5 file
 .SH DESCRIPTION
@@ -66,7 +66,7 @@ show this help message and exit
 .TP
 .BI \-c \ COMPRESSION\fR,\fB \ \-\-compression \ COMPRESSION
 deflate compression rate from 0 to 9 (default: 2) or
-<filterid>:opt1,opt2,... e.g. \-c 32008:0,2 for
+<filterid>:opt1,opt2,… e.g. \-c 32008:0,2 for
 bitshuffle with lz4
 .TP
 .BI \-p \ PATH\fR,\fB \ \-\-path \ PATH
@@ -75,18 +75,18 @@ nexus path for the output field, e.g.
 .TP
 .BI \-i \ INPUTFILES\fR,\fB \ \-\-input_files \ INPUTFILES
 input data files defined with a pattern or separated
-by \(aq,\(aq e.g.\(aqscan_%05d.tif:0:100\(aq
+by ‘,’ e.g.’scan_%05d.tif:0:100’
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: \(aq,\(aq)
+input data files separator (default: ‘,’)
 .TP
 .BI \-\-dtype \ DATATYPE
 datatype of input data \- only for raw data, e.g.
-\(aquint8\(aq
+‘uint8’
 .TP
 .BI \-\-shape \ SHAPE
 shape of input data \- only for raw data, e.g.
-\(aq[4096,2048]\(aq
+‘[4096,2048]’
 .TP
 .B  \-s\fP,\fB  \-\-skip_missing
 skip missing files
@@ -209,99 +209,99 @@ Options:
 show this help message and exit
 .TP
 .BI \-t \ DTYPE\fR,\fB \ \-\-dtype \ DTYPE
-datatype of the VDS field, e.g. \(aquint8\(aq
+datatype of the VDS field, e.g. ‘uint8’
 .TP
 .BI \-s \ SHAPE\fR,\fB \ \-\-shape \ SHAPE
-shape of the VDS field, e.g. \(aq[U,4096,2048]\(aq or
-U,4096,2048 where U means span along the field\(aq
+shape of the VDS field, e.g. ‘[U,4096,2048]’ or
+U,4096,2048 where U means span along the field’
 .TP
 .BI \-f \ FILLVALUE\fR,\fB \ \-\-fill\-value \ FILLVALUE
 fill value for the gaps, default is 0
 .TP
 .BI \-e \ TARGETFIELDS\fR,\fB \ \-\-target\-fields \ TARGETFIELDS
 external fields with their NeXus file paths defined
-with a pattern or separated by \(aq,\(aq
-e.g.\(aqscan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP\(aq
+with a pattern or separated by ‘,’
+e.g.’scan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP’
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: \(aq,\(aq)
+input data files separator (default: ‘,’)
 .TP
 .BI \-p \ SHAPES\fR,\fB \ \-\-shapes \ SHAPES
 shapes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
 means 0
 .TP
 .BI \-o \ OFFSETS\fR,\fB \ \-\-offsets \ OFFSETS
 offsets in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
 means 0
 .TP
 .BI \-b \ BLOCKS\fR,\fB \ \-\-blocks \ BLOCKS
 block sizes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,256,512;,256,512;,256,512\(aq where an
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,256,512;,256,512;,256,512’ where an
 empty coordinate means 1
 .TP
 .BI \-c \ COUNTS\fR,\fB \ \-\-counts \ COUNTS
 count numbers in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,1,1;,1,1;,1,1\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,1,1;,1,1;,1,1’ where an empty coordinate
 means span along the layout
 .TP
 .BI \-d \ STRIDES\fR,\fB \ \-\-strides \ STRIDES
 stride sizes in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,,;,,;,,\(aq where an empty coordinate means
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,,;,,;,,’ where an empty coordinate means
 1
 .TP
 .BI \-l \ SLICES\fR,\fB \ \-\-slices \ SLICES
 mapping slices in the VDS layoutfor the corresponding
-target fields with coordinates sepatated by \(aq,\(aq and
-different fields separated by \(aq;\(aq or spaces e.g.
-\(aq:,0:50,: :,50:100,:\(aq where U means span along the
+target fields with coordinates sepatated by ‘,’ and
+different fields separated by ‘;’ or spaces e.g.
+‘:,0:50,: :,50:100,:’ where U means span along the
 layout
 .TP
 .BI \-P \ TARGETSHAPES\fR,\fB \ \-\-target\-shapes \ TARGETSHAPES
-field shapes with coordinates sepatated by \(aq,\(aq and
-different fields separated by \(aq;\(aq, \(aq:\(aq or spaces
-e.g.\(aq,,;,300,;,600,0\(aq
+field shapes with coordinates sepatated by ‘,’ and
+different fields separated by ‘;’, ‘:’ or spaces
+e.g.’,,;,300,;,600,0’
 .TP
 .BI \-O \ TARGETOFFSETS\fR,\fB \ \-\-target\-offsets \ TARGETOFFSETS
 offsets in the view hyperslab of target fieldswith
-coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.\(aq,,;,300,;,600,0\(aq
+coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g.’,,;,300,;,600,0’
 where an empty coordinate means 0
 .TP
 .BI \-B \ TARGETBLOCKS\fR,\fB \ \-\-target\-blocks \ TARGETBLOCKS
 block sizes in the view hyperslab of target fields
-with coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.
-\(aq,256,512;,256,512;,256,512\(aq where an empty coordinate
+with coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g.
+‘,256,512;,256,512;,256,512’ where an empty coordinate
 means 1
 .TP
 .BI \-C \ TARGETCOUNTS\fR,\fB \ \-\-target\-counts \ TARGETCOUNTS
 count numbers in the view hyperslab of target fields
-with coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,1,1;,1,1;,1,1\(aq
+with coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g. ‘,1,1;,1,1;,1,1’
 where an empty coordinate means span along the layout
 .TP
 .BI \-D \ TARGETSTRIDES\fR,\fB \ \-\-target\-strides \ TARGETSTRIDES
 stride sizes numbers in the view hyperslab of target
-fields with coordinates sepatated by \(aq,\(aq and different
-fields separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,,;,,;,,\(aq
+fields with coordinates sepatated by ‘,’ and different
+fields separated by ‘;’, ‘:’ or spaces e.g. ‘,,;,,;,,’
 where an empty coordinate means 1
 .TP
 .BI \-L \ TARGETSLICES\fR,\fB \ \-\-target\-slices \ TARGETSLICES
 view slices of target fields with coordinates
-sepatated by \(aq,\(aq and different fields separated by \(aq;\(aq
-or spaces e.g. \(aq:,0:50,: :,0:50,:\(aq where U means span
+sepatated by ‘,’ and different fields separated by ‘;’
+or spaces e.g. ‘:,0:50,: :,0:50,:’ where U means span
 along the layout
 .TP
 .B  \-r\fP,\fB  \-\-replace\-nexus\-file

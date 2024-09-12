@@ -1976,7 +1976,6 @@ class SECoPCPCreator(CPCreator):
                 mn = links[tg][0]
                 NLink(sample, mn, tg)
                 created.append(mn)
-
         llinks = sorted([(tg, mns[0], mns[1]) for tg, mns in links.items()],
                         key=itemgetter(2), reverse=True)
         if dynamiclinks or samplenxdata:
@@ -2087,10 +2086,11 @@ class SECoPCPCreator(CPCreator):
             field = NField(mgr, 'name', 'NX_CHAR')
             field.setText("%s" % str(name))
             field.setStrategy('INIT')
-        semeaning = None
+        afunction = None
+        alink = None
+        akey = None
         if 'meaning' in conf.keys():
             meaning = conf['meaning']
-            semeaning = meaning
             importance = None
             if isinstance(meaning, list):
                 if len(meaning) > 1:
@@ -2100,24 +2100,43 @@ class SECoPCPCreator(CPCreator):
                         importance = None
                 if len(meaning) > 0:
                     meaning = meaning[0]
-            if isinstance(meaning, dict):
+                    afunction = meaning
+            elif isinstance(meaning, dict):
+                try:
+                    alink = meaning["link"]
+                except Exception:
+                    alink = None
+                try:
+                    akey = meaning["key"]
+                except Exception:
+                    akey = None
                 try:
                     importance = int(meaning["importance"])
                 except Exception:
                     importance = None
                 try:
-                    meaning = int(meaning["function"])
+                    meaning = meaning["function"]
+                    afunction = meaning
                 except Exception:
                     meaning = None
-            if meaning in mnTme.keys():
-                meaning = mnTme[meaning]
-                field = NField(mgr, 'measurement', 'NX_CHAR')
-                field.setText(meaning)
-                field.setStrategy('INIT')
-                if importance is not None:
-                    mimp = NAttr(field, "secop_importance", "NX_INT32")
-                    mimp.setText(str(importance))
-
+            else:
+                afunction = meaning
+            field = NField(mgr, 'measurement', 'NX_CHAR')
+            field.setStrategy('INIT')
+            meaning = mnTme[meaning] if meaning in mnTme.keys() else ""
+            field.setText(meaning)
+            if importance is not None:
+                mimp = NAttr(field, "secop_importance", "NX_INT32")
+                mimp.setText(str(importance))
+            if akey is not None:
+                mimp = NAttr(field, "secop_key", "NX_CHAR")
+                mimp.setText(str(akey))
+            if alink is not None:
+                mimp = NAttr(field, "secop_link", "NX_CHAR")
+                mimp.setText(str(alink))
+            if afunction is not None:
+                mimp = NAttr(field, "secop_function", "NX_CHAR")
+                mimp.setText(str(afunction))
         if 'implementation' in conf.keys():
             field = NField(mgr, 'model', 'NX_CHAR')
             field.setText("%s" % str(conf['implementation']))
@@ -2149,7 +2168,7 @@ class SECoPCPCreator(CPCreator):
                                     (self.options.entryname or "scan"))
                             target = "/%s/%s/%s/%s/value_log" % \
                                 (ename, basename, nodename, name)
-                            links[target] = (meaning, semeaning)
+                            links[target] = (meaning, afunction)
                         dsname = "%s_%s" % (nodename, name)
                         timedsname = "%s_%s_time" % (nodename, name)
                         if self.options.lower:
@@ -2161,9 +2180,9 @@ class SECoPCPCreator(CPCreator):
                         field.setText("$datasources.%s" % dsname)
                         if units:
                             field.setUnits(units)
-                        if meaning and meaning in trattrs.keys():
+                        if afunction and afunction in trattrs.keys():
                             try:
-                                attrs = dict(trattrs[meaning])
+                                attrs = dict(trattrs[afunction])
                             except Exception:
                                 attrs = {}
                             for nm, vl in attrs.items():
@@ -2180,6 +2199,14 @@ class SECoPCPCreator(CPCreator):
                                     vct.setStrategy("INIT")
                                 else:
                                     field.addTagAttr(nm, vl)
+                            ename = \
+                                "$var.entryname#'$(__entryname__)'" \
+                                "$var.serialno".replace(
+                                    "$(__entryname__)",
+                                    (self.options.entryname or "scan"))
+                            target = "/%s/%s/%s/%s/value_log" % \
+                                (ename, basename, nodename, name)
+                            links[target] = (afunction, afunction)
                         strategy = self.options.strategy
                         field.setStrategy(strategy)
                         field = NField(log, 'time', "NX_FLOAT64")
