@@ -110,7 +110,6 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         with open("test/files/myunidy2.xml", "r") as fl:
             self.myunidy2 = fl.read()
 
-
         self.myunids = [
             '<?xml version=\'1.0\'?>\n'
             '<definition>\n'
