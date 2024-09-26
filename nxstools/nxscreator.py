@@ -56,6 +56,7 @@ if sys.version_info > (3,):
 
 npTn = {"double": "NX_FLOAT64",
         "int": "NX_INT64",
+        "enum": "NX_INT64",
         "string": "NX_CHAR",
         "bool": "NX_BOOLEAN"}
 

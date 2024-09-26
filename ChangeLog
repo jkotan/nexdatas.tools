@@ -1,3 +1,7 @@
+2024-09-26 Jan Kotanski <jankotan@gmail.com>
+	* add enum as a valid secop type(#715)
+	* tagged as v4.16.0
+
 2024-09-11 Jan Kotanski <jankotan@gmail.com>
 	* add support for link, key and function for secop meaning dictionary (#712)
 	* tagged as v4.15.0
