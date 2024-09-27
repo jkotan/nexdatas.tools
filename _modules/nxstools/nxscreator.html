@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 4.14.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 4.16.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>4.14</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.16</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -243,6 +243,7 @@
 
 <span class="n">npTn</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;double&quot;</span><span class="p">:</span> <span class="s2">&quot;NX_FLOAT64&quot;</span><span class="p">,</span>
         <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="s2">&quot;NX_INT64&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="s2">&quot;NX_INT64&quot;</span><span class="p">,</span>
         <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
         <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="s2">&quot;NX_BOOLEAN&quot;</span><span class="p">}</span>
 
@@ -2163,7 +2164,6 @@
                 <span class="n">mn</span> <span class="o">=</span> <span class="n">links</span><span class="p">[</span><span class="n">tg</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">NLink</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">tg</span><span class="p">)</span>
                 <span class="n">created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mn</span><span class="p">)</span>
-
         <span class="n">llinks</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">tg</span><span class="p">,</span> <span class="n">mns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">tg</span><span class="p">,</span> <span class="n">mns</span> <span class="ow">in</span> <span class="n">links</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span>
                         <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dynamiclinks</span> <span class="ow">or</span> <span class="n">samplenxdata</span><span class="p">:</span>
@@ -2274,10 +2274,11 @@
             <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
-        <span class="n">semeaning</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">afunction</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">alink</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">akey</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s1">&#39;meaning&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">meaning</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;meaning&#39;</span><span class="p">]</span>
-            <span class="n">semeaning</span> <span class="o">=</span> <span class="n">meaning</span>
             <span class="n">importance</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -2287,24 +2288,43 @@
                         <span class="n">importance</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">afunction</span> <span class="o">=</span> <span class="n">meaning</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">alink</span> <span class="o">=</span> <span class="n">meaning</span><span class="p">[</span><span class="s2">&quot;link&quot;</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">alink</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">akey</span> <span class="o">=</span> <span class="n">meaning</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">akey</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">importance</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">meaning</span><span class="p">[</span><span class="s2">&quot;importance&quot;</span><span class="p">])</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="n">importance</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">meaning</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">meaning</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">])</span>
+                    <span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span>
+                    <span class="n">afunction</span> <span class="o">=</span> <span class="n">meaning</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="n">meaning</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">meaning</span> <span class="ow">in</span> <span class="n">mnTme</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">meaning</span> <span class="o">=</span> <span class="n">mnTme</span><span class="p">[</span><span class="n">meaning</span><span class="p">]</span>
-                <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;measurement&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
-                <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span>
-                <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">importance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">mimp</span> <span class="o">=</span> <span class="n">NAttr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s2">&quot;secop_importance&quot;</span><span class="p">,</span> <span class="s2">&quot;NX_INT32&quot;</span><span class="p">)</span>
-                    <span class="n">mimp</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">importance</span><span class="p">))</span>
-
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">afunction</span> <span class="o">=</span> <span class="n">meaning</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;measurement&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+            <span class="n">meaning</span> <span class="o">=</span> <span class="n">mnTme</span><span class="p">[</span><span class="n">meaning</span><span class="p">]</span> <span class="k">if</span> <span class="n">meaning</span> <span class="ow">in</span> <span class="n">mnTme</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">importance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mimp</span> <span class="o">=</span> <span class="n">NAttr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s2">&quot;secop_importance&quot;</span><span class="p">,</span> <span class="s2">&quot;NX_INT32&quot;</span><span class="p">)</span>
+                <span class="n">mimp</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">importance</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">akey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mimp</span> <span class="o">=</span> <span class="n">NAttr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s2">&quot;secop_key&quot;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">)</span>
+                <span class="n">mimp</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">akey</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">alink</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mimp</span> <span class="o">=</span> <span class="n">NAttr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s2">&quot;secop_link&quot;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">)</span>
+                <span class="n">mimp</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">alink</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">afunction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mimp</span> <span class="o">=</span> <span class="n">NAttr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s2">&quot;secop_function&quot;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">)</span>
+                <span class="n">mimp</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">afunction</span><span class="p">))</span>
         <span class="k">if</span> <span class="s1">&#39;implementation&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;implementation&#39;</span><span class="p">]))</span>
@@ -2336,7 +2356,7 @@
                                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s2">&quot;scan&quot;</span><span class="p">))</span>
                             <span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/value_log&quot;</span> <span class="o">%</span> \
                                 <span class="p">(</span><span class="n">ename</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">nodename</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                            <span class="n">links</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="n">semeaning</span><span class="p">)</span>
+                            <span class="n">links</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="n">afunction</span><span class="p">)</span>
                         <span class="n">dsname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nodename</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                         <span class="n">timedsname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">_time&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nodename</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
@@ -2348,9 +2368,9 @@
                         <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;$datasources.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">dsname</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">units</span><span class="p">:</span>
                             <span class="n">field</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">meaning</span> <span class="ow">and</span> <span class="n">meaning</span> <span class="ow">in</span> <span class="n">trattrs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">afunction</span> <span class="ow">and</span> <span class="n">afunction</span> <span class="ow">in</span> <span class="n">trattrs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                             <span class="k">try</span><span class="p">:</span>
-                                <span class="n">attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">trattrs</span><span class="p">[</span><span class="n">meaning</span><span class="p">])</span>
+                                <span class="n">attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">trattrs</span><span class="p">[</span><span class="n">afunction</span><span class="p">])</span>
                             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                                 <span class="n">attrs</span> <span class="o">=</span> <span class="p">{}</span>
                             <span class="k">for</span> <span class="n">nm</span><span class="p">,</span> <span class="n">vl</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2367,6 +2387,14 @@
                                     <span class="n">vct</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;INIT&quot;</span><span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="n">field</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="n">nm</span><span class="p">,</span> <span class="n">vl</span><span class="p">)</span>
+                            <span class="n">ename</span> <span class="o">=</span> \
+                                <span class="s2">&quot;$var.entryname#&#39;$(__entryname__)&#39;&quot;</span> \
+                                <span class="s2">&quot;$var.serialno&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                                    <span class="s2">&quot;$(__entryname__)&quot;</span><span class="p">,</span>
+                                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s2">&quot;scan&quot;</span><span class="p">))</span>
+                            <span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/value_log&quot;</span> <span class="o">%</span> \
+                                <span class="p">(</span><span class="n">ename</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">nodename</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                            <span class="n">links</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">afunction</span><span class="p">,</span> <span class="n">afunction</span><span class="p">)</span>
                         <span class="n">strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">strategy</span>
                         <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
                         <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s2">&quot;NX_FLOAT64&quot;</span><span class="p">)</span>
