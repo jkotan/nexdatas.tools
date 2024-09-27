@@ -64,7 +64,7 @@ if [ "$2" = "2" ]; then
     docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y  python-pytango python-nxswriter nxswriter python-nxsconfigserver nxsconfigserver'
 else
     echo "install python3-pytango ..."
-    if [ "$1" = "ubuntu24.04" ] ||"$1" = "debian10" ] || [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu22.04" ] || [ "$1" = "ubuntu23.10" ] || [ "$1" = "ubuntu20.10" ]  || [ "$1" = "debian11" ] || [ "$1" = "debian12" ] ; then
+    if [ "$1" = "ubuntu24.04" ] || [ "$1" = "debian10" ] || [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu22.04" ] || [ "$1" = "ubuntu23.10" ] || [ "$1" = "ubuntu20.10" ]  || [ "$1" = "debian11" ] || [ "$1" = "debian12" ] ; then
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-tango python3-nxswriter nxswriter python3-nxsconfigserver nxsconfigserver'
     else
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-nxswriter nxswriter3 python3-nxsconfigserver nxsconfigserver3'
