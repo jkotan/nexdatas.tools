@@ -604,10 +604,12 @@ class NXSFileParser(object):
         """
         for entry in self.__root:
             nm = entry.name
+            at = None
             try:
-                at = entry.attributes["NX_class"]
+                if "NX_class" in entry.attributes.names():
+                    at = entry.attributes["NX_class"]
             except Exception:
-                at = None
+                pass
             if len(self.entryclasses) == 0 or \
                at and (filewriter.first(at.read()) in self.entryclasses):
                 if len(self.entrynames) == 0 or \

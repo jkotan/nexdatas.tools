@@ -1,3 +1,7 @@
+2024-09-27 Jan Kotanski <jankotan@gmail.com>
+	* fix for metadata parser of groups without NX_class (#718)
+	* tagged as v4.16.1
+
 2024-09-26 Jan Kotanski <jankotan@gmail.com>
 	* add enum as a valid secop type(#715)
 	* tagged as v4.16.0
