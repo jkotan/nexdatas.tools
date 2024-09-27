@@ -2220,13 +2220,13 @@ class SECoPCPCreator(CPCreator):
                         field.setUnits("s")
                         field.setStrategy(strategy)
                         if minval:
-                            field = NField(log, 'minimal_value', nxtype)
+                            field = NField(log, 'manimum_value', nxtype)
                             field.setStrategy('INIT')
                             field.setText(str(minval))
                             if units:
                                 field.setUnits(units)
                         if maxval:
-                            field = NField(log, 'maximal_value', nxtype)
+                            field = NField(log, 'maximum_value', nxtype)
                             field.setStrategy('INIT')
                             field.setText(str(maxval))
                             if units:
@@ -2304,13 +2304,13 @@ class SECoPCPCreator(CPCreator):
         field.setUnits("s")
         field.setStrategy(pstrategy)
         if minval:
-            field = NField(log, 'minimal_value', nxtype)
+            field = NField(log, 'manimum_value', nxtype)
             field.setStrategy('INIT')
             field.setText(str(minval))
             if units:
                 field.setUnits(units)
         if maxval:
-            field = NField(log, 'maximal_value', nxtype)
+            field = NField(log, 'maximum_value', nxtype)
             field.setStrategy('INIT')
             field.setText(str(maxval))
             if units:

@@ -60,8 +60,8 @@
             <group name="pollinterval" type="NXlog">
               <field name="value" type="NX_FLOAT64">$datasources.{cpname}_force_pollinterval<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_force_pollinterval_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="minimal_value" type="NX_FLOAT64">0.1<strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64">120<strategy mode="INIT"/></field>
+              <field name="manimum_value" type="NX_FLOAT64">0.1<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64">120<strategy mode="INIT"/></field>
             </group>
             <group name="target" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="N">$datasources.{cpname}_force_target<strategy mode="INIT"/></field>
@@ -70,12 +70,12 @@
             <group name="_limit" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="N">$datasources.{cpname}_force__limit<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_force__limit_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64" units="N">150<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64" units="N">150<strategy mode="INIT"/></field>
             </group>
             <group name="_tolerance" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="N">$datasources.{cpname}_force__tolerance<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_force__tolerance_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64" units="N">10<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64" units="N">10<strategy mode="INIT"/></field>
             </group>
             <group name="_slope" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="deg/N">$datasources.{cpname}_force__slope<strategy mode="INIT"/></field>
@@ -88,7 +88,7 @@
             <group name="_filter_interval" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="s">$datasources.{cpname}_force__filter_interval<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_force__filter_interval_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64" units="s">60<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64" units="s">60<strategy mode="INIT"/></field>
             </group>
             <group name="_current_step" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="deg">$datasources.{cpname}_force__current_step<strategy mode="INIT"/></field>
@@ -101,7 +101,7 @@
             <group name="_hysteresis" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="N">$datasources.{cpname}_force__hysteresis<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_force__hysteresis_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64" units="N">150<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64" units="N">150<strategy mode="INIT"/></field>
             </group>
             <group name="_adjusting" type="NXlog">
               <field name="value" type="NX_BOOLEAN">$datasources.{cpname}_force__adjusting<strategy mode="INIT"/></field>
@@ -110,7 +110,7 @@
             <group name="_adjusting_current" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="A">$datasources.{cpname}_force__adjusting_current<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_force__adjusting_current_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64" units="A">2.8<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64" units="A">2.8<strategy mode="INIT"/></field>
             </group>
             <group name="_safe_step" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="deg">$datasources.{cpname}_force__safe_step<strategy mode="INIT"/></field>
@@ -119,7 +119,7 @@
             <group name="_safe_current" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="A">$datasources.{cpname}_force__safe_current<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_force__safe_current_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64" units="A">2.8<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64" units="A">2.8<strategy mode="INIT"/></field>
             </group>
             <group name="_low_pos" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="deg">$datasources.{cpname}_force__low_pos<strategy mode="INIT"/></field>
@@ -149,8 +149,8 @@
             <group name="pollinterval" type="NXlog">
               <field name="value" type="NX_FLOAT64">$datasources.{cpname}_drv_pollinterval<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_drv_pollinterval_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="minimal_value" type="NX_FLOAT64">0.1<strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64">120<strategy mode="INIT"/></field>
+              <field name="manimum_value" type="NX_FLOAT64">0.1<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64">120<strategy mode="INIT"/></field>
             </group>
             <group name="target" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="deg">$datasources.{cpname}_drv_target<strategy mode="INIT"/></field>
@@ -159,7 +159,7 @@
             <group name="_interval" type="NXlog">
               <field name="value" type="NX_FLOAT64">$datasources.{cpname}_drv__interval<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_drv__interval_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64">1<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64">1<strategy mode="INIT"/></field>
             </group>
             <group name="_speed" type="NXlog">
               <field name="value" type="NX_FLOAT64">$datasources.{cpname}_drv__speed<strategy mode="INIT"/></field>
@@ -201,8 +201,8 @@
             <group name="pollinterval" type="NXlog">
               <field name="value" type="NX_FLOAT64">$datasources.{cpname}_transducer_pollinterval<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_transducer_pollinterval_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="minimal_value" type="NX_FLOAT64">0.1<strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64">120<strategy mode="INIT"/></field>
+              <field name="manimum_value" type="NX_FLOAT64">0.1<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64">120<strategy mode="INIT"/></field>
             </group>
             <group name="_jitter" type="NXlog">
               <field name="value" type="NX_FLOAT64" units="N">$datasources.{cpname}_transducer__jitter<strategy mode="INIT"/></field>
@@ -243,8 +243,8 @@
             <group name="pollinterval" type="NXlog">
               <field name="value" type="NX_FLOAT64">$datasources.{cpname}_res_pollinterval<strategy mode="INIT"/></field>
               <field name="time" type="NX_FLOAT64" units="s">$datasources.{cpname}_res_pollinterval_time<attribute name="start" type="NX_DATE_TIME">$datasources.client_start_time<strategy mode="INIT"/></attribute><strategy mode="INIT"/></field>
-              <field name="minimal_value" type="NX_FLOAT64">0.1<strategy mode="INIT"/></field>
-              <field name="maximal_value" type="NX_FLOAT64">120<strategy mode="INIT"/></field>
+              <field name="manimum_value" type="NX_FLOAT64">0.1<strategy mode="INIT"/></field>
+              <field name="maximum_value" type="NX_FLOAT64">120<strategy mode="INIT"/></field>
             </group>
             <group name="_jitter" type="NXlog">
               <field name="value" type="NX_FLOAT64">$datasources.{cpname}_res__jitter<strategy mode="INIT"/></field>
