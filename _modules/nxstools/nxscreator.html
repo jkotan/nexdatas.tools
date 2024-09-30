@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 4.16.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 4.16.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -2407,13 +2407,13 @@
                         <span class="n">field</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
                         <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">minval</span><span class="p">:</span>
-                            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;minimal_value&#39;</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">)</span>
+                            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;manimum_value&#39;</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">)</span>
                             <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
                             <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">minval</span><span class="p">))</span>
                             <span class="k">if</span> <span class="n">units</span><span class="p">:</span>
                                 <span class="n">field</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">maxval</span><span class="p">:</span>
-                            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;maximal_value&#39;</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">)</span>
+                            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;maximum_value&#39;</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">)</span>
                             <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
                             <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">maxval</span><span class="p">))</span>
                             <span class="k">if</span> <span class="n">units</span><span class="p">:</span>
@@ -2491,13 +2491,13 @@
         <span class="n">field</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
         <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="n">pstrategy</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">minval</span><span class="p">:</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;minimal_value&#39;</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">)</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;manimum_value&#39;</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">)</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">minval</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">units</span><span class="p">:</span>
                 <span class="n">field</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">maxval</span><span class="p">:</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;maximal_value&#39;</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">)</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;maximum_value&#39;</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">)</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">maxval</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">units</span><span class="p">:</span>
