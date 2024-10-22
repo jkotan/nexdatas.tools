@@ -1,3 +1,7 @@
+2024-10-22 Jan Kotanski <jankotan@gmail.com>
+	* improve datasetName values generation in the ScanNames mode (#723)
+	* tagged as v4.16.2
+
 2024-09-27 Jan Kotanski <jankotan@gmail.com>
 	* fix for metadata parser of groups without NX_class (#718)
 	* fix minimal_value and maximal_value to minimum_value and maximum_value NXlog attributes (#718)

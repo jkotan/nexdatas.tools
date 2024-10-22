@@ -836,6 +836,7 @@ class BeamtimeLoader(object):
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
         metadata = metadata or {}
+        genuid = False
         if "pid" not in metadata:
             beamtimeid = beamtimeid or ""
             if not beamtimeid and "scientificMetadata" in metadata \
@@ -886,14 +887,23 @@ class BeamtimeLoader(object):
                 if puuid:
                     metadata["pid"] = "%s/%s/%s" % \
                         (beamtimeid, scanid, str(uuid.uuid4()))
+                    genuid = True
                 else:
                     metadata["pid"] = "%s/%s" % \
                         (beamtimeid, scanid)
 
         if "datasetName" not in metadata and "pid" in metadata:
             spid = metadata["pid"].split("/")
-            if len(spid) > 1:
+            if genuid:
+                spid = spid[:-1]
+            if len(spid) == 2:
                 metadata["datasetName"] = spid[1]
+            elif len(spid) > 1:
+                try:
+                    int(spid[-1])
+                    metadata["datasetName"] = spid[-2]
+                except Exception:
+                    metadata["datasetName"] = spid[-1]
             else:
                 metadata["datasetName"] = metadata["pid"]
         return metadata
