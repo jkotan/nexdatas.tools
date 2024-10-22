@@ -897,7 +897,7 @@ class BeamtimeLoader(object):
             if genuid:
                 spid = spid[:-1]
             if len(spid) == 2:
-                    metadata["datasetName"] = spid[1]
+                metadata["datasetName"] = spid[1]
             elif len(spid) > 1:
                 try:
                     int(spid[-1])
