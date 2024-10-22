@@ -3441,11 +3441,13 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ("nxsfileinfo metadata -k4  %s %s --pid 12341234 "
+                ("nxsfileinfo metadata -k4  %s %s "
+                 "--pid 99001234/mywpscan/mywpscan_01363 "
                  "-e logs --entry-classes \'\'"
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata -k4  %s %s '
-                 " -p 12341234 --entry-names logs -t \'\'"
+                 " -p 99001234/mywpscan/mywpscan_01363 "
+                 "--entry-names logs -t \'\'"
                  % (filename, self.flags)).split(),
             ]
 
@@ -3499,8 +3501,8 @@ For more help:
                     self.assertEqual('', er)
                     dct = json.loads(vl)
                     res = {
-                        'pid': '12341234',
-                        'datasetName': '12341234',
+                        'pid': '99001234/mywpscan/mywpscan_01363',
+                        'datasetName': 'mywpscan_01363',
                         "type": "raw",
                         "creationTime": "",
                         "ownerGroup": "ingestor",
