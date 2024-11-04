@@ -723,6 +723,10 @@ class BeamtimeLoader(object):
                    isinstance(line[0], basestring) and \
                    isinstance(line[1], basestring) and \
                    not line[0].startswith(line[1] + "."):
+                    action = None
+                    if line and len(line) > 2 and line[2] and \
+                            isinstance(line[2], basestring):
+                        action = line[2]
                     ts = line[0]
                     vs = line[1]
                     vls = vs.split(".")
@@ -743,7 +747,19 @@ class BeamtimeLoader(object):
                             else:
                                 td[tg] = {}
                                 td = td[tg]
-                        parent[tg] = md
+                        if action.lower() in ["extend", "append", "e", "a"]:
+                            if tg not in parent:
+                                parent[tg] = []
+                            elif not isinstance(parent[tg], list):
+                                parent[tg] = [parent[tg]]
+                            if action.lower() in ["extend", "e"] and \
+                                    isinstance(md, list):
+                                parent[tg].extend(md)
+                            else:
+                                parent[tg].append(md)
+
+                        else:
+                            parent[tg] = md
         return metadata
 
     def remove_metadata(self, metadata, cmap=None, clist=None, cmapfield=None):
