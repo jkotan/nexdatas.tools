@@ -1433,7 +1433,7 @@ class Metadata(Runner):
                 if isinstance(dct, list):
                     for line in dct:
                         if isinstance(line, list):
-                            usercopylist.append(line[:2])
+                            usercopylist.append(line[:3])
 
         if hasattr(options, "copymapfile") and options.copymapfile:
             if os.path.isfile(options.copymapfile):
@@ -1460,7 +1460,7 @@ class Metadata(Runner):
                         if isinstance(dct, list):
                             for line in dct:
                                 if isinstance(line, list):
-                                    usercopylist.append(line[:2])
+                                    usercopylist.append(line[:3])
             elif hasattr(options, "copymaperror") and options.copymaperror:
                 raise Exception("Copy-map file '%s' does not exist"
                                 % options.copymapfile)
