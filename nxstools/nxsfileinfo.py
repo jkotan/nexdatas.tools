@@ -754,7 +754,7 @@ class BeamtimeLoader(object):
                             elif not isinstance(parent[tg], list):
                                 parent[tg] = [parent[tg]]
                             if action.lower() in ["extend", "e"] and \
-                                    isinstance(md, list):
+                                    type(md).__name__ in ["list", "ndarray"]:
                                 parent[tg].extend(md)
                             else:
                                 parent[tg].append(md)
