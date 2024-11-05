@@ -747,7 +747,8 @@ class BeamtimeLoader(object):
                             else:
                                 td[tg] = {}
                                 td = td[tg]
-                        if action.lower() in ["extend", "append", "e", "a"]:
+                        if action and action.lower() \
+                                in ["extend", "append", "e", "a"]:
                             if tg not in parent:
                                 parent[tg] = []
                             elif not isinstance(parent[tg], list):
