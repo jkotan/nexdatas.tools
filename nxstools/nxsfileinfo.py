@@ -1981,7 +1981,7 @@ class GroupMetadata(Runner):
         tg = None
         if key in parent.keys():
             tg = parent[key]
-        if tgtype in cls.listtype:
+        if tgtype in cls.listtype or tgtype in cls.uniquelisttype:
             if not isinstance(tg, list):
                 if tg:
                     parent[key] = [tg]
@@ -2009,7 +2009,8 @@ class GroupMetadata(Runner):
             else:
                 parent[key][1] = md
         elif key in parent and isinstance(parent[key], list):
-            parent[key].append(md)
+            if tgtype not in cls.uniquelisttype or md not in parent[key]:
+                parent[key].append(md)
         elif not tg:
             parent[key] = md
         elif tg != md:
