@@ -1746,6 +1746,7 @@ class GroupMetadata(Runner):
     mintype = ["Min", "min"]
     maxtype = ["Max", "max"]
     uniquelisttype = ["UniqueList", "U", "u", "uniquelist"]
+    singlelisttype = ["SingleList", "S", "s", "singlelist"]
     endpointstype = ["Endpoints",  "endpoints", "E", "e"]
     firstlasttype = ["FirstLast",  "firstlast"]
     lasttype = ["Last", "last", "l", "L"]
@@ -1981,7 +1982,8 @@ class GroupMetadata(Runner):
         tg = None
         if key in parent.keys():
             tg = parent[key]
-        if tgtype in cls.listtype or tgtype in cls.uniquelisttype:
+        if tgtype in cls.listtype or tgtype in cls.uniquelisttype \
+                or tgtype in cls.singlelisttype:
             if not isinstance(tg, list):
                 if tg:
                     parent[key] = [tg]
@@ -2009,7 +2011,9 @@ class GroupMetadata(Runner):
             else:
                 parent[key][1] = md
         elif key in parent and isinstance(parent[key], list):
-            if tgtype not in cls.uniquelisttype or md not in parent[key]:
+            if (tgtype not in cls.uniquelisttype and \
+                    tgtype not in cls.singlelisttype) or \
+                    md not in parent[key]:
                 parent[key].append(md)
         elif not tg:
             parent[key] = md
@@ -2219,7 +2223,11 @@ class GroupMetadata(Runner):
                     and md != parent[key]:
                 parent[key] = [tg]
 
-            if tgtype not in cls.uniquelisttype or \
+            if tgtype in cls.singlelisttype:
+                for mm in md:
+                    if mm not in parent[key]:
+                        parent[key].append(mm)
+            elif tgtype not in cls.uniquelisttype or \
                (md not in parent[key] and md != parent[key]):
                 if tgtype in cls.uniquelisttype and not parent[key]:
                     parent[key] = md
@@ -2508,9 +2516,9 @@ class GroupMetadata(Runner):
             return cls._merge_firstlast_list(parent, key, md, unit)
         if tgtype in cls.endpointstype:
             return cls._merge_endpoints_list(parent, key, md, unit)
-        if (tgtype in cls.listtype or tgtype in cls.uniquelisttype):
+        if tgtype in cls.listtype or tgtype in cls.uniquelisttype \
+                or tgtype in cls.singlelisttype:
             return cls._merge_list_list(parent, key, md, unit, tgtype)
-
         elif tgtype in cls.dicttype:
             return cls._merge_dict_list(parent, key, md, unit)
         elif md:

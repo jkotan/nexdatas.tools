@@ -1,5 +1,6 @@
-2024-11-04 Jan Kotanski <jankotan@gmail.com>
+2024-11-06 Jan Kotanski <jankotan@gmail.com>
 	* add support for append end extend actions in copy-map files (#726)
+	* add singlelist type in group-map (#726)
 	* tagged as v4.17.0
 
 2024-10-22 Jan Kotanski <jankotan@gmail.com>
