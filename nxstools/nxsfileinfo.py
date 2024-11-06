@@ -723,6 +723,10 @@ class BeamtimeLoader(object):
                    isinstance(line[0], basestring) and \
                    isinstance(line[1], basestring) and \
                    not line[0].startswith(line[1] + "."):
+                    action = None
+                    if line and len(line) > 2 and line[2] and \
+                            isinstance(line[2], basestring):
+                        action = line[2]
                     ts = line[0]
                     vs = line[1]
                     vls = vs.split(".")
@@ -743,7 +747,20 @@ class BeamtimeLoader(object):
                             else:
                                 td[tg] = {}
                                 td = td[tg]
-                        parent[tg] = md
+                        if action and action.lower() \
+                                in ["extend", "append", "e", "a"]:
+                            if tg not in parent:
+                                parent[tg] = []
+                            elif not isinstance(parent[tg], list):
+                                parent[tg] = [parent[tg]]
+                            if action.lower() in ["extend", "e"] and \
+                                    type(md).__name__ in ["list", "ndarray"]:
+                                parent[tg].extend(md)
+                            else:
+                                parent[tg].append(md)
+
+                        else:
+                            parent[tg] = md
         return metadata
 
     def remove_metadata(self, metadata, cmap=None, clist=None, cmapfield=None):
@@ -1416,7 +1433,7 @@ class Metadata(Runner):
                 if isinstance(dct, list):
                     for line in dct:
                         if isinstance(line, list):
-                            usercopylist.append(line[:2])
+                            usercopylist.append(line[:3])
 
         if hasattr(options, "copymapfile") and options.copymapfile:
             if os.path.isfile(options.copymapfile):
@@ -1443,7 +1460,7 @@ class Metadata(Runner):
                         if isinstance(dct, list):
                             for line in dct:
                                 if isinstance(line, list):
-                                    usercopylist.append(line[:2])
+                                    usercopylist.append(line[:3])
             elif hasattr(options, "copymaperror") and options.copymaperror:
                 raise Exception("Copy-map file '%s' does not exist"
                                 % options.copymapfile)
@@ -1729,6 +1746,7 @@ class GroupMetadata(Runner):
     mintype = ["Min", "min"]
     maxtype = ["Max", "max"]
     uniquelisttype = ["UniqueList", "U", "u", "uniquelist"]
+    singlelisttype = ["SingleList", "S", "s", "singlelist"]
     endpointstype = ["Endpoints",  "endpoints", "E", "e"]
     firstlasttype = ["FirstLast",  "firstlast"]
     lasttype = ["Last", "last", "l", "L"]
@@ -1964,7 +1982,8 @@ class GroupMetadata(Runner):
         tg = None
         if key in parent.keys():
             tg = parent[key]
-        if tgtype in cls.listtype:
+        if tgtype in cls.listtype or tgtype in cls.uniquelisttype \
+                or tgtype in cls.singlelisttype:
             if not isinstance(tg, list):
                 if tg:
                     parent[key] = [tg]
@@ -1992,7 +2011,10 @@ class GroupMetadata(Runner):
             else:
                 parent[key][1] = md
         elif key in parent and isinstance(parent[key], list):
-            parent[key].append(md)
+            if (tgtype not in cls.uniquelisttype and
+                tgtype not in cls.singlelisttype) or \
+                    md not in parent[key]:
+                parent[key].append(md)
         elif not tg:
             parent[key] = md
         elif tg != md:
@@ -2201,8 +2223,12 @@ class GroupMetadata(Runner):
                     and md != parent[key]:
                 parent[key] = [tg]
 
-            if tgtype not in cls.uniquelisttype or \
-               (md not in parent[key] and md != parent[key]):
+            if tgtype in cls.singlelisttype:
+                for mm in md:
+                    if mm not in parent[key]:
+                        parent[key].append(mm)
+            elif tgtype not in cls.uniquelisttype or \
+                    (md not in parent[key] and md != parent[key]):
                 if tgtype in cls.uniquelisttype and not parent[key]:
                     parent[key] = md
                 else:
@@ -2490,9 +2516,9 @@ class GroupMetadata(Runner):
             return cls._merge_firstlast_list(parent, key, md, unit)
         if tgtype in cls.endpointstype:
             return cls._merge_endpoints_list(parent, key, md, unit)
-        if (tgtype in cls.listtype or tgtype in cls.uniquelisttype):
+        if tgtype in cls.listtype or tgtype in cls.uniquelisttype \
+                or tgtype in cls.singlelisttype:
             return cls._merge_list_list(parent, key, md, unit, tgtype)
-
         elif tgtype in cls.dicttype:
             return cls._merge_dict_list(parent, key, md, unit)
         elif md:

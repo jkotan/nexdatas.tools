@@ -6557,6 +6557,10 @@ For more help:
 
         smfile = '''{
           "user_comments": "Awesome comment",
+          "user_data": {
+           "keyword": "reflectivity",
+           "keywords": ["saxs", "waxs"]
+          },
           "end_time": {"value":"2014-02-16T15:17:21+00:00"}
         }
         '''
@@ -6564,6 +6568,11 @@ For more help:
             'scientificMetadata.sample\n' + \
             'scientificMetadata.instrument_name ' + \
             'scientificMetadata.instrument.name.value\n' + \
+            'keywords ' + \
+            'scientificMetadata.user_data.keywords Extend\n' + \
+            'keywords ' + \
+            'scientificMetadata.user_data.keyword Append\n' + \
+            'scientificMetadata.user_data\n' + \
             'scientificMetadata.sample_name ' + \
             'scientificMetadata.sample.name.value\n' + \
             '# scientificMetadata.chemical_formula ' + \
@@ -6718,7 +6727,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
-                        "keywords": ["scan"],
+                        "keywords": ['scan', 'saxs', 'waxs', 'reflectivity'],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -14189,7 +14198,10 @@ For more help:
                         "isPublished": False,
                         "keywords": [
                             "measurement",
-                            "mcalib01"
+                            "mcalib01",
+                            "saxs",
+                            "waxs",
+                            "reflectivity"
                         ],
                         "owner": "Smithson",
                         "ownerEmail": "peter.smithson@fake.de",

@@ -33,6 +33,10 @@
 	"long_static_vector": [0, 1, 0, 2, 3],
 	"dynamic_vector": [1.2, 4.4],
 	"user_comments": ["my comment 3", "my comment 2"],
+	"user_data":{
+	    "keyword": "reflectivity",
+	    "keywords": ["waxs"]
+	},
         "data": {
             "axes": "exp_dmy01",
             "signal": "ct01",
