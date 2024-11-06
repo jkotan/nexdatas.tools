@@ -2011,8 +2011,8 @@ class GroupMetadata(Runner):
             else:
                 parent[key][1] = md
         elif key in parent and isinstance(parent[key], list):
-            if (tgtype not in cls.uniquelisttype and \
-                    tgtype not in cls.singlelisttype) or \
+            if (tgtype not in cls.uniquelisttype and
+                tgtype not in cls.singlelisttype) or \
                     md not in parent[key]:
                 parent[key].append(md)
         elif not tg:
@@ -2228,7 +2228,7 @@ class GroupMetadata(Runner):
                     if mm not in parent[key]:
                         parent[key].append(mm)
             elif tgtype not in cls.uniquelisttype or \
-               (md not in parent[key] and md != parent[key]):
+                    (md not in parent[key] and md != parent[key]):
                 if tgtype in cls.uniquelisttype and not parent[key]:
                     parent[key] = md
                 else:
