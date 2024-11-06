@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 4.13.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 4.17.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>4.13</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>4.17</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -910,6 +910,10 @@
                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">basestring</span><span class="p">)</span> <span class="ow">and</span> \
                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">basestring</span><span class="p">)</span> <span class="ow">and</span> \
                    <span class="ow">not</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">):</span>
+                    <span class="n">action</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">line</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> \
+                            <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">basestring</span><span class="p">):</span>
+                        <span class="n">action</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
                     <span class="n">ts</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="n">vs</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="n">vls</span> <span class="o">=</span> <span class="n">vs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
@@ -930,7 +934,20 @@
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">td</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                 <span class="n">td</span> <span class="o">=</span> <span class="n">td</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span>
-                        <span class="n">parent</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+                        <span class="k">if</span> <span class="n">action</span> <span class="ow">and</span> <span class="n">action</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> \
+                                <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;extend&quot;</span><span class="p">,</span> <span class="s2">&quot;append&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">]:</span>
+                            <span class="k">if</span> <span class="n">tg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">:</span>
+                                <span class="n">parent</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">[</span><span class="n">tg</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                                <span class="n">parent</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent</span><span class="p">[</span><span class="n">tg</span><span class="p">]]</span>
+                            <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;extend&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">]</span> <span class="ow">and</span> \
+                                    <span class="nb">type</span><span class="p">(</span><span class="n">md</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;ndarray&quot;</span><span class="p">]:</span>
+                                <span class="n">parent</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">parent</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">parent</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
         <span class="k">return</span> <span class="n">metadata</span></div>
 
 <div class="viewcode-block" id="BeamtimeLoader.remove_metadata"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.BeamtimeLoader.remove_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">remove_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cmapfield</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1023,6 +1040,7 @@
 <span class="sd">        :rtype: :obj:`dict` &lt;:obj:`str`, `any`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">genuid</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="s2">&quot;pid&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
             <span class="n">beamtimeid</span> <span class="o">=</span> <span class="n">beamtimeid</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">beamtimeid</span> <span class="ow">and</span> <span class="s2">&quot;scientificMetadata&quot;</span> <span class="ow">in</span> <span class="n">metadata</span> \
@@ -1073,14 +1091,23 @@
                 <span class="k">if</span> <span class="n">puuid</span><span class="p">:</span>
                     <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;pid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> \
                         <span class="p">(</span><span class="n">beamtimeid</span><span class="p">,</span> <span class="n">scanid</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()))</span>
+                    <span class="n">genuid</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;pid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> \
                         <span class="p">(</span><span class="n">beamtimeid</span><span class="p">,</span> <span class="n">scanid</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;datasetName&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="ow">and</span> <span class="s2">&quot;pid&quot;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
             <span class="n">spid</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;pid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">genuid</span><span class="p">:</span>
+                <span class="n">spid</span> <span class="o">=</span> <span class="n">spid</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;datasetName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">spid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">spid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;datasetName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spid</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;datasetName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spid</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;datasetName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;pid&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">metadata</span></div>
@@ -1593,7 +1620,7 @@
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
                         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                            <span class="n">usercopylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+                            <span class="n">usercopylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;copymapfile&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">copymapfile</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">copymapfile</span><span class="p">):</span>
@@ -1620,7 +1647,7 @@
                         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                                    <span class="n">usercopylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+                                    <span class="n">usercopylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
             <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;copymaperror&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">copymaperror</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Copy-map file &#39;</span><span class="si">%s</span><span class="s2">&#39; does not exist&quot;</span>
                                 <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">copymapfile</span><span class="p">)</span>
@@ -1906,6 +1933,7 @@
     <span class="n">mintype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Min&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">]</span>
     <span class="n">maxtype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Max&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]</span>
     <span class="n">uniquelisttype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;UniqueList&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="s2">&quot;uniquelist&quot;</span><span class="p">]</span>
+    <span class="n">singlelisttype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SingleList&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;singlelist&quot;</span><span class="p">]</span>
     <span class="n">endpointstype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Endpoints&quot;</span><span class="p">,</span>  <span class="s2">&quot;endpoints&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">]</span>
     <span class="n">firstlasttype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FirstLast&quot;</span><span class="p">,</span>  <span class="s2">&quot;firstlast&quot;</span><span class="p">]</span>
     <span class="n">lasttype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Last&quot;</span><span class="p">,</span> <span class="s2">&quot;last&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">]</span>
@@ -2141,7 +2169,8 @@
         <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">listtype</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">listtype</span> <span class="ow">or</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> \
+                <span class="ow">or</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">singlelisttype</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">tg</span><span class="p">:</span>
                     <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">]</span>
@@ -2169,7 +2198,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">tgtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">and</span>
+                <span class="n">tgtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">singlelisttype</span><span class="p">)</span> <span class="ow">or</span> \
+                    <span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">tg</span><span class="p">:</span>
             <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
         <span class="k">elif</span> <span class="n">tg</span> <span class="o">!=</span> <span class="n">md</span><span class="p">:</span>
@@ -2378,8 +2410,12 @@
                     <span class="ow">and</span> <span class="n">md</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
                 <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">or</span> \
-               <span class="p">(</span><span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">and</span> <span class="n">md</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">singlelisttype</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">mm</span> <span class="ow">in</span> <span class="n">md</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">mm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mm</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">tgtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">or</span> \
+                    <span class="p">(</span><span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">and</span> <span class="n">md</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
                     <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -2667,9 +2703,9 @@
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_firstlast_list</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">endpointstype</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_endpoints_list</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">listtype</span> <span class="ow">or</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">listtype</span> <span class="ow">or</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> \
+                <span class="ow">or</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">singlelisttype</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_list_list</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">tgtype</span><span class="p">)</span>
-
         <span class="k">elif</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dicttype</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_dict_list</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">md</span><span class="p">:</span>
