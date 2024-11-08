@@ -840,7 +840,7 @@ class H5RedisFile(H5File):
                     if 'proposal' not in scandct or not scandct["proposal"]:
                         if "experiment_identifier" in entry.names():
                             proposal = filewriter.first(
-                                self.open("experiment_identifier").read())
+                                entry.open("experiment_identifier").read())
                             if proposal:
                                 scandct["proposal"] = proposal
 
