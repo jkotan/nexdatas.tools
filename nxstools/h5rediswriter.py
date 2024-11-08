@@ -188,7 +188,8 @@ def unlimited(parent=None):
     return h5writer.unlimited(parent)
 
 
-def open_file(filename, readonly=False, redisurl=None, **pars):
+def open_file(filename, readonly=False, redisurl=None, session=None,
+              **pars):
     """ open the new file
 
     :param filename: file name
@@ -197,13 +198,15 @@ def open_file(filename, readonly=False, redisurl=None, **pars):
     :type readonly: :obj:`bool`
     :param redisurl: redis URL
     :type redisurl: :obj:`str`
+    :param session: redis session
+    :type session: :obj:`str`
     :param libver: library version: 'lastest' or 'earliest'
     :type libver: :obj:`str`
     :returns: file object
     :rtype: :class:`H5RedisFile`
     """
     return H5RedisFile(h5imp=h5writer.open_file(filename, readonly, **pars),
-                       redisurl=redisurl)
+                       redisurl=redisurl, session=session)
 
 
 def is_image_file_supported():
@@ -251,7 +254,8 @@ def load_file(membuffer, filename=None, readonly=False, **pars):
         h5imp=h5writer.load_file(membuffer, filename, readonly, **pars))
 
 
-def create_file(filename, overwrite=False, redisurl=None, **pars):
+def create_file(filename, overwrite=False, redisurl=None, session=None,
+                **pars):
     """ create a new file
 
     :param filename: file name
@@ -262,12 +266,14 @@ def create_file(filename, overwrite=False, redisurl=None, **pars):
     :type libver: :obj:`str`
     :param redisurl: redis URL
     :type redisurl: :obj:`str`
+    :param session: redis session
+    :type session: :obj:`str`
     :returns: file object
     :rtype: :class:`H5RedisFile`
     """
     return H5RedisFile(
         h5imp=h5writer.create_file(filename, overwrite, **pars),
-        redisurl=redisurl)
+        redisurl=redisurl, session=session)
 
 
 def link(target, parent, name):
@@ -380,7 +386,7 @@ class H5RedisFile(H5File):
     """
 
     def __init__(self, h5object=None, filename=None, h5imp=None,
-                 redisurl=None):
+                 redisurl=None, session=None):
         """ constructor
 
         :param h5object: h5 object
@@ -391,6 +397,8 @@ class H5RedisFile(H5File):
         :type h5imp: :class:`filewriter.FTFile`
         :param redisurl: redis url string
         :type redisurl: :obj:`str`
+        :param session: redis session
+        :type session: :obj:`str`
         """
         if h5imp is not None:
             H5File.__init__(self, h5imp.h5object, h5imp.name)
@@ -400,6 +408,7 @@ class H5RedisFile(H5File):
             H5File.__init__(self, h5object, filename)
         #: (:obj:`str`) redis url
         self.__redisurl = redisurl or "redis://localhost:6380"
+        self.__session = session or "test_session"
         self.__datastore = None
         self.__scan = None
         self.__scan_lock = threading.Lock()
@@ -589,7 +598,7 @@ class H5RedisFile(H5File):
         scinfo = {
             "name": fbase,
             "scan_nb": number,
-            "session_name": 'test_session',
+            "session_name": self.__session,
             "data_policy": 'no_policy',
             "user_name": getpass.getuser(),
             "start_time":
@@ -817,7 +826,7 @@ class H5RedisFile(H5File):
                            "number": sinfo["scan_nb"],
                            "dataset": fbase,
                            "path": dr,
-                           "session": "test_session",
+                           "session": self.__session,
                            "collection": measurement,
                            "data_policy": "no_policy"}
                 if "beamtime_id" in sinfo:
