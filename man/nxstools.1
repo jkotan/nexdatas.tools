@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSTOOLS" "1" "Nov 07, 2024" "4.17" "NXSTools"
+.TH "NXSTOOLS" "1" "Nov 08, 2024" "4.18" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .sp
@@ -6543,7 +6543,7 @@ set scan info parameters
 .UNINDENT
 .INDENT 0.0
 .TP
-.B class  nxstools.h5rediswriter.H5RedisFile(h5object=None, filename=None, h5imp=None, redisurl=None)
+.B class  nxstools.h5rediswriter.H5RedisFile(h5object=None, filename=None, h5imp=None, redisurl=None, session=None)
 Bases: \fI\%H5CppFile\fP
 .sp
 file tree file
@@ -6561,6 +6561,8 @@ constructor
 \fBh5imp\fP (\fBfilewriter.FTFile\fP) \-\- h5 implementation file
 .IP \(bu 2
 \fBredisurl\fP (\fI\%str\fP) \-\- redis url string
+.IP \(bu 2
+\fBsession\fP (\fI\%str\fP) \-\- redis session
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -7318,7 +7320,7 @@ constructor
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.h5rediswriter.create_file(filename, overwrite=False, redisurl=None, **pars)
+.B nxstools.h5rediswriter.create_file(filename, overwrite=False, redisurl=None, session=None, **pars)
 create a new file
 .INDENT 7.0
 .TP
@@ -7332,6 +7334,8 @@ create a new file
 \fBlibver\fP (\fI\%str\fP) \-\- library version: \(aqlastest\(aq or \(aqearliest\(aq
 .IP \(bu 2
 \fBredisurl\fP (\fI\%str\fP) \-\- redis URL
+.IP \(bu 2
+\fBsession\fP (\fI\%str\fP) \-\- redis session
 .UNINDENT
 .TP
 .B Returns
@@ -7520,7 +7524,7 @@ nupy type
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.h5rediswriter.open_file(filename, readonly=False, redisurl=None, **pars)
+.B nxstools.h5rediswriter.open_file(filename, readonly=False, redisurl=None, session=None, **pars)
 open the new file
 .INDENT 7.0
 .TP
@@ -7532,6 +7536,8 @@ open the new file
 \fBreadonly\fP (\fI\%bool\fP) \-\- readonly flag
 .IP \(bu 2
 \fBredisurl\fP (\fI\%str\fP) \-\- redis URL
+.IP \(bu 2
+\fBsession\fP (\fI\%str\fP) \-\- redis session
 .IP \(bu 2
 \fBlibver\fP (\fI\%str\fP) \-\- library version: \(aqlastest\(aq or \(aqearliest\(aq
 .UNINDENT

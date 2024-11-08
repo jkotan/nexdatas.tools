@@ -1,6 +1,7 @@
 2024-11-08 Jan Kotanski <jankotan@gmail.com>
 	* fix typo in h5rediswriter (#729)
-	* tagged as v4.17.1
+	* add `session` parameter for h5redis Writer property (#731)
+	* tagged as v4.18.0
 
 2024-11-06 Jan Kotanski <jankotan@gmail.com>
 	* add support for append end extend actions in copy-map files (#726)
