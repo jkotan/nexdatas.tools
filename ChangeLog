@@ -1,3 +1,7 @@
+2024-12-11 Jan Kotanski <jankotan@gmail.com>
+	* reset SciCatMeasurements if not dict (#734)
+	* tagged as v4.18.1
+
 2024-11-08 Jan Kotanski <jankotan@gmail.com>
 	* fix typo in h5rediswriter (#729)
 	* add `session` parameter for h5redis Writer property (#731)
