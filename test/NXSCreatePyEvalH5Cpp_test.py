@@ -1812,11 +1812,17 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         commonblock[filestartnum_str] = 1
 
         sfn1 = "/tmp/current/scan213123_%05d.tif:0:19"
+        sfn2 = "/tmp/current/scan213123_%05d.tif:1:20"
 
         fn1 = pco.postrun(
             commonblock, filestartnum, filedir, nbframes,
             filepostfix, fileprefix, filestartnum_str)
         self.assertEqual(fn1, sfn1)
+
+        fn1 = pco.postrun(
+            commonblock, filestartnum, filedir, nbframes,
+            filepostfix, fileprefix, filestartnum_str, fromzero=True)
+        self.assertEqual(fn1, sfn2)
 
         tstroot.stepsperfile = 20
         tstroot.currentfileid = 1

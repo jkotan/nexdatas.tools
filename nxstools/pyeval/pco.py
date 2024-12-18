@@ -28,7 +28,7 @@ def postrun(commonblock,
             nbframes,
             filepostfix,
             fileprefix,
-            filestartnum_str):
+            filestartnum_str, fromzero=False):
     """ code for postrun  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -53,14 +53,20 @@ def postrun(commonblock,
         unixdir = "/data" + unixdir[2:]
     if unixdir and unixdir[-1] == "/":
         unixdir = unixdir[:-1]
-    filestartnumer = commonblock[filestartnum_str]
+    if fromzero:
+        filestartnumer = commonblock[filestartnum_str]
+    else:
+        filestartnumer = commonblock[filestartnum_str] - 1
     if fileprefix.endswith("_"):
         fileprefix = fileprefix[:-1]
     result = "" + unixdir + "/" + fileprefix + "_%05d."
     if filepostfix.startswith("."):
         filepostfix = filepostfix[1:]
     result += filepostfix + ":"
-    filelastnumber = filestartnum
+    if fromzero:
+        filelastnumber = filestartnum
+    else:
+        filelastnumber = filestartnum - 1
     if "__root__" in commonblock.keys():
         root = commonblock["__root__"]
         if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):

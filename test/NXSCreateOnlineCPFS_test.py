@@ -331,6 +331,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      "lambdavdsnm",
                      "limaccd", "limaccds", "marccd", "mca_xia",
                      "mythen", "mythen2", "pco", "pco4000", "pcoedge",
+                     "pcovds",
                      "pedetector", "perkinelmer",
                      "perkinelmerdetector",
                      "pilatus", "pilatus100k",
@@ -377,6 +378,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             "pilctimeid",
             'marccd',               # +
             'pcoedge',              #
+            "pcovds",
             'pilatus100k',          #
             'tangovimba',           #
             'cobold',
@@ -443,6 +445,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                              "lambdavds", "lambdavdsnm",
                              "limaccd", "limaccds", "marccd", "mca_xia",
                              "mythen", "mythen2", "pco", "pco4000", "pcoedge",
+                             "pcovds",
                              "pedetector", "perkinelmer",
                              "perkinelmerdetector",
                              "pilatus", "pilatus100k",
@@ -519,6 +522,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                  "lambdavds", "lambdavdsnm",
                  "limaccd", "limaccds", "marccd", "mca_xia",
                  "mythen", "mythen2", "pco", "pco4000", "pcoedge",
+                 "pcovds",
                  "pedetector", "perkinelmer",
                  "perkinelmerdetector",
                  "pilatus", "pilatus100k",
