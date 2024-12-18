@@ -62,6 +62,10 @@ def triggermode_cb(commonblock, name, triggermode,
     :type eigerfilewriter_str: :obj:`str`
     :param addfilepattern: add eiger filepattern to the link names
     :type addfilepattern: :obj:`bool`
+    :param shape:  shape
+    :type shape: [:obj:`int`, :obj:`int` ]
+    :param dtype: NeXus image data type
+    :type dtype: :obj:`str`
     :param acq_modes: acquisition modes
     :type acq_modes: :obj:`str`
     :param shortdetpath: shortdetpath
