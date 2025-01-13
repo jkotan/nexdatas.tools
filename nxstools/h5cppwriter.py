@@ -1694,7 +1694,10 @@ class H5CppAttribute(filewriter.FTAttribute):
            (hasattr(o, "__len__") and t == slice(0, len(o), None)):
             if self.dtype in ['string', b'string']:
                 if isinstance(o, str):
-                    self._h5object.write(unicode(o))
+                    try:
+                        self._h5object.write(unicode(o))
+                    except Exception:
+                        self._h5object.write(o.decode("utf8"))
                 else:
                     dtype = np.unicode_
                     self._h5object.write(np.array(o, dtype=dtype))
@@ -1735,7 +1738,7 @@ class H5CppAttribute(filewriter.FTAttribute):
                 var = var.astype(dtype)
             self._h5object.write(var)
         else:
-            if isinstance(o, str) or isinstance(o, unicode):
+            if isinstance(o, unicode):
                 self._h5object.write(unicode(o))
             else:
                 self._h5object.write(np.array(o, dtype=self.dtype))
